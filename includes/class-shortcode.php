@@ -18,6 +18,11 @@ class Shortcode {
 
 		// PAY.JP checkoutコードを表示させるオリジナルタグを追加.
 		add_action( 'wpcf7_init', array( $this, 'payjpforkintone_add_form_tag' ) );
+
+		// Payment.
+		require_once PAY_JP_FOR_KINTONE_PATH . '/includes/class-payment.php';
+		new Payment();
+
 	}
 
 	/**
@@ -42,7 +47,7 @@ class Shortcode {
 		if ( 'enable' !== $payjpforkintone_setting_data['payjpforkintone-enabled'] ) {
 			return;
 		}
-		
+
 		if ( isset( $payjpforkintone_setting_data['live-enabled'] ) && 'enable' === $payjpforkintone_setting_data['live-enabled'] ) {
 			// Live.
 			$public_key = get_option( 'pay_jp_for_kintone_live_public_key' );

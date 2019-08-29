@@ -260,8 +260,11 @@ class Admin {
 		$payjpforkintone_enabled = $payjpforkintone_setting_data['payjpforkintone-enabled'];
 
 
-		$live_enabled      = $payjpforkintone_setting_data['live-enabled'];
-		$amout_cf7_mailtag = $payjpforkintone_setting_data['amout-cf7-mailtag'];
+		$live_enabled       = $payjpforkintone_setting_data['live-enabled'];
+		$amount_cf7_mailtag = $payjpforkintone_setting_data['amount-cf7-mailtag'];
+
+		$kintone_enabled                        = $payjpforkintone_setting_data['kintone-enabled'];
+		$kintone_fieldcode_for_payjp_billing_id = $payjpforkintone_setting_data['kintone-fieldcode-for-payjp-billing-id'];
 
 		?>
 
@@ -308,22 +311,22 @@ class Admin {
 
 			<div class="field-wrap field-wrap-use-external-url">
 				<fieldset>
-					<label for="amout-cf7-mailtag">
-						<?php esc_html_e( 'Select amout of CF7 mailtag', 'pay-jp-for-kintone' ); ?>
+					<label for="amount-cf7-mailtag">
+						<?php esc_html_e( 'Select amount of CF7 mailtag', 'pay-jp-for-kintone' ); ?>
 					</label><br/>
 
 					<select
-						name="payjpforkintone_setting_data[amout-cf7-mailtag]"
-						data-placeholder="<?php esc_html_e( 'Select amout of CF7 mailtag', 'pay-jp-for-kintone' ); ?>"
+						name="payjpforkintone_setting_data[amount-cf7-mailtag]"
+						data-placeholder="<?php esc_html_e( 'Select amount of CF7 mailtag', 'pay-jp-for-kintone' ); ?>"
 						class="chosen-select"
 						style="width:350px;"
-						id="amout-cf7-mailtag"
+						id="amount-cf7-mailtag"
 					>
 						<option value=""></option>
 						<?php foreach ( $mailtags as $mailtag ) : ?>
 							<option
 								value="<?php echo esc_textarea( $mailtag ); ?>"
-								<?php selected( $amout_cf7_mailtag, $mailtag ); ?>
+								<?php selected( $amount_cf7_mailtag, $mailtag ); ?>
 							>
 								<?php echo esc_textarea( $mailtag ); ?>
 							</option>
@@ -332,6 +335,36 @@ class Admin {
 				</fieldset>
 			</div>
 
+			<div class="setting-kintone-block">
+
+				<div class="field-wrap field-wrap-use-external-url">
+
+					<fieldset>
+						<label for="kintone-enabled"><?php esc_html_e(
+								'Enable kintone',
+								'pay-jp-for-kintone'
+							); ?></label>
+						<input
+							type="checkbox"
+							name="payjpforkintone_setting_data[kintone-enabled]"
+							id="kintone-enabled"
+							value="enable"
+							<?php checked( $kintone_enabled, 'enable' ); ?>
+						>
+					</fieldset>
+				</div>
+
+				<div class="field-wrap field-wrap-use-external-url">
+					<fieldset>
+						<label for="payjp-billing-id">
+							<?php esc_html_e( 'Select PAY.JP Billing ID of CF7 mailtag', 'pay-jp-for-kintone' ); ?>
+						</label><br/>
+						<input type="text" id="payjp-billing-id"
+							value="<?php echo esc_attr( $kintone_fieldcode_for_payjp_billing_id ); ?>"
+							name="payjpforkintone_setting_data[kintone-fieldcode-for-payjp-billing-id]">
+					</fieldset>
+				</div>
+			</div>
 		</div>
 		<?php
 	}
