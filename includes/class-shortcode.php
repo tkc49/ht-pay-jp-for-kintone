@@ -30,20 +30,29 @@ class Shortcode {
 	 */
 	public function payjpforkintone_add_form_tag() {
 
-		wpcf7_add_form_tag( 'payjp_for_kintone',
+		wpcf7_add_form_tag(
+			'payjp_for_kintone',
 			array( $this, 'payjp_for_kintone_add_form_handler' ),
 			array(
 				'name-attr' => true,
-			) );
+			)
+		);
 	}
 
+	/**
+	 * CF7用のオリジナルタグを追加.
+	 *
+	 * @param WPCF7_FormTag $tag .
+	 *
+	 * @return string .
+	 */
 	public function payjp_for_kintone_add_form_handler( $tag ) {
 
 		$contact_form                 = WPCF7_ContactForm::get_current();
 		$payjpforkintone_setting_data = get_post_meta( $contact_form->id(), '_payjpforkintone_setting_data', true );
 
 		if ( 'enable' !== $payjpforkintone_setting_data['payjpforkintone-enabled'] ) {
-			return;
+			return '';
 		}
 
 		if ( isset( $payjpforkintone_setting_data['live-enabled'] ) && 'enable' === $payjpforkintone_setting_data['live-enabled'] ) {
@@ -53,9 +62,7 @@ class Shortcode {
 			$public_key = get_option( 'pay_jp_for_kintone_test_public_key' );
 		}
 
-
-		$html = '';
-		$html .= '<script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button" data-key="' . $public_key . '" data-partial="true" ></script > ';
+		$html = '<script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button" data-key="' . $public_key . '" data-partial="true" ></script > ';
 
 		return $html;
 
