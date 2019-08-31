@@ -27,7 +27,7 @@ class Payment {
 	 * @param boolean           $abort .
 	 * @param WPCF7_Submission  $submission .
 	 */
-	public function payment_to_pay_jp( $contact_form, $abort, $submission ) {
+	public function payment_to_pay_jp( $contact_form, &$abort, $submission ) {
 
 		if ( isset( $_POST['payjp-token'] ) && $_POST['payjp-token'] !== '' ) {
 
@@ -48,29 +48,81 @@ class Payment {
 
 			\Payjp\Payjp::setApiKey( $secret_key );
 			try {
-				$charge = \Payjp\Charge::create(
-					[
-						'card'     => $token,
-						'amount'   => $amount,
-						'currency' => 'jpy',
-					]
-				);
-				error_log( '成功' );
-				error_log( var_export( $charge, true ) );
+				$charge = \Payjp\Charge::create( [
+					'card'     => $token,
+					'amount'   => $amount,
+					'currency' => 'jpy',
+				] );
 
 				// IDを保存する.
 				$this->payjp_biling_id = $charge->id;
 
-			} catch ( \Payjp\Error\InvalidRequest $e ) {
-				error_log( '失敗' );
-				error_log( var_export( $e, true ) );
-				$abort = true;
-			}
+				$submited['posted_data']                     = $submission->get_posted_data();
+				$submited['posted_data']['payjp-charged-id'] = $charge->id;
 
+				$mail = $contact_form->prop( 'mail' );
+				// Find/replace the "special" tag as defined in your CF7 email body
+				$mail['body'] = str_replace( "[payjp-charged-id]",
+					$submited['posted_data']['payjp-charged-id'],
+					$mail['body'] );
+				// Save the email body
+				$contact_form->set_properties( array( "mail" => $mail ) );
+
+				$mail2         = $contact_form->prop( 'mail_2' );
+				$mail2['body'] = str_replace( "[payjp-charged-id]",
+					$submited['posted_data']['payjp-charged-id'],
+					$mail2['body'] );
+
+				// Save the email body
+				$contact_form->set_properties( array( "mail" => $mail, "mail_2" => $mail2 ) );
+
+
+			} catch ( \Payjp\Error\InvalidRequest $e ) {
+
+				$abort = true;
+				$submission->set_response( $contact_form->filter_message( $e->getMessage() ) );
+
+				$this->send_error_mail( $contact_form, $e );
+			}
 		} else {
 			// Error.
 			$abort = true;
 		}
+
+	}
+
+	public function payjp_erroor_message( $output, $class, $content, $object ) {
+		return sprintf( '<div class="wpcf7-response-output wpcf7-display-none wpcf7-mail-sent-ng"
+            role="alert" style="display: block;">%s</div>',
+			__( 'Payment ERROR' ) );
+	}
+
+	/**
+	 * エラーメール送信.
+	 *
+	 * @param \Payjp\Error\InvalidRequest $e .
+	 */
+	private function send_error_mail( $contact_form, $e ) {
+
+		$kintone_setting_data = $contact_form->prop( 'kintone_setting_data' );
+
+		if ( empty( $kintone_setting_data ) ) {
+			return;
+		}
+
+		$error_msg = $e->getMessage();
+
+		$email_address_to_send_kintone_registration_error = $kintone_setting_data['email_address_to_send_kintone_registration_error'];
+
+		if ( $email_address_to_send_kintone_registration_error ) {
+			$to = $email_address_to_send_kintone_registration_error;
+		} else {
+			$to = get_option( 'admin_email' );
+		}
+
+		$subject = esc_html__( 'Error : PAY.JP Payment', 'pay-jp-for-kintone' );
+		$body    = $error_msg;
+		wp_mail( $to, $subject, $body );
 
 	}
 
@@ -103,10 +155,8 @@ class Payment {
 
 		$add_data[ $kintone_fieldcode_for_payjp_billing_id ] = array( 'value' => $this->payjp_biling_id );
 
-		$datas = array_merge(
-			$datas,
-			$add_data
-		);
+		$datas = array_merge( $datas,
+			$add_data );
 
 		return $datas;
 
