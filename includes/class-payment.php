@@ -87,6 +87,8 @@ class Payment {
 		} else {
 			// Error.
 			$abort = true;
+			$submission->set_response( $contact_form->filter_message( __( 'Failed to get credit card information',
+				'payjp-for-kintone' ) ) );
 		}
 
 	}
