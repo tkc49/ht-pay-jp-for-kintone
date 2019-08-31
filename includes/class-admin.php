@@ -2,8 +2,8 @@
 /**
  * Admin の Classファイル
  *
- * @package Pay_Jp_For_Kintone
- * @version 0.1.0
+ * @package Payjp_For_Kintone
+ * @version 1.0.0
  */
 
 /**
@@ -16,7 +16,7 @@ class Admin {
 	 *
 	 * @var string
 	 */
-	private $nonce = 'pay-jp-for-kintone-admin-setting-page';
+	private $nonce = 'payjp-for-kintone-admin-setting-page';
 
 	/**
 	 * Admin constructor.
@@ -85,7 +85,7 @@ class Admin {
 		?>
 		<div class="wrap">
 			<h2>PAY.JP for kintone Settings</h2>
-			<form id="pay-jp-for-kintone-form" method="post" action="">
+			<form id="payjp-for-kintone-form" method="post" action="">
 
 				<?php wp_nonce_field( $this->nonce ); ?>
 
@@ -94,7 +94,7 @@ class Admin {
 					<tr valign="top">
 						<th scope="row">
 							<label for="add_text">
-								<?php esc_html_e( 'Test Secret Key', 'pay-jp-for-kintone' ); ?>
+								<?php esc_html_e( 'Test Secret Key', 'payjp-for-kintone' ); ?>
 							</label>
 						</th>
 						<td>
@@ -105,7 +105,7 @@ class Admin {
 					<tr valign="top">
 						<th scope="row">
 							<label for="add_text">
-								<?php esc_html_e( 'Test Public Key', 'pay-jp-for-kintone' ); ?>
+								<?php esc_html_e( 'Test Public Key', 'payjp-for-kintone' ); ?>
 							</label>
 						</th>
 						<td>
@@ -116,7 +116,7 @@ class Admin {
 					<tr valign="top">
 						<th scope="row">
 							<label for="add_text">
-								<?php esc_html_e( 'Live Secret Key', 'pay-jp-for-kintone' ); ?>
+								<?php esc_html_e( 'Live Secret Key', 'payjp-for-kintone' ); ?>
 							</label>
 						</th>
 						<td>
@@ -127,7 +127,7 @@ class Admin {
 					<tr valign="top">
 						<th scope="row">
 							<label for="add_text">
-								<?php esc_html_e( 'Live Public Key', 'pay-jp-for-kintone' ); ?>
+								<?php esc_html_e( 'Live Public Key', 'payjp-for-kintone' ); ?>
 							</label>
 						</th>
 						<td>
@@ -139,7 +139,7 @@ class Admin {
 				</table>
 				<p class="submit">
 					<input type="submit" name="get_kintone_fields" class="button-primary"
-						value="<?php echo esc_attr( __( 'Save', 'pay-jp-for-kintone' ) ); ?>"/>
+						value="<?php echo esc_attr( __( 'Save', 'payjp-for-kintone' ) ); ?>"/>
 				</p>
 			</form>
 		</div>
@@ -251,11 +251,11 @@ class Admin {
 
 		?>
 
-		<h2><?php esc_html_e( 'Setting PAY.JP for kintone', 'pay-jp-for-kintone' ); ?></h2>
+		<h2><?php esc_html_e( 'Setting PAY.JP for kintone', 'payjp-for-kintone' ); ?></h2>
 		<div id="payjpforkintone-disabled-blocked" class="field-wrap field-wrap-use-external-url">
 			<fieldset>
 				<label for="payjpforkintone-disabled">
-					<?php esc_html_e( 'Disable', 'pay-jp-for-kintone' ); ?>
+					<?php esc_html_e( 'Disable', 'payjp-for-kintone' ); ?>
 				</label>
 				<input type="radio"
 					name="payjpforkintone_setting_data[payjpforkintone-enabled]"
@@ -264,7 +264,7 @@ class Admin {
 					<?php checked( $payjpforkintone_enabled, 'disable' ); ?>
 				>
 				<label for="payjpforkintone-enabled">
-					<?php esc_html_e( 'Enable', 'pay-jp-for-kintone' ); ?>
+					<?php esc_html_e( 'Enable', 'payjp-for-kintone' ); ?>
 				</label>
 				<input type="radio"
 					name="payjpforkintone_setting_data[payjpforkintone-enabled]"
@@ -288,7 +288,7 @@ class Admin {
 			<div class="field-wrap field-wrap-use-external-url">
 
 				<fieldset>
-					<label for="live-enabled"><?php esc_html_e( 'Enable Live', 'pay-jp-for-kintone' ); ?></label>
+					<label for="live-enabled"><?php esc_html_e( 'Enable Live', 'payjp-for-kintone' ); ?></label>
 					<input
 						type="checkbox"
 						name="payjpforkintone_setting_data[live-enabled]"
@@ -302,12 +302,12 @@ class Admin {
 			<div class="field-wrap field-wrap-use-external-url">
 				<fieldset>
 					<label for="amount-cf7-mailtag">
-						<?php esc_html_e( 'Select amount of CF7 mailtag', 'pay-jp-for-kintone' ); ?>
+						<?php esc_html_e( 'Select amount of CF7 mailtag', 'payjp-for-kintone' ); ?>
 					</label><br/>
 
 					<select
 						name="payjpforkintone_setting_data[amount-cf7-mailtag]"
-						data-placeholder="<?php esc_html_e( 'Select amount of CF7 mailtag', 'pay-jp-for-kintone' ); ?>"
+						data-placeholder="<?php esc_html_e( 'Select amount of CF7 mailtag', 'payjp-for-kintone' ); ?>"
 						class="chosen-select"
 						style="width:350px;"
 						id="amount-cf7-mailtag"
@@ -326,7 +326,7 @@ class Admin {
 			</div>
 
 			<?php esc_html_e( 'Paste the following shortcode of Contact form 7 on form of Contact form 7',
-				'pay-jp-for-kintone' ); ?>
+				'payjp-for-kintone' ); ?>
 			<span class="shortcode wp-ui-highlight">
 					<input type="text" id="payjpforkintone-shortcode" onfocus="this.select();" readonly="readonly" class="large-text code" value="[payjp_for_kintone]">
 			</span>
@@ -344,7 +344,7 @@ class Admin {
 
 					<fieldset>
 						<label for="kintone-enabled"><?php esc_html_e( 'Enable kintone',
-								'pay-jp-for-kintone' ); ?></label>
+								'payjp-for-kintone' ); ?></label>
 						<input
 							type="checkbox"
 							name="payjpforkintone_setting_data[kintone-enabled]"
@@ -358,7 +358,7 @@ class Admin {
 				<div class="field-wrap field-wrap-use-external-url">
 					<fieldset>
 						<label for="payjp-billing-id">
-							<?php esc_html_e( 'Select PAY.JP Billing ID of CF7 mailtag', 'pay-jp-for-kintone' ); ?>
+							<?php esc_html_e( 'Select PAY.JP Billing ID of CF7 mailtag', 'payjp-for-kintone' ); ?>
 						</label><br/>
 						<input type="text" id="payjp-billing-id"
 							value="<?php echo esc_attr( $kintone_fieldcode_for_payjp_billing_id ); ?>"
@@ -411,7 +411,7 @@ class Admin {
 			'PAY.JP for kintone',
 			'PAY.JP for kintone',
 			'manage_options',
-			'pay-jp-for-kintone',
+			'payjp-for-kintone',
 			array(
 				$this,
 				'admin_setting',

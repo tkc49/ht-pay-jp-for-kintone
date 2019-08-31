@@ -2,7 +2,7 @@
 /**
  * ShortCode
  *
- * @package Pay_Jp_For_Kintone
+ * @package Payjp_For_Kintone
  */
 
 /**
@@ -30,13 +30,11 @@ class Shortcode {
 	 */
 	public function payjpforkintone_add_form_tag() {
 
-		wpcf7_add_form_tag(
-			'payjp_for_kintone',
+		wpcf7_add_form_tag( 'payjp_for_kintone',
 			array( $this, 'payjp_for_kintone_add_form_handler' ),
 			array(
 				'name-attr' => true,
-			)
-		);
+			) );
 	}
 
 	public function payjp_for_kintone_add_form_handler( $tag ) {

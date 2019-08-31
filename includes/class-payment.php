@@ -2,7 +2,7 @@
 /**
  * Payment
  *
- * @package Pay_Jp_For_Kintone
+ * @package Payjp_For_Kintone
  */
 
 /**
@@ -120,7 +120,7 @@ class Payment {
 			$to = get_option( 'admin_email' );
 		}
 
-		$subject = esc_html__( 'Error : PAY.JP Payment', 'pay-jp-for-kintone' );
+		$subject = esc_html__( 'Error : PAY.JP Payment', 'payjp-for-kintone' );
 		$body    = $error_msg;
 		wp_mail( $to, $subject, $body );
 

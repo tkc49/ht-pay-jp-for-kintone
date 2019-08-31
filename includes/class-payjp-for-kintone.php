@@ -1,14 +1,14 @@
 <?php
 /**
- * Pay_Jp_For_Kintone
+ * Payjp_For_Kintone
  *
- * @package Pay_Jp_For_Kintone
+ * @package Payjp_For_Kintone
  */
 
 /**
- * Pay_Jp_For_Kintone
+ * Payjp_For_Kintone
  */
-class Pay_Jp_For_Kintone {
+class Payjp_For_Kintone {
 
 	/**
 	 * Constructor
