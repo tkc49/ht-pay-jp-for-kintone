@@ -1,14 +1,14 @@
 <?php
 /**
- * Payjp_For_Kintone
+ * HT_Payjp_For_Kintone
  *
- * @package Payjp_For_Kintone
+ * @package HT_Payjp_For_Kintone
  */
 
 /**
- * Payjp_For_Kintone
+ * HT_Payjp_For_Kintone
  */
-class Payjp_For_Kintone {
+class HT_Payjp_For_Kintone {
 
 	/**
 	 * Constructor
@@ -29,10 +29,10 @@ class Payjp_For_Kintone {
 	public function plugins_loaded() {
 
 		if ( ( is_admin() ) ) {
-			require_once PAY_JP_FOR_KINTONE_PATH . '/includes/class-admin.php';
+			require_once HT_PAY_JP_FOR_KINTONE_PATH . '/includes/class-admin.php';
 			new Admin();
 		} else {
-			require_once PAY_JP_FOR_KINTONE_PATH . '/includes/class-shortcode.php';
+			require_once HT_PAY_JP_FOR_KINTONE_PATH . '/includes/class-shortcode.php';
 			new Shortcode();
 		}
 

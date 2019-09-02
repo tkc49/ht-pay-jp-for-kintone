@@ -1,4 +1,4 @@
-=== PAY.JP for kintone ===
+=== HT PAY.JP for kintone ===
 Contributors: tkc49
 Donate link:
 Tags: Contact Form 7, kintone, PAY.JP
@@ -30,7 +30,7 @@ https://pay.jp
 
 == Installation ==
 
-1. Upload the entire `payjp-for-kintone` folder to the `/ wp-content / plugins /` directory.
+1. Upload the entire `ht-payjp-for-kintone` folder to the `/ wp-content / plugins /` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Frequently Asked Questions ==

@@ -16,27 +16,27 @@ class Admin {
 	 *
 	 * @var string
 	 */
-	private $nonce = 'payjp-for-kintone-admin-setting-page';
+	private $nonce = 'ht_payjp-for-kintone-admin-setting-page';
 
 	/**
 	 * Admin constructor.
 	 */
 	public function __construct() {
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'payjpforkintone_admin_enqueue_scripts' ) );
-		add_action( 'admin_menu', array( $this, 'payjpforkintone_admin_add_page' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'ht_payjpforkintone_admin_enqueue_scripts' ) );
+		add_action( 'admin_menu', array( $this, 'ht_payjpforkintone_admin_add_page' ) );
 
 		// Add PAY.JP setting panel to CF7.
-		add_filter( 'wpcf7_editor_panels', array( $this, 'payjpforkintone_editor_panels' ) );
+		add_filter( 'wpcf7_editor_panels', array( $this, 'ht_payjpforkintone_editor_panels' ) );
 		add_filter(
 			'wpcf7_contact_form_properties',
-			array( $this, 'payjpforkintone_add_properties_to_contact_form_properties' ),
+			array( $this, 'ht_payjpforkintone_add_properties_to_contact_form_properties' ),
 			10,
 			2
 		);
 
 		// 保存したときに実行.
-		add_action( 'wpcf7_save_contact_form', array( $this, 'payjpforkintone_save_contact_form' ), 10, 3 );
+		add_action( 'wpcf7_save_contact_form', array( $this, 'ht_payjpforkintone_save_contact_form' ), 10, 3 );
 
 	}
 
@@ -47,30 +47,30 @@ class Admin {
 	 * @param array             $args .
 	 * @param string            $context .
 	 */
-	public function payjpforkintone_save_contact_form( $contact_form, $args, $context ) {
-		$properties                                 = array();
-		$properties['payjpforkintone_setting_data'] = $args['payjpforkintone_setting_data'];
+	public function ht_payjpforkintone_save_contact_form( $contact_form, $args, $context ) {
+		$properties                                    = array();
+		$properties['ht_payjpforkintone_setting_data'] = $args['ht_payjpforkintone_setting_data'];
 		$contact_form->set_properties( $properties );
 	}
 
 	/**
 	 * CF7のメニューにオプションページのメニューを追加する.
 	 */
-	public function payjpforkintone_admin_add_page() {
+	public function ht_payjpforkintone_admin_add_page() {
 		add_submenu_page(
 			'wpcf7',
-			'PAY.JP for kintone',
-			'PAY.JP for kintone',
+			'HT PAY.JP for kintone',
+			'HT PAY.JP for kintone',
 			WPCF7_ADMIN_READ_WRITE_CAPABILITY,
-			'payjpforkintone',
-			array( $this, 'payjpforkintone_options_page_handler' )
+			'htpayjpforkintone',
+			array( $this, 'ht_payjpforkintone_options_page_handler' )
 		);
 	}
 
 	/**
 	 * PAY.JP for kintone オプションページ作成.
 	 */
-	public function payjpforkintone_options_page_handler() {
+	public function ht_payjpforkintone_options_page_handler() {
 
 		if ( ! empty( $_POST ) && check_admin_referer( $this->nonce ) ) {
 
@@ -81,10 +81,10 @@ class Admin {
 			}
 		}
 
-		$test_secret_key = get_option( 'pay_jp_for_kintone_test_secret_key' );
-		$test_public_key = get_option( 'pay_jp_for_kintone_test_public_key' );
-		$live_secret_key = get_option( 'pay_jp_for_kintone_live_secret_key' );
-		$live_public_key = get_option( 'pay_jp_for_kintone_live_public_key' );
+		$test_secret_key = get_option( 'ht_pay_jp_for_kintone_test_secret_key' );
+		$test_public_key = get_option( 'ht_pay_jp_for_kintone_test_public_key' );
+		$live_secret_key = get_option( 'ht_pay_jp_for_kintone_live_secret_key' );
+		$live_public_key = get_option( 'ht_pay_jp_for_kintone_live_public_key' );
 
 		?>
 		<div class="wrap">
@@ -155,67 +155,67 @@ class Admin {
 	/**
 	 * 管理画面用のJSとCSSの読み込み.
 	 */
-	public function payjpforkintone_admin_enqueue_scripts() {
+	public function ht_payjpforkintone_admin_enqueue_scripts() {
 
 		wp_enqueue_script(
 			'jquery-ui',
-			PAY_JP_FOR_KINTONE_URL . '/lib/jquery-ui/jquery-ui.min.js',
+			HT_PAY_JP_FOR_KINTONE_URL . '/lib/jquery-ui/jquery-ui.min.js',
 			array( 'jquery' ),
 			date(
 				'YmdGis',
-				filemtime( PAY_JP_FOR_KINTONE_PATH . '/lib/jquery-ui/jquery-ui.min.js' )
+				filemtime( HT_PAY_JP_FOR_KINTONE_PATH . '/lib/jquery-ui/jquery-ui.min.js' )
 			),
 			true
 		);
 		wp_enqueue_style(
 			'jquery-ui-css',
-			PAY_JP_FOR_KINTONE_URL . '/lib/jquery-ui/jquery-ui.min.css',
+			HT_PAY_JP_FOR_KINTONE_URL . '/lib/jquery-ui/jquery-ui.min.css',
 			array(),
 			date(
 				'YmdGis',
-				filemtime( PAY_JP_FOR_KINTONE_PATH . '/lib/jquery-ui/jquery-ui.min.css' )
+				filemtime( HT_PAY_JP_FOR_KINTONE_PATH . '/lib/jquery-ui/jquery-ui.min.css' )
 			)
 		);
 
 		wp_enqueue_script(
 			'jquery-chosen',
-			PAY_JP_FOR_KINTONE_URL . '/lib/chosen/chosen.jquery.min.js',
+			HT_PAY_JP_FOR_KINTONE_URL . '/lib/chosen/chosen.jquery.min.js',
 			array( 'jquery' ),
 			date(
 				'YmdGis',
-				filemtime( PAY_JP_FOR_KINTONE_PATH . '/lib/chosen/chosen.jquery.min.js' )
+				filemtime( HT_PAY_JP_FOR_KINTONE_PATH . '/lib/chosen/chosen.jquery.min.js' )
 			),
 			true
 		);
 
 		wp_enqueue_style(
 			'jquery-chosen-css',
-			PAY_JP_FOR_KINTONE_URL . '/lib/chosen/chosen.min.css',
+			HT_PAY_JP_FOR_KINTONE_URL . '/lib/chosen/chosen.min.css',
 			array(),
 			date(
 				'YmdGis',
-				filemtime( PAY_JP_FOR_KINTONE_PATH . '/lib/chosen/chosen.min.css' )
+				filemtime( HT_PAY_JP_FOR_KINTONE_PATH . '/lib/chosen/chosen.min.css' )
 			)
 		);
 
 		wp_enqueue_script(
 			'payjpforkintone-main-js',
-			PAY_JP_FOR_KINTONE_URL . '/assets/js/admin.js',
+			HT_PAY_JP_FOR_KINTONE_URL . '/assets/js/admin.js',
 			array( 'jquery' ),
 			date(
 				'YmdGis',
-				filemtime( PAY_JP_FOR_KINTONE_PATH . '/assets/js/admin.js' )
+				filemtime( HT_PAY_JP_FOR_KINTONE_PATH . '/assets/js/admin.js' )
 			),
 			true
 		);
 
 		wp_enqueue_style(
 			'payjpforkintone-admin-css',
-			PAY_JP_FOR_KINTONE_URL . '/assets/css/admin.css',
+			HT_PAY_JP_FOR_KINTONE_URL . '/assets/css/admin.css',
 			array(),
 			date(
 				'YmdGis',
-				filemtime( PAY_JP_FOR_KINTONE_PATH . '/assets/css/admin.css' )
+				filemtime( HT_PAY_JP_FOR_KINTONE_PATH . '/assets/css/admin.css' )
 			)
 		);
 	}
@@ -227,11 +227,11 @@ class Admin {
 	 *
 	 * @return array .
 	 */
-	public function payjpforkintone_editor_panels( $panels ) {
+	public function ht_payjpforkintone_editor_panels( $panels ) {
 
 		$panels['payjpforkintone-panel'] = array(
 			'title'    => 'PAY.JP',
-			'callback' => array( $this, 'payjpforkintone_panel_handler' ),
+			'callback' => array( $this, 'ht_payjpforkintone_panel_handler' ),
 		);
 
 		return $panels;
@@ -242,12 +242,12 @@ class Admin {
 	 *
 	 * @param WPCF7_ContactForm $post .
 	 */
-	public function payjpforkintone_panel_handler( $post ) {
+	public function ht_payjpforkintone_panel_handler( $post ) {
 
 		// メールタグ取得.
 		$mailtags = $post->collect_mail_tags();
 
-		$payjpforkintone_setting_data = get_post_meta( $post->id(), '_payjpforkintone_setting_data', true );
+		$payjpforkintone_setting_data = get_post_meta( $post->id(), '_ht_payjpforkintone_setting_data', true );
 
 		$payjpforkintone_setting_data = wp_parse_args(
 			$payjpforkintone_setting_data,
@@ -288,7 +288,7 @@ class Admin {
 					<?php esc_html_e( 'Disable', 'payjp-for-kintone' ); ?>
 				</label>
 				<input type="radio"
-					name="payjpforkintone_setting_data[payjpforkintone-enabled]"
+					name="ht_payjpforkintone_setting_data[payjpforkintone-enabled]"
 					id="payjpforkintone-disabled"
 					value="disable"
 					<?php checked( $payjpforkintone_enabled, 'disable' ); ?>
@@ -297,7 +297,7 @@ class Admin {
 					<?php esc_html_e( 'Enable', 'payjp-for-kintone' ); ?>
 				</label>
 				<input type="radio"
-					name="payjpforkintone_setting_data[payjpforkintone-enabled]"
+					name="ht_payjpforkintone_setting_data[payjpforkintone-enabled]"
 					id="payjpforkintone-enabled"
 					value="enable"
 					<?php checked( $payjpforkintone_enabled, 'enable' ); ?>
@@ -323,7 +323,7 @@ class Admin {
 					<label for="live-enabled"><?php esc_html_e( 'Enable Live', 'payjp-for-kintone' ); ?></label>
 					<input
 						type="checkbox"
-						name="payjpforkintone_setting_data[live-enabled]"
+						name="ht_payjpforkintone_setting_data[live-enabled]"
 						id="live-enabled"
 						value="enable"
 						<?php checked( $live_enabled, 'enable' ); ?>
@@ -338,7 +338,7 @@ class Admin {
 					</label><br/>
 
 					<select
-						name="payjpforkintone_setting_data[amount-cf7-mailtag]"
+						name="ht_payjpforkintone_setting_data[amount-cf7-mailtag]"
 						data-placeholder="<?php esc_html_e( 'Select amount of CF7 mailtag', 'payjp-for-kintone' ); ?>"
 						class="chosen-select"
 						style="width:350px;"
@@ -364,14 +364,16 @@ class Admin {
 			);
 			?>
 			<span class="shortcode wp-ui-highlight">
-					<input type="text" id="payjpforkintone-shortcode" onfocus="this.select();" readonly="readonly" class="large-text code" value="[payjp_for_kintone]">
+					<input type="text" id="payjpforkintone-shortcode" onfocus="this.select();" readonly="readonly" class="large-text code" value="[ht_payjp_for_kintone]">
 			</span>
 
 			<span class="shortcode wp-ui-highlight">
 					<input type="text" id="payjpforkintone-shortcode-of-payment-id" onfocus="this.select();" readonly="readonly" class="large-text code" value="[hidden payjp-charged-id]">
 			</span>
 
-			<img src="<?php echo esc_attr( PAY_JP_FOR_KINTONE_URL . '/assets/images/admin-shortcode.jpg' ); ?>" alt="">
+			<img src="<?php echo esc_attr(
+				HT_PAY_JP_FOR_KINTONE_URL . '/assets/images/admin-shortcode.jpg'
+			); ?>" alt="">
 
 
 			<div class="setting-kintone-block">
@@ -384,7 +386,7 @@ class Admin {
 						</label>
 						<input
 							type="checkbox"
-							name="payjpforkintone_setting_data[kintone-enabled]"
+							name="ht_payjpforkintone_setting_data[kintone-enabled]"
 							id="kintone-enabled"
 							value="enable"
 							<?php checked( $kintone_enabled, 'enable' ); ?>
@@ -399,7 +401,7 @@ class Admin {
 						</label><br/>
 						<input type="text" id="payjp-billing-id"
 							value="<?php echo esc_attr( $kintone_fieldcode_for_payjp_billing_id ); ?>"
-							name="payjpforkintone_setting_data[kintone-fieldcode-for-payjp-billing-id]">
+							name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-billing-id]">
 					</fieldset>
 				</div>
 			</div>
@@ -414,10 +416,10 @@ class Admin {
 	 */
 	private function check_setting_payjp_key() {
 
-		$pay_jp_for_kintone_test_public_key = get_option( 'pay_jp_for_kintone_test_public_key' );
-		$pay_jp_for_kintone_test_secret_key = get_option( 'pay_jp_for_kintone_test_secret_key' );
-		$pay_jp_for_kintone_live_public_key = get_option( 'pay_jp_for_kintone_live_public_key' );
-		$pay_jp_for_kintone_live_secret_key = get_option( 'pay_jp_for_kintone_live_secret_key' );
+		$pay_jp_for_kintone_test_public_key = get_option( 'ht_pay_jp_for_kintone_test_public_key' );
+		$pay_jp_for_kintone_test_secret_key = get_option( 'ht_pay_jp_for_kintone_test_secret_key' );
+		$pay_jp_for_kintone_live_public_key = get_option( 'ht_pay_jp_for_kintone_live_public_key' );
+		$pay_jp_for_kintone_live_secret_key = get_option( 'ht_pay_jp_for_kintone_live_secret_key' );
 
 		if ( empty( $pay_jp_for_kintone_test_public_key ) || empty( $pay_jp_for_kintone_test_secret_key ) || empty( $pay_jp_for_kintone_live_public_key ) || empty( $pay_jp_for_kintone_live_secret_key ) ) {
 			return false;
@@ -434,12 +436,12 @@ class Admin {
 	 *
 	 * @return array An array of image URLs.
 	 */
-	public function payjpforkintone_add_properties_to_contact_form_properties( $properties, $contact_form ) {
+	public function ht_payjpforkintone_add_properties_to_contact_form_properties( $properties, $contact_form ) {
 
 		$properties = wp_parse_args(
 			$properties,
 			array(
-				'payjpforkintone_setting_data' => array(),
+				'ht_payjpforkintone_setting_data' => array(),
 			)
 		);
 
@@ -453,10 +455,10 @@ class Admin {
 	public function admin_menu() {
 		$page = add_submenu_page(
 			'options-general.php',
-			'PAY.JP for kintone',
-			'PAY.JP for kintone',
+			'HT PAY.JP for kintone',
+			'HT PAY.JP for kintone',
 			'manage_options',
-			'payjp-for-kintone',
+			'ht-payjp-for-kintone',
 			array(
 				$this,
 				'admin_setting',
@@ -482,28 +484,28 @@ class Admin {
 			$test_public_key      = (string) filter_input( INPUT_POST, 'test-public-key' );
 			$safe_test_public_key = sanitize_text_field( $test_public_key );
 		}
-		update_option( 'pay_jp_for_kintone_test_public_key', $safe_test_public_key );
+		update_option( 'ht_pay_jp_for_kintone_test_public_key', $safe_test_public_key );
 
 		$safe_test_secret_key = '';
 		if ( isset( $_POST['test-secret-key'] ) ) {
 			$test_secret_key      = (string) filter_input( INPUT_POST, 'test-secret-key' );
 			$safe_test_secret_key = sanitize_text_field( $test_secret_key );
 		}
-		update_option( 'pay_jp_for_kintone_test_secret_key', $safe_test_secret_key );
+		update_option( 'ht_pay_jp_for_kintone_test_secret_key', $safe_test_secret_key );
 
 		$safe_live_public_key = '';
 		if ( isset( $_POST['live-public-key'] ) ) {
 			$live_public_key      = (string) filter_input( INPUT_POST, 'live-public-key' );
 			$safe_live_public_key = sanitize_text_field( $live_public_key );
 		}
-		update_option( 'pay_jp_for_kintone_live_public_key', $safe_live_public_key );
+		update_option( 'ht_pay_jp_for_kintone_live_public_key', $safe_live_public_key );
 
 		$safe_live_secret_key = '';
 		if ( isset( $_POST['live-public-key'] ) ) {
 			$live_secret_key      = (string) filter_input( INPUT_POST, 'live-secret-key' );
 			$safe_live_secret_key = sanitize_text_field( $live_secret_key );
 		}
-		update_option( 'pay_jp_for_kintone_live_secret_key', $safe_live_secret_key );
+		update_option( 'ht_pay_jp_for_kintone_live_secret_key', $safe_live_secret_key );
 
 		return true;
 	}
