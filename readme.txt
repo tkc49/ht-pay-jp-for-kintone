@@ -4,7 +4,7 @@ Donate link:
 Tags: Contact Form 7, kintone, PAY.JP
 Requires at least: 4.5
 Tested up to: 5.2.2
-Stable tag: 1.10.0
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ This plugin can payment using PAY.JP
 
 == Description ==
 
-This plugin needs Contact Form 7 and Form data to kintone.
+This plugin needs [Contact Form 7](https://ja.wordpress.org/plugins/contact-form-7/) and [Form data to kintone](https://ja.wordpress.org/plugins/kintone-form/).
 This plugin can payment using PAY.JP and post to kintone.
 
 = What is kintone? =
@@ -21,12 +21,12 @@ It is a cloud service that can make the business applications with non-programmi
 
 Collaborate with team members and partners via apps and workspaces.
 
-* Information in Japanese : https://kintone.cybozu.com/jp/
-* Information in English: https://www.kintone.com/
+* Information in Japanese : [https://kintone.cybozu.com/jp/](https://kintone.cybozu.com/jp/)
+* Information in English: [https://www.kintone.com/](https://www.kintone.com/)
 
 = What is PAY.JP? =
 PAY.JP is  a suite of payment APIs in Japan.
-https://pay.jp
+[https://pay.jp/](https://pay.jp/)
 
 == Installation ==
 
@@ -50,6 +50,12 @@ Answer to foo bar dilemma.
 4. screenshot-4.png
 
 == Changelog ==
+= 1.0.2 =
+* Change readme.txt.
+
+
+= 1.0.1 =
+* Fix typo.
 
 = 1.0.0 =
 * First Release

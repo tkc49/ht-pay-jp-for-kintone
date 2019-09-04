@@ -311,8 +311,8 @@ class Admin {
 			<?php if ( ! $this->check_setting_payjp_key() ) : ?>
 				<div class="warning-message">
 					Set the PAY.JP key. ->
-					<a href="<?php echo esc_url( admin_url( '/admin.php?page=payjpforkintone' ) ); ?>">
-						<?php echo esc_url( admin_url( '/admin.php?page=payjpforkintone' ) ); ?>
+					<a href="<?php echo esc_url( admin_url( '/admin.php?page=htpayjpforkintone' ) ); ?>">
+						<?php echo esc_url( admin_url( '/admin.php?page=htpayjpforkintone' ) ); ?>
 					</a>
 				</div>
 			<?php endif; ?>
