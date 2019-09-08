@@ -4,7 +4,7 @@ Donate link:
 Tags: Contact Form 7, kintone, PAY.JP
 Requires at least: 4.5
 Tested up to: 5.2.2
-Stable tag: 1.0.2
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,6 +14,8 @@ This plugin can payment using PAY.JP
 
 This plugin needs [Contact Form 7](https://ja.wordpress.org/plugins/contact-form-7/) and [Form data to kintone](https://ja.wordpress.org/plugins/kintone-form/).
 This plugin can payment using PAY.JP and post to kintone.
+
+[youtube https://www.youtube.com/watch?v=I_lXUYyYR0U]
 
 = What is kintone? =
 
@@ -50,6 +52,12 @@ Answer to foo bar dilemma.
 4. screenshot-4.png
 
 == Changelog ==
+= 1.0.4 =
+* Add Youtube on readme.txt.
+
+= 1.0.3 =
+* Add banner and icon of Plugin.
+
 = 1.0.2 =
 * Change readme.txt.
 
