@@ -29,11 +29,11 @@ class HT_Payjp_For_Kintone {
 	public function plugins_loaded() {
 
 		if ( ( is_admin() ) ) {
-			require_once HT_PAY_JP_FOR_KINTONE_PATH . '/includes/class-admin.php';
-			new Admin();
+			require_once HT_PAY_JP_FOR_KINTONE_PATH . '/includes/class-ht-payjp-for-kintone-Admin.php';
+			new HT_Payjp_For_Kintone_Admin();
 		} else {
-			require_once HT_PAY_JP_FOR_KINTONE_PATH . '/includes/class-shortcode.php';
-			new Shortcode();
+			require_once HT_PAY_JP_FOR_KINTONE_PATH . '/includes/class-ht-payjp-for-kintone-shortcode.php';
+			new HT_Payjp_For_Kintone_Shortcode();
 		}
 
 	}

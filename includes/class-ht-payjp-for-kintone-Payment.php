@@ -1,14 +1,14 @@
 <?php
 /**
- * Payment
+ * Ht_Payjp_For_Kintone_Payment
  *
  * @package Payjp_For_Kintone
  */
 
 /**
- * Payment
+ * Ht_Payjp_For_Kintone_Payment
  */
-class Payment {
+class HT_Payjp_For_Kintone_Payment {
 
 	/**
 	 * 決済完了後にPAY.JP からリターンされる一意のID.
@@ -33,6 +33,13 @@ class Payment {
 	 * @param WPCF7_Submission  $submission .
 	 */
 	public function payment_to_pay_jp( $contact_form, &$abort, $submission ) {
+
+		// 有効でない場合は何もせずにリターン.
+		$payjpforkintone_setting_data = get_post_meta( $contact_form->id(), '_ht_payjpforkintone_setting_data', true );
+		if ( 'enable' !== $payjpforkintone_setting_data['payjpforkintone-enabled'] ) {
+			return;
+		}
+
 
 		if ( isset( $_POST['payjp-token'] ) && '' !== $_POST['payjp-token'] ) {
 

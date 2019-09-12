@@ -8,7 +8,7 @@
 /**
  * HT PAY.JP
  */
-class Shortcode {
+class HT_Payjp_For_Kintone_Shortcode {
 
 
 	/**
@@ -20,8 +20,8 @@ class Shortcode {
 		add_action( 'wpcf7_init', array( $this, 'ht_payjpforkintone_add_form_tag' ) );
 
 		// Payment.
-		require_once HT_PAY_JP_FOR_KINTONE_PATH . '/includes/class-payment.php';
-		new Payment();
+		require_once HT_PAY_JP_FOR_KINTONE_PATH . '/includes/class-ht-payjp-for-kintone-Payment.php';
+		new HT_Payjp_For_Kintone_Payment();
 
 	}
 

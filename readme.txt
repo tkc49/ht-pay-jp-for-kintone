@@ -4,7 +4,7 @@ Donate link:
 Tags: Contact Form 7, kintone, PAY.JP
 Requires at least: 4.5
 Tested up to: 5.2.2
-Stable tag: 1.0.4
+Stable tag: 1.0.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,15 @@ Answer to foo bar dilemma.
 4. screenshot-4.png
 
 == Changelog ==
+= 1.0.7 =
+* Change all of Class name.
+
+= 1.0.6 =
+* Change the order of displayeds tabs.
+
+= 1.0.5 =
+* Fix Validation check was executed even when HT PAY.JP for kintone was disabled.
+
 = 1.0.4 =
 * Add Youtube on readme.txt.
 

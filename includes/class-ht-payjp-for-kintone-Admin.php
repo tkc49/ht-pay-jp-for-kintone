@@ -1,15 +1,15 @@
 <?php
 /**
- * Admin の Classファイル
+ * HT PAY.JP For kintone Admin の Classファイル
  *
  * @package Payjp_For_Kintone
  * @version 1.0.0
  */
 
 /**
- * Admin.
+ * Ht_Payjp_For_Kintone_Admin.
  */
-class Admin {
+class HT_Payjp_For_Kintone_Admin {
 
 	/**
 	 * Nonce
@@ -27,7 +27,7 @@ class Admin {
 		add_action( 'admin_menu', array( $this, 'ht_payjpforkintone_admin_add_page' ) );
 
 		// Add PAY.JP setting panel to CF7.
-		add_filter( 'wpcf7_editor_panels', array( $this, 'ht_payjpforkintone_editor_panels' ) );
+		add_filter( 'wpcf7_editor_panels', array( $this, 'ht_payjpforkintone_editor_panels' ), 30 );
 		add_filter(
 			'wpcf7_contact_form_properties',
 			array( $this, 'ht_payjpforkintone_add_properties_to_contact_form_properties' ),
