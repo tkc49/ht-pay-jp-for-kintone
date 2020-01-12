@@ -166,6 +166,9 @@ class HT_Payjp_For_Kintone_Payment {
 		$payjpforkintone_setting_data = get_post_meta( $contact_form->id(), '_ht_payjpforkintone_setting_data', true );
 
 		// 有効ではない場合は、何もせずにリターン.
+		if ( ! isset( $payjpforkintone_setting_data['kintone-enabled'] ) ) {
+			return $datas;
+		}
 		if ( 'enable' !== $payjpforkintone_setting_data['kintone-enabled'] ) {
 			return $datas;
 		}
