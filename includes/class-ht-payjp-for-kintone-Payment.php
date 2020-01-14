@@ -40,7 +40,6 @@ class HT_Payjp_For_Kintone_Payment {
 			return;
 		}
 
-
 		if ( isset( $_POST['payjp-token'] ) && '' !== $_POST['payjp-token'] ) {
 
 			$token = sanitize_text_field( wp_unslash( $_POST['payjp-token'] ) );

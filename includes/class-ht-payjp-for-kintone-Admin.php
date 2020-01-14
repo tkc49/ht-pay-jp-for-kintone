@@ -259,6 +259,9 @@ class HT_Payjp_For_Kintone_Admin {
 
 		$payjpforkintone_enabled = $payjpforkintone_setting_data['payjpforkintone-enabled'];
 
+		$subscription_enabled = '';
+		$subscription_enabled = apply_filters( 'payjpforkintone_admin_subscription_enabled', $subscription_enabled );
+
 		$live_enabled = '';
 		if ( isset( $payjpforkintone_setting_data['live-enabled'] ) ) {
 			$live_enabled = $payjpforkintone_setting_data['live-enabled'];
@@ -318,7 +321,6 @@ class HT_Payjp_For_Kintone_Admin {
 			<?php endif; ?>
 
 			<div class="field-wrap field-wrap-use-external-url">
-
 				<fieldset>
 					<label for="live-enabled"><?php esc_html_e( 'Enable Live', 'payjp-for-kintone' ); ?></label>
 					<input
@@ -329,6 +331,20 @@ class HT_Payjp_For_Kintone_Admin {
 						<?php checked( $live_enabled, 'enable' ); ?>
 					>
 				</fieldset>
+			</div>
+
+			<div class="field-wrap field-wrap-use-external-url">
+				<fieldset>
+					<label for="subscription-enabled"><?php esc_html_e( 'Subscription', 'payjp-for-kintone' ); ?></label>
+					<input
+						type="checkbox"
+						name="ht_payjpforkintone_setting_data[subscription-enabled]"
+						id="subscription-enabled"
+						value="enable"
+						<?php checked( $subscription_enabled, 'enable' ); ?>
+					>
+				</fieldset>
+
 			</div>
 
 			<div class="field-wrap field-wrap-use-external-url">
@@ -357,12 +373,7 @@ class HT_Payjp_For_Kintone_Admin {
 				</fieldset>
 			</div>
 
-			<?php
-			esc_html_e(
-				'Paste the following shortcode of Contact form 7 on form of Contact form 7',
-				'payjp-for-kintone'
-			);
-			?>
+			<?php esc_html_e( 'Paste the following shortcode of Contact form 7 on form of Contact form 7', 'payjp-for-kintone' ); ?>
 			<span class="shortcode wp-ui-highlight">
 					<input type="text" id="payjpforkintone-shortcode" onfocus="this.select();" readonly="readonly" class="large-text code" value="[ht_payjp_for_kintone]">
 			</span>
@@ -371,9 +382,7 @@ class HT_Payjp_For_Kintone_Admin {
 					<input type="text" id="payjpforkintone-shortcode-of-payment-id" onfocus="this.select();" readonly="readonly" class="large-text code" value="[hidden payjp-charged-id]">
 			</span>
 
-			<img src="<?php echo esc_attr(
-				HT_PAY_JP_FOR_KINTONE_URL . '/assets/images/admin-shortcode.jpg'
-			); ?>" alt="">
+			<img src="<?php echo esc_attr( HT_PAY_JP_FOR_KINTONE_URL . '/assets/images/admin-shortcode.jpg' ); ?>" alt="">
 
 
 			<div class="setting-kintone-block">

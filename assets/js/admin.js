@@ -4,33 +4,21 @@
 
 		function enabledBlockControle(){
 
-			const enabled = $( '[name="ht_payjpforkintone_setting_data[payjpforkintone-enabled]"]:checked' )
-			.val();
+			const enabled = $( '[name="ht_payjpforkintone_setting_data[payjpforkintone-enabled]"]:checked' ).val();
 
 			if ( enabled === 'enable' ) {
-				$( '#js-payjpforkintone-enabled-block' )
-				.show();
+				$( '#js-payjpforkintone-enabled-block' ).show();
 			} else {
-				$( '#js-payjpforkintone-enabled-block' )
-				.hide();
+				$( '#js-payjpforkintone-enabled-block' ).hide();
 			}
 
-			const kintoneEnabled = $( '[name="ht_payjpforkintone_setting_data[kintone-enabled]"]:checked' )
-			.val();
+			const kintoneEnabled = $( '[name="ht_payjpforkintone_setting_data[kintone-enabled]"]:checked' ).val();
 
 			if ( kintoneEnabled === 'enable' ) {
-				console.log( '活性' );
-				$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-billing-id]"]' )
-				.prop( 'disabled', false )
-				.trigger( "chosen:updated" );
-				;
-			} else {
-				console.log( '非活性' );
-				$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-billing-id]"]' )
-				.prop( 'disabled', true )
-				.trigger( "chosen:updated" );
-				;
+				$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-billing-id]"]' ).prop( 'disabled', false ).trigger( "chosen:updated" );
 
+			} else {
+				$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-billing-id]"]' ).prop( 'disabled', true ).trigger( "chosen:updated" );
 			}
 
 		}
@@ -38,15 +26,12 @@
 		function main(){
 			$(
 				function(){
-					$( '[name="ht_payjpforkintone_setting_data[payjpforkintone-enabled]"]' )
-					.checkboxradio();
-					$( '[name="ht_payjpforkintone_setting_data[live-enabled]"]' )
-					.checkboxradio();
-					$( '[name="ht_payjpforkintone_setting_data[kintone-enabled]"]' )
-					.checkboxradio();
+					$( '[name="ht_payjpforkintone_setting_data[payjpforkintone-enabled]"]' ).checkboxradio();
+					$( '[name="ht_payjpforkintone_setting_data[live-enabled]"]' ).checkboxradio();
+					$( '[name="ht_payjpforkintone_setting_data[kintone-enabled]"]' ).checkboxradio();
+					$( '[name="ht_payjpforkintone_setting_data[subscription-enabled]"]' ).checkboxradio();
 
-					$( '.chosen-select' )
-					.chosen(
+					$( '.chosen-select' ).chosen(
 						{
 							allow_single_deselect: true,
 							width                : '100%',
@@ -59,15 +44,13 @@
 
 			$(
 				function(){
-					$( '[name="ht_payjpforkintone_setting_data[payjpforkintone-enabled]"]' )
-					.change(
+					$( '[name="ht_payjpforkintone_setting_data[payjpforkintone-enabled]"]' ).change(
 						function(){
 							enabledBlockControle();
 						}
 					)
 
-					$( '[name="ht_payjpforkintone_setting_data[kintone-enabled]"]' )
-					.change(
+					$( '[name="ht_payjpforkintone_setting_data[kintone-enabled]"]' ).change(
 						function(){
 							enabledBlockControle();
 						}
@@ -75,6 +58,9 @@
 
 				}
 			);
+
+			$( '[name="ht_payjpforkintone_setting_data[subscription-enabled]"]' ).prop( "disabled", true );
+
 		}
 
 		main();
