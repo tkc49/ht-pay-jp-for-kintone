@@ -397,7 +397,7 @@ class HT_Payjp_For_Kintone_Admin {
 				<div class="field-wrap field-wrap-use-external-url">
 					<fieldset>
 						<label for="payjp-billing-id">
-							<?php esc_html_e( 'Select PAY.JP Billing ID of CF7 mailtag', 'payjp-for-kintone' ); ?>
+							<?php esc_html_e( 'kintone field code to saving PAY.JP Billing ID', 'payjp-for-kintone' ); ?>
 						</label><br/>
 						<input type="text" id="payjp-billing-id"
 							value="<?php echo esc_attr( $kintone_fieldcode_for_payjp_billing_id ); ?>"
