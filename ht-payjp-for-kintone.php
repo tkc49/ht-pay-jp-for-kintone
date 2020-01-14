@@ -14,7 +14,7 @@
 
 
 define( 'HT_PAY_JP_FOR_KINTONE_URL', plugins_url( '', __FILE__ ) );
-define( 'HT_PAY_JP_FOR_KINTONE_PATH', dirname( __FILE__ ) );
+define( 'HT_PAY_JP_FOR_KINTONE_PATH', plugin_dir_path( __FILE__ ) );
 $data = get_file_data(
 	__FILE__,
 	array(
@@ -31,6 +31,9 @@ load_plugin_textdomain(
 );
 
 require_once 'vendor/autoload.php';
-require_once dirname( __FILE__ ) . '/includes/class-ht-Payjp-for-kintone.php';
+require_once HT_PAY_JP_FOR_KINTONE_PATH . 'includes/class-ht-Payjp-for-kintone.php';
+require_once HT_PAY_JP_FOR_KINTONE_PATH . 'includes/ht-payjp-for-kintone-utility-functions.php';
+ht_payjp_for_kintone_include( 'pro/ht-payjp-for-kintone-pro.php' );
+
 $ht_pay_jp = new HT_Payjp_For_Kintone();
 $ht_pay_jp->register();
