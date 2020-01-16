@@ -62,48 +62,56 @@ class HT_Payjp_For_Kintone_Payment {
 			$amount             = $post_data[ $amount_cf7_mailtag ];
 
 			\Payjp\Payjp::setApiKey( $secret_key );
-			try {
-				$charge = \Payjp\Charge::create(
-					[
-						'card'     => $token,
-						'amount'   => $amount,
-						'currency' => 'jpy',
-					]
-				);
 
-				// IDを保存する.
-				$this->payjp_charged_id = $charge->id;
+			if ( isset( $payjpforkintone_setting_data['subscription-enabled'] ) && 'enable' === $payjpforkintone_setting_data['subscription-enabled'] ) {
+				// サブスクリプション決済
+				do_action( 'ht_payjp_for_kintone_do_subscription', $token, $secret_key );
+			} else {
 
-				$submited['posted_data']                     = $submission->get_posted_data();
-				$submited['posted_data']['payjp-charged-id'] = $charge->id;
+				// 都度決済
+				try {
+					$charge = \Payjp\Charge::create(
+						[
+							'card'     => $token,
+							'amount'   => $amount,
+							'currency' => 'jpy',
+						]
+					);
 
-				$mail = $contact_form->prop( 'mail' );
+					// IDを保存する.
+					$this->payjp_charged_id = $charge->id;
 
-				$mail['body'] = str_replace(
-					'[payjp-charged-id]',
-					$submited['posted_data']['payjp-charged-id'],
-					$mail['body']
-				);
+					$submited['posted_data']                     = $submission->get_posted_data();
+					$submited['posted_data']['payjp-charged-id'] = $charge->id;
 
-				$mail2         = $contact_form->prop( 'mail_2' );
-				$mail2['body'] = str_replace(
-					'[payjp-charged-id]',
-					$submited['posted_data']['payjp-charged-id'],
-					$mail2['body']
-				);
+					$mail = $contact_form->prop( 'mail' );
 
-				$contact_form->set_properties(
-					array(
-						'mail'   => $mail,
-						'mail_2' => $mail2,
-					)
-				);
+					$mail['body'] = str_replace(
+						'[payjp-charged-id]',
+						$submited['posted_data']['payjp-charged-id'],
+						$mail['body']
+					);
 
-			} catch ( \Payjp\Error\InvalidRequest $e ) {
+					$mail2         = $contact_form->prop( 'mail_2' );
+					$mail2['body'] = str_replace(
+						'[payjp-charged-id]',
+						$submited['posted_data']['payjp-charged-id'],
+						$mail2['body']
+					);
 
-				$abort = true;
-				$submission->set_response( $contact_form->filter_message( $e->getMessage() ) );
-				$this->send_error_mail( $contact_form, $e );
+					$contact_form->set_properties(
+						array(
+							'mail'   => $mail,
+							'mail_2' => $mail2,
+						)
+					);
+
+				} catch ( \Payjp\Error\InvalidRequest $e ) {
+
+					$abort = true;
+					$submission->set_response( $contact_form->filter_message( $e->getMessage() ) );
+					$this->send_error_mail( $contact_form, $e );
+				}
 			}
 		} else {
 			// Error.
