@@ -218,6 +218,8 @@ class HT_Payjp_For_Kintone_Admin {
 				filemtime( HT_PAY_JP_FOR_KINTONE_PATH . '/assets/css/admin.css' )
 			)
 		);
+
+		do_action( 'ht_payjp_for_kintone_after_admin_enqueue_scripts' );
 	}
 
 	/**
