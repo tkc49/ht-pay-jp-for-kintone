@@ -260,7 +260,9 @@ class HT_Payjp_For_Kintone_Admin {
 		$payjpforkintone_enabled = $payjpforkintone_setting_data['payjpforkintone-enabled'];
 
 		$subscription_enabled = '';
-		$subscription_enabled = apply_filters( 'payjpforkintone_admin_subscription_enabled', $subscription_enabled );
+		$subscription_enabled = apply_filters( 'ht_payjp_for_kintone_admin_subscription_enabled', $subscription_enabled );
+		$payjp_plan_id        = '';
+		$payjp_plan_id        = apply_filters( 'ht_payjp_for_kintone_admin_payjp_plan_id', $payjp_plan_id );
 
 		$live_enabled = '';
 		if ( isset( $payjpforkintone_setting_data['live-enabled'] ) ) {
@@ -344,8 +346,16 @@ class HT_Payjp_For_Kintone_Admin {
 						<?php checked( $subscription_enabled, 'enable' ); ?>
 					>
 				</fieldset>
-
 			</div>
+			<div class="field-wrap field-wrap-use-external-url">
+				<fieldset>
+					<label for="payjp-plan-id">
+						<?php esc_html_e( 'PAY.JP\'s Plan ID', 'payjp-for-kintone' ); ?>
+					</label><br/>
+					<input type="text" id="payjp-plan-id" value="<?php echo esc_attr( $payjp_plan_id ); ?>" name="ht_payjpforkintone_setting_data[payjp-plan-id]">
+				</fieldset>
+			</div>
+
 
 			<div class="field-wrap field-wrap-use-external-url">
 				<fieldset>
