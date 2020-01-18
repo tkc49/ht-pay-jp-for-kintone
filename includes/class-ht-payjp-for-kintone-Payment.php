@@ -65,7 +65,7 @@ class HT_Payjp_For_Kintone_Payment {
 
 			if ( isset( $payjpforkintone_setting_data['subscription-enabled'] ) && 'enable' === $payjpforkintone_setting_data['subscription-enabled'] ) {
 				// サブスクリプション決済
-				do_action( 'ht_payjp_for_kintone_do_subscription', $token, $secret_key );
+				do_action( 'ht_payjp_for_kintone_do_subscription', $token, $contact_form, $submission );
 			} else {
 
 				// 都度決済
