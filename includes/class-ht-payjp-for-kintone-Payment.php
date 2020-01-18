@@ -110,7 +110,7 @@ class HT_Payjp_For_Kintone_Payment {
 
 					$abort = true;
 					$submission->set_response( $contact_form->filter_message( $e->getMessage() ) );
-					$this->send_error_mail( $contact_form, $e );
+					ht_payjp_for_kintone_send_error_mail( $contact_form, $e );
 				}
 			}
 		} else {
@@ -125,36 +125,6 @@ class HT_Payjp_For_Kintone_Payment {
 				)
 			);
 		}
-
-	}
-
-	/**
-	 * エラーメール送信.
-	 *
-	 * @param WPCF7_ContactForm           $contact_form .
-	 * @param \Payjp\Error\InvalidRequest $e .
-	 */
-	private function send_error_mail( $contact_form, $e ) {
-
-		$kintone_setting_data = $contact_form->prop( 'kintone_setting_data' );
-
-		if ( empty( $kintone_setting_data ) ) {
-			return;
-		}
-
-		$error_msg = $e->getMessage();
-
-		$email_address_to_send_kintone_registration_error = $kintone_setting_data['email_address_to_send_kintone_registration_error'];
-
-		if ( $email_address_to_send_kintone_registration_error ) {
-			$to = $email_address_to_send_kintone_registration_error;
-		} else {
-			$to = get_option( 'admin_email' );
-		}
-
-		$subject = esc_html__( 'Error : PAY.JP Payment', 'payjp-for-kintone' );
-		$body    = $error_msg;
-		wp_mail( $to, $subject, $body );
 
 	}
 
