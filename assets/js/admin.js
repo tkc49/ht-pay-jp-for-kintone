@@ -66,7 +66,11 @@
 
 		}
 
-		main();
+		$(
+			function(){
+				main();
+			}
+		);
 
 	}
 )( jQuery );
