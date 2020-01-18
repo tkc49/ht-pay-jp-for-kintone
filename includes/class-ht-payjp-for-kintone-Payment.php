@@ -81,7 +81,7 @@ class HT_Payjp_For_Kintone_Payment {
 					// IDを保存する.
 					$this->payjp_charged_id = $charge->id;
 
-					$submited['posted_data']                     = $submission->get_posted_data();
+					$submited['posted_data']                     = $post_data;
 					$submited['posted_data']['payjp-charged-id'] = $charge->id;
 
 					$mail = $contact_form->prop( 'mail' );
