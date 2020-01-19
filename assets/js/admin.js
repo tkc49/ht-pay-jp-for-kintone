@@ -62,6 +62,7 @@
 			$( '[name="ht_payjpforkintone_setting_data[subscription-enabled]"]' ).prop( "disabled", true );
 			$( '[name="ht_payjpforkintone_setting_data[payjp-plan-id]"]' ).prop( "disabled", true );
 
+			$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-subscription-plan-id]"]' ).prop( "disabled", true );
 			$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-subscription-amount]"]' ).prop( "disabled", true );
 			$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-customer-id]"]' ).prop( "disabled", true );
 			$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-subscription-id]"]' ).prop( "disabled", true );
