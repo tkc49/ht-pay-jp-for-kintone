@@ -266,7 +266,7 @@ class HT_Payjp_For_Kintone_Admin {
 		$payjp_plan_id        = '';
 		$payjp_plan_id        = apply_filters( 'ht_payjp_for_kintone_admin_payjp_plan_id', $payjp_plan_id, $post );
 
-		$kintone_fieldcode_for_payjp_subscription_amount = ''
+		$kintone_fieldcode_for_payjp_subscription_amount = '';
 		$kintone_fieldcode_for_payjp_subscription_amount = apply_filters( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_subscription_amount', $kintone_fieldcode_for_payjp_subscription_amount, $post );
 		$kintone_fieldcode_for_payjp_customer_id         = '';
 		$kintone_fieldcode_for_payjp_customer_id         = apply_filters( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_customer_id', $kintone_fieldcode_for_payjp_customer_id, $post );
