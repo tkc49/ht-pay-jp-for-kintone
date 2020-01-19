@@ -28,6 +28,9 @@ class HT_Payjp_For_Kintone_Pro_Admin {
 		add_filter( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_customer_id', array( $this, 'set_kintone_fieldcode_for_payjp_customer_id' ), 10, 2 );
 		add_filter( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_subscription_id', array( $this, 'set_kintone_fieldcode_for_payjp_subscription_id' ), 10, 2 );
 
+		add_filter( 'ht_payjp_for_kintone_after_setting_page', array( $this, 'set_ht_payjp_for_kintone_licence_block' ) );
+		add_action( 'ht_payjp_for_kintone_admin_setting_update', array( $this, 'update_licence_key' ) );
+
 	}
 
 
@@ -154,6 +157,39 @@ class HT_Payjp_For_Kintone_Pro_Admin {
 		}
 
 		return $kintone_fieldcode_for_payjp_subscription_id;
+
+	}
+
+	public function set_ht_payjp_for_kintone_licence_block() {
+
+		$ht_payjp_for_kintone_licence_key = get_option( 'ht_payjp_for_kintone_licence_key' );
+		?>
+
+		<h2>HT PAY.JP for kintone licence key</h2>
+		<table class="form-table">
+			<tbody>
+			<tr valign="top">
+				<th scope="row">
+					<label for="add_text">
+						<?php esc_html_e( 'HT PAY.JP for kintone licence key', 'payjp-for-kintone' ); ?>
+					</label>
+				</th>
+				<td>
+					<input type="text" name="ht-payjp-for-kintone-licence-key" class="regular-text" value="<?php echo esc_attr( $ht_payjp_for_kintone_licence_key ); ?>">
+				</td>
+			</tr>
+			</tbody>
+		</table>
+		<?php
+	}
+
+	public function update_licence_key() {
+		$safe_licence_key = '';
+		if ( isset( $_POST['ht-payjp-for-kintone-licence-key'] ) ) {
+			$licence_key      = (string) filter_input( INPUT_POST, 'ht-payjp-for-kintone-licence-key' );
+			$safe_licence_key = sanitize_text_field( $licence_key );
+		}
+		update_option( 'ht_payjp_for_kintone_licence_key', $safe_licence_key );
 
 	}
 
