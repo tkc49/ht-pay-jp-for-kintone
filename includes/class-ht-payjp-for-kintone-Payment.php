@@ -154,7 +154,6 @@ class HT_Payjp_For_Kintone_Payment {
 			return $datas;
 		}
 
-
 		$kintone_fieldcode_for_payjp_billing_id = $payjpforkintone_setting_data['kintone-fieldcode-for-payjp-billing-id'];
 
 		$add_data = array();
