@@ -266,12 +266,14 @@ class HT_Payjp_For_Kintone_Admin {
 		$payjp_plan_id        = '';
 		$payjp_plan_id        = apply_filters( 'ht_payjp_for_kintone_admin_payjp_plan_id', $payjp_plan_id, $post );
 
-		$kintone_fieldcode_for_payjp_subscription_amount = '';
-		$kintone_fieldcode_for_payjp_subscription_amount = apply_filters( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_subscription_amount', $kintone_fieldcode_for_payjp_subscription_amount, $post );
-		$kintone_fieldcode_for_payjp_customer_id         = '';
-		$kintone_fieldcode_for_payjp_customer_id         = apply_filters( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_customer_id', $kintone_fieldcode_for_payjp_customer_id, $post );
-		$kintone_fieldcode_for_payjp_subscription_id     = '';
-		$kintone_fieldcode_for_payjp_subscription_id     = apply_filters( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_subscription_id', $kintone_fieldcode_for_payjp_subscription_id, $post );
+		$kintone_fieldcode_for_payjp_subscription_plan_id = '';
+		$kintone_fieldcode_for_payjp_subscription_plan_id = apply_filters( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_subscription_plan_id', $kintone_fieldcode_for_payjp_subscription_plan_id, $post );
+		$kintone_fieldcode_for_payjp_subscription_amount  = '';
+		$kintone_fieldcode_for_payjp_subscription_amount  = apply_filters( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_subscription_amount', $kintone_fieldcode_for_payjp_subscription_amount, $post );
+		$kintone_fieldcode_for_payjp_customer_id          = '';
+		$kintone_fieldcode_for_payjp_customer_id          = apply_filters( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_customer_id', $kintone_fieldcode_for_payjp_customer_id, $post );
+		$kintone_fieldcode_for_payjp_subscription_id      = '';
+		$kintone_fieldcode_for_payjp_subscription_id      = apply_filters( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_subscription_id', $kintone_fieldcode_for_payjp_subscription_id, $post );
 
 		$live_enabled = '';
 		if ( isset( $payjpforkintone_setting_data['live-enabled'] ) ) {
@@ -429,6 +431,17 @@ class HT_Payjp_For_Kintone_Admin {
 						<input type="text" id="payjp-billing-id"
 							value="<?php echo esc_attr( $kintone_fieldcode_for_payjp_billing_id ); ?>"
 							name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-billing-id]">
+					</fieldset>
+				</div>
+
+				<div class="field-wrap field-wrap-use-external-url">
+					<fieldset>
+						<label for="kintone-subscription-plan-id-fieldcode">
+							<?php esc_html_e( 'kintone field code to saving PAY.JP Subscription amount', 'payjp-for-kintone' ); ?>
+						</label><br/>
+						<input type="text" id="kintone-subscription-plan-id-fieldcode"
+							value="<?php echo esc_attr( $kintone_fieldcode_for_payjp_subscription_plan_id ); ?>"
+							name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-subscription-plan-id]">
 					</fieldset>
 				</div>
 
