@@ -141,6 +141,9 @@ class HT_Payjp_For_Kintone_Admin {
 					</tr>
 					</tbody>
 				</table>
+
+				<?php apply_filters( 'ht_payjp_for_kintone_after_setting_page' ); ?>
+
 				<p class="submit">
 					<input type="submit" name="get_kintone_fields" class="button-primary"
 						value="<?php echo esc_attr( __( 'Save', 'payjp-for-kintone' ) ); ?>"/>
@@ -579,6 +582,8 @@ class HT_Payjp_For_Kintone_Admin {
 			$safe_live_secret_key = sanitize_text_field( $live_secret_key );
 		}
 		update_option( 'ht_pay_jp_for_kintone_live_secret_key', $safe_live_secret_key );
+
+		do_action( 'ht_payjp_for_kintone_admin_setting_update' );
 
 		return true;
 	}
