@@ -437,7 +437,7 @@ class HT_Payjp_For_Kintone_Admin {
 				<div class="field-wrap field-wrap-use-external-url">
 					<fieldset>
 						<label for="kintone-subscription-plan-id-fieldcode">
-							<?php esc_html_e( 'kintone field code to saving PAY.JP Subscription amount', 'payjp-for-kintone' ); ?>
+							<?php esc_html_e( 'kintone field code to saving PAY.JP Subscription Plan ID', 'payjp-for-kintone' ); ?>
 						</label><br/>
 						<input type="text" id="kintone-subscription-plan-id-fieldcode"
 							value="<?php echo esc_attr( $kintone_fieldcode_for_payjp_subscription_plan_id ); ?>"
