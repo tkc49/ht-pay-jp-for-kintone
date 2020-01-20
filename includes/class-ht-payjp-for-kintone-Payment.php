@@ -44,18 +44,7 @@ class HT_Payjp_For_Kintone_Payment {
 
 			$token = sanitize_text_field( wp_unslash( $_POST['payjp-token'] ) );
 
-			$payjpforkintone_setting_data = get_post_meta(
-				$contact_form->id(),
-				'_ht_payjpforkintone_setting_data',
-				true
-			);
-
-			if ( isset( $payjpforkintone_setting_data['live-enabled'] ) && 'enable' === $payjpforkintone_setting_data['live-enabled'] ) {
-				// Live.
-				$secret_key = get_option( 'ht_pay_jp_for_kintone_live_secret_key' );
-			} else {
-				$secret_key = get_option( 'ht_pay_jp_for_kintone_test_secret_key' );
-			}
+			$secret_key = ht_payjp_for_kintone_get_api_key( $contact_form->id() );
 
 			$amount_cf7_mailtag = $payjpforkintone_setting_data['amount-cf7-mailtag'];
 			$post_data          = $submission->get_posted_data();
