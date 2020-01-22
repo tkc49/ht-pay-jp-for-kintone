@@ -53,10 +53,10 @@ class HT_Payjp_For_Kintone_Payment {
 		// 有効でない場合は何もせずにリターン.
 		$payjpforkintone_setting_data = get_post_meta( $contact_form->id(), '_ht_payjpforkintone_setting_data', true );
 		if ( 'enable' !== $payjpforkintone_setting_data['payjpforkintone-enabled'] ) {
-			return;
+			return $posted_data;
 		}
 		if ( isset( $payjpforkintone_setting_data['payment-type'] ) && 'checkout' !== $payjpforkintone_setting_data['payment-type'] ) {
-			return;
+			return $posted_data;
 		}
 
 		if ( isset( $_POST['payjp-token'] ) && '' !== $_POST['payjp-token'] ) {
