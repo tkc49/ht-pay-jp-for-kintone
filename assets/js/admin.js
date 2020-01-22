@@ -61,7 +61,6 @@
 
 			$( '[name="ht_payjpforkintone_setting_data[payjp-plan-id]"]' ).prop( "disabled", true );
 			$( '[name="ht_payjpforkintone_setting_data[payment-type]"]:eq(1)' ).prop( "disabled", true );
-			$( '[name="ht_payjpforkintone_setting_data[payment-type]"]:eq(0)' ).prop( 'checked', true );
 
 			$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-subscription-plan-id]"]' ).prop( "disabled", true );
 			$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-subscription-amount]"]' ).prop( "disabled", true );
