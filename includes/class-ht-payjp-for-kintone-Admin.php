@@ -264,7 +264,7 @@ class HT_Payjp_For_Kintone_Admin {
 
 		$payjpforkintone_enabled = $payjpforkintone_setting_data['payjpforkintone-enabled'];
 
-		$subscription_enabled = '';
+		$subscription_enabled = 'checkout';
 		$subscription_enabled = apply_filters( 'ht_payjp_for_kintone_admin_subscription_enabled', $subscription_enabled, $post );
 		$payjp_plan_id        = '';
 		$payjp_plan_id        = apply_filters( 'ht_payjp_for_kintone_admin_payjp_plan_id', $payjp_plan_id, $post );
