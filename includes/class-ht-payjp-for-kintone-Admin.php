@@ -306,23 +306,12 @@ class HT_Payjp_For_Kintone_Admin {
 				<label for="payjpforkintone-disabled">
 					<?php esc_html_e( 'Disable', 'payjp-for-kintone' ); ?>
 				</label>
-				<input type="radio"
-					name="ht_payjpforkintone_setting_data[payjpforkintone-enabled]"
-					id="payjpforkintone-disabled"
-					value="disable"
-					<?php checked( $payjpforkintone_enabled, 'disable' ); ?>
-				>
+				<input type="radio" name="ht_payjpforkintone_setting_data[payjpforkintone-enabled]" id="payjpforkintone-disabled" value="disable"<?php checked( $payjpforkintone_enabled, 'disable' ); ?>>
 				<label for="payjpforkintone-enabled">
 					<?php esc_html_e( 'Enable', 'payjp-for-kintone' ); ?>
 				</label>
-				<input type="radio"
-					name="ht_payjpforkintone_setting_data[payjpforkintone-enabled]"
-					id="payjpforkintone-enabled"
-					value="enable"
-					<?php checked( $payjpforkintone_enabled, 'enable' ); ?>
-				>
+				<input type="radio" name="ht_payjpforkintone_setting_data[payjpforkintone-enabled]" id="payjpforkintone-enabled" value="enable"<?php checked( $payjpforkintone_enabled, 'enable' ); ?>>
 			</fieldset>
-
 		</div>
 
 		<div id="js-payjpforkintone-enabled-block">
@@ -349,16 +338,26 @@ class HT_Payjp_For_Kintone_Admin {
 				</fieldset>
 			</div>
 
+
 			<div class="field-wrap field-wrap-use-external-url">
 				<fieldset>
-					<label for="subscription-enabled"><?php esc_html_e( 'Subscription', 'payjp-for-kintone' ); ?></label>
+					<label for="payment-type-checkout"><?php esc_html_e( 'Checkout', 'payjp-for-kintone' ); ?></label>
 					<input
-						type="checkbox"
-						name="ht_payjpforkintone_setting_data[subscription-enabled]"
-						id="subscription-enabled"
-						value="enable"
-						<?php checked( $subscription_enabled, 'enable' ); ?>
+						type="radio"
+						name="ht_payjpforkintone_setting_data[payment-type]"
+						id="payment-type-checkout"
+						value="checkout"
+						<?php checked( $subscription_enabled, 'checkout' ); ?>
 					>
+					<label for="payment-type-subscription"><?php esc_html_e( 'Subscription', 'payjp-for-kintone' ); ?></label>
+					<input
+						type="radio"
+						name="ht_payjpforkintone_setting_data[payment-type]"
+						id="payment-type-subscription"
+						value="subscription"
+						<?php checked( $subscription_enabled, 'subscription' ); ?>
+					>
+
 				</fieldset>
 			</div>
 			<div class="field-wrap field-wrap-use-external-url">

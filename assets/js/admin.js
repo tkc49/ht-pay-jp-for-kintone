@@ -27,9 +27,9 @@
 			$(
 				function(){
 					$( '[name="ht_payjpforkintone_setting_data[payjpforkintone-enabled]"]' ).checkboxradio();
+					$( '[name="ht_payjpforkintone_setting_data[payment-type]"]' ).checkboxradio();
 					$( '[name="ht_payjpforkintone_setting_data[live-enabled]"]' ).checkboxradio();
 					$( '[name="ht_payjpforkintone_setting_data[kintone-enabled]"]' ).checkboxradio();
-					$( '[name="ht_payjpforkintone_setting_data[subscription-enabled]"]' ).checkboxradio();
 
 					$( '.chosen-select' ).chosen(
 						{
@@ -59,8 +59,9 @@
 				}
 			);
 
-			$( '[name="ht_payjpforkintone_setting_data[subscription-enabled]"]' ).prop( "disabled", true );
 			$( '[name="ht_payjpforkintone_setting_data[payjp-plan-id]"]' ).prop( "disabled", true );
+			$( '[name="ht_payjpforkintone_setting_data[payment-type]"]:eq(1)' ).prop( "disabled", true );
+			$( '[name="ht_payjpforkintone_setting_data[payment-type]"]:eq(0)' ).prop( 'checked', true );
 
 			$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-subscription-plan-id]"]' ).prop( "disabled", true );
 			$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-subscription-amount]"]' ).prop( "disabled", true );

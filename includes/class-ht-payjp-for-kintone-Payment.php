@@ -63,10 +63,7 @@ class HT_Payjp_For_Kintone_Payment {
 
 			\Payjp\Payjp::setApiKey( $secret_key );
 
-			if ( isset( $payjpforkintone_setting_data['subscription-enabled'] ) && 'enable' === $payjpforkintone_setting_data['subscription-enabled'] ) {
-				// サブスクリプション決済
-				do_action( 'ht_payjp_for_kintone_do_subscription', $token, $contact_form, $submission );
-			} else {
+			if ( isset( $payjpforkintone_setting_data['payment-type'] ) && 'checkout' === $payjpforkintone_setting_data['payment-type'] ) {
 
 				// 都度決済
 				try {
@@ -94,6 +91,7 @@ class HT_Payjp_For_Kintone_Payment {
 
 				}
 			}
+			do_action( 'ht_payjp_for_kintone_do_subscription', $token, $contact_form, $submission );
 		} else {
 			// Error.
 			$submission->set_response( $contact_form->filter_message( __( 'Failed to get credit card information', 'payjp-for-kintone' ) ) );
