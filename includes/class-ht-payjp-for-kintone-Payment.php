@@ -10,12 +10,6 @@
  */
 class HT_Payjp_For_Kintone_Payment {
 
-	/**
-	 * 決済完了後にPAY.JP からリターンされる一意のID.
-	 *
-	 * @var string .
-	 */
-	private $payjp_charged_id;
 
 	/**
 	 * Constructor
@@ -87,8 +81,6 @@ class HT_Payjp_For_Kintone_Payment {
 					]
 				);
 
-				// IDを保存する.
-				$this->payjp_charged_id = $charge->id;
 
 				$posted_data['payjp-charged-id'] = $charge->id;
 
