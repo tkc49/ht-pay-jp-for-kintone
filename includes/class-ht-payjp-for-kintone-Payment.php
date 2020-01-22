@@ -26,6 +26,16 @@ class HT_Payjp_For_Kintone_Payment {
 	}
 
 	public function check_charge_id( $contact_form, &$abort, $submission ) {
+
+		// 有効でない場合は何もせずにリターン.
+		$payjpforkintone_setting_data = get_post_meta( $contact_form->id(), '_ht_payjpforkintone_setting_data', true );
+		if ( 'enable' !== $payjpforkintone_setting_data['payjpforkintone-enabled'] ) {
+			return;
+		}
+		if ( isset( $payjpforkintone_setting_data['payment-type'] ) && 'checkout' !== $payjpforkintone_setting_data['payment-type'] ) {
+			return;
+		}
+
 		$post_data = $submission->get_posted_data();
 		if ( ! isset( $post_data['payjp-charged-id'] ) || empty( $post_data['payjp-charged-id'] ) ) {
 			$abort = true;
@@ -51,6 +61,9 @@ class HT_Payjp_For_Kintone_Payment {
 		if ( 'enable' !== $payjpforkintone_setting_data['payjpforkintone-enabled'] ) {
 			return;
 		}
+		if ( isset( $payjpforkintone_setting_data['payment-type'] ) && 'checkout' !== $payjpforkintone_setting_data['payment-type'] ) {
+			return;
+		}
 
 		if ( isset( $_POST['payjp-token'] ) && '' !== $_POST['payjp-token'] ) {
 
@@ -61,37 +74,34 @@ class HT_Payjp_For_Kintone_Payment {
 			$amount_cf7_mailtag = $payjpforkintone_setting_data['amount-cf7-mailtag'];
 			$amount             = $posted_data[ $amount_cf7_mailtag ];
 
-			\Payjp\Payjp::setApiKey( $secret_key );
+			// 都度決済
+			try {
 
-			if ( isset( $payjpforkintone_setting_data['payment-type'] ) && 'checkout' === $payjpforkintone_setting_data['payment-type'] ) {
+				\Payjp\Payjp::setApiKey( $secret_key );
 
-				// 都度決済
-				try {
-					$charge = \Payjp\Charge::create(
-						[
-							'card'     => $token,
-							'amount'   => $amount,
-							'currency' => 'jpy',
-						]
-					);
+				$charge = \Payjp\Charge::create(
+					[
+						'card'     => $token,
+						'amount'   => $amount,
+						'currency' => 'jpy',
+					]
+				);
 
-					// IDを保存する.
-					$this->payjp_charged_id = $charge->id;
+				// IDを保存する.
+				$this->payjp_charged_id = $charge->id;
 
-					$posted_data['payjp-charged-id'] = $charge->id;
+				$posted_data['payjp-charged-id'] = $charge->id;
 
-					return $posted_data;
+				return $posted_data;
 
-				} catch ( \Payjp\Error\InvalidRequest $e ) {
+			} catch ( \Payjp\Error\InvalidRequest $e ) {
 
-					$submission->set_response( $contact_form->filter_message( $e->getMessage() ) );
-					ht_payjp_for_kintone_send_error_mail( $contact_form, $e->getMessage() );
+				$submission->set_response( $contact_form->filter_message( $e->getMessage() ) );
+				ht_payjp_for_kintone_send_error_mail( $contact_form, $e->getMessage() );
 
-					return $posted_data;
+				return $posted_data;
 
-				}
 			}
-			do_action( 'ht_payjp_for_kintone_do_subscription', $token, $contact_form, $submission );
 		} else {
 			// Error.
 			$submission->set_response( $contact_form->filter_message( __( 'Failed to get credit card information', 'payjp-for-kintone' ) ) );
