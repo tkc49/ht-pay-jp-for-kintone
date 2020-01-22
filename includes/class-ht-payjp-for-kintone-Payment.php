@@ -21,18 +21,30 @@ class HT_Payjp_For_Kintone_Payment {
 	 * Constructor
 	 */
 	public function __construct() {
-		add_action( 'wpcf7_before_send_mail', array( $this, 'payment_to_pay_jp' ), 10, 3 );
-		add_filter( 'form_data_to_kintone_post_datas', array( $this, 'add_payjp_billing_id_to_kintone' ), 10, 3 );
+		add_action( 'wpcf7_posted_data', array( $this, 'payment_to_pay_jp' ), 10, 1 );
+		add_action( 'wpcf7_before_send_mail', array( $this, 'check_charge_id' ), 10, 3 );
+	}
+
+	public function check_charge_id( $contact_form, &$abort, $submission ) {
+		$post_data = $submission->get_posted_data();
+		if ( ! isset( $post_data['payjp-charged-id'] ) || empty( $post_data['payjp-charged-id'] ) ) {
+			$abort = true;
+		}
+
+		return;
 	}
 
 	/**
 	 * PAY.JP へ決済する.
 	 *
-	 * @param WPCF7_ContactForm $contact_form .
-	 * @param boolean           $abort .
-	 * @param WPCF7_Submission  $submission .
+	 * @param array $posted_data .
+	 *
+	 * @return array
 	 */
-	public function payment_to_pay_jp( $contact_form, &$abort, $submission ) {
+	public function payment_to_pay_jp( $posted_data ) {
+
+		$contact_form = WPCF7_ContactForm::get_current();
+		$submission   = WPCF7_Submission::get_instance();
 
 		// 有効でない場合は何もせずにリターン.
 		$payjpforkintone_setting_data = get_post_meta( $contact_form->id(), '_ht_payjpforkintone_setting_data', true );
@@ -47,8 +59,7 @@ class HT_Payjp_For_Kintone_Payment {
 			$secret_key = ht_payjp_for_kintone_get_api_key( $contact_form->id() );
 
 			$amount_cf7_mailtag = $payjpforkintone_setting_data['amount-cf7-mailtag'];
-			$post_data          = $submission->get_posted_data();
-			$amount             = $post_data[ $amount_cf7_mailtag ];
+			$amount             = $posted_data[ $amount_cf7_mailtag ];
 
 			\Payjp\Payjp::setApiKey( $secret_key );
 
@@ -70,89 +81,25 @@ class HT_Payjp_For_Kintone_Payment {
 					// IDを保存する.
 					$this->payjp_charged_id = $charge->id;
 
-					$submited['posted_data']                     = $post_data;
-					$submited['posted_data']['payjp-charged-id'] = $charge->id;
+					$posted_data['payjp-charged-id'] = $charge->id;
 
-					$mail = $contact_form->prop( 'mail' );
-
-					$mail['body'] = str_replace(
-						'[payjp-charged-id]',
-						$submited['posted_data']['payjp-charged-id'],
-						$mail['body']
-					);
-
-					$mail2         = $contact_form->prop( 'mail_2' );
-					$mail2['body'] = str_replace(
-						'[payjp-charged-id]',
-						$submited['posted_data']['payjp-charged-id'],
-						$mail2['body']
-					);
-
-					$contact_form->set_properties(
-						array(
-							'mail'   => $mail,
-							'mail_2' => $mail2,
-						)
-					);
+					return $posted_data;
 
 				} catch ( \Payjp\Error\InvalidRequest $e ) {
 
-					$abort = true;
 					$submission->set_response( $contact_form->filter_message( $e->getMessage() ) );
-					ht_payjp_for_kintone_send_error_mail( $contact_form, $e );
+					ht_payjp_for_kintone_send_error_mail( $contact_form, $e->getMessage() );
+
+					return $posted_data;
+
 				}
 			}
 		} else {
 			// Error.
-			$abort = true;
-			$submission->set_response(
-				$contact_form->filter_message(
-					__(
-						'Failed to get credit card information',
-						'payjp-for-kintone'
-					)
-				)
-			);
+			$submission->set_response( $contact_form->filter_message( __( 'Failed to get credit card information', 'payjp-for-kintone' ) ) );
+
+			return $posted_data;
 		}
 
 	}
-
-	/**
-	 * PAY.JPからリターンされる課金IDをkintoneへ保存する.
-	 *
-	 * @param array  $datas kintoneへ登録するデータ.
-	 * @param int    $appid kintoneへ登録するアプリ番号.
-	 * @param string $unique_key ユニークキー（アップデータするときに使う）.
-	 *
-	 * @return array
-	 */
-	public function add_payjp_billing_id_to_kintone( $datas, $appid, $unique_key ) {
-
-		$contact_form                 = WPCF7_ContactForm::get_current();
-		$payjpforkintone_setting_data = get_post_meta( $contact_form->id(), '_ht_payjpforkintone_setting_data', true );
-
-		// 有効ではない場合は、何もせずにリターン.
-		if ( ! isset( $payjpforkintone_setting_data['kintone-enabled'] ) ) {
-			return $datas;
-		}
-		if ( 'enable' !== $payjpforkintone_setting_data['kintone-enabled'] ) {
-			return $datas;
-		}
-
-		if ( ! isset( $payjpforkintone_setting_data['kintone-fieldcode-for-payjp-billing-id'] ) || empty( $payjpforkintone_setting_data['kintone-fieldcode-for-payjp-billing-id'] ) ) {
-			return $datas;
-		}
-
-		$kintone_fieldcode_for_payjp_billing_id = $payjpforkintone_setting_data['kintone-fieldcode-for-payjp-billing-id'];
-
-		$add_data = array();
-
-		$add_data[ $kintone_fieldcode_for_payjp_billing_id ] = array( 'value' => $this->payjp_charged_id );
-
-		$datas = array_merge( $datas, $add_data );
-
-		return $datas;
-
-	}
-
 }
