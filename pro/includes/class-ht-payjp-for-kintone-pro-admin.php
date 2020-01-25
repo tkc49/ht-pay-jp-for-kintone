@@ -20,6 +20,7 @@ class HT_Payjp_For_Kintone_Pro_Admin {
 
 		// actions
 		add_action( 'ht_payjp_for_kintone_after_admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'add_explain_ht_payjp_for_kintone_shortcode', array( $this, 'add_explaion_pro_shortcode' ) );
 
 		// fillter
 		add_filter( 'ht_payjp_for_kintone_admin_subscription_enabled', array( $this, 'set_subscription_enabled' ), 10, 2 );
@@ -30,7 +31,7 @@ class HT_Payjp_For_Kintone_Pro_Admin {
 		add_filter( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_customer_id', array( $this, 'set_kintone_fieldcode_for_payjp_customer_id' ), 10, 2 );
 		add_filter( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_subscription_id', array( $this, 'set_kintone_fieldcode_for_payjp_subscription_id' ), 10, 2 );
 
-		add_filter( 'ht_payjp_for_kintone_after_setting_page', array( $this, 'set_ht_payjp_for_kintone_licence_block' ) );
+		add_action( 'ht_payjp_for_kintone_after_setting_page', array( $this, 'set_ht_payjp_for_kintone_licence_block' ) );
 		add_action( 'ht_payjp_for_kintone_admin_setting_update', array( $this, 'update_licence_key' ) );
 	}
 
@@ -211,6 +212,29 @@ class HT_Payjp_For_Kintone_Pro_Admin {
 		}
 		update_option( 'ht_payjp_for_kintone_source_token_of_webhook', $safe_source_token );
 
+	}
+
+	public function add_explaion_pro_shortcode() {
+		esc_html_e( 'Paste the following shortcode of Contact form 7 on form of Contact form 7 when selected subscription', 'payjp-for-kintone' );
+		?>
+
+		<span class="shortcode wp-ui-highlight">
+			<input type="text" id="payjpforkintone-shortcode-of-payjp-charged-captured-at" onfocus="this.select();" readonly="readonly" class="large-text code" value="[hidden payjp-charged-captured-at]">
+		</span>
+		<span class="shortcode wp-ui-highlight">
+			<input type="text" id="payjpforkintone-shortcode-of-customer-id" onfocus="this.select();" readonly="readonly" class="large-text code" value="[hidden payjp-customer-id]">
+		</span>
+		<span class="shortcode wp-ui-highlight">
+			<input type="text" id="payjpforkintone-shortcode-of-subscription-id" onfocus="this.select();" readonly="readonly" class="large-text code" value="[hidden payjp-subscription-id]">
+		</span>
+		<span class="shortcode wp-ui-highlight">
+			<input type="text" id="payjpforkintone-shortcode-of-subscription-plan-id" onfocus="this.select();" readonly="readonly" class="large-text code" value="[hidden payjp-subscription-plan-id]">
+		</span>
+		<span class="shortcode wp-ui-highlight">
+			<input type="text" id="payjpforkintone-shortcode-of-subscription-plan-amount" onfocus="this.select();" readonly="readonly" class="large-text code" value="[hidden payjp-subscription-plan-amount]">
+		</span>
+
+		<?php
 	}
 
 }
