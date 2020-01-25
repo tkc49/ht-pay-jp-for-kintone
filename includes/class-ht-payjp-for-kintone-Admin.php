@@ -142,7 +142,7 @@ class HT_Payjp_For_Kintone_Admin {
 					</tbody>
 				</table>
 
-				<?php apply_filters( 'ht_payjp_for_kintone_after_setting_page' ); ?>
+				<?php do_action( 'ht_payjp_for_kintone_after_setting_page' ); ?>
 
 				<p class="submit">
 					<input type="submit" name="get_kintone_fields" class="button-primary"
@@ -406,80 +406,6 @@ class HT_Payjp_For_Kintone_Admin {
 
 			<img src="<?php echo esc_attr( HT_PAY_JP_FOR_KINTONE_URL . '/assets/images/admin-shortcode.jpg' ); ?>" alt="">
 
-
-			<div class="setting-kintone-block">
-
-				<div class="field-wrap field-wrap-use-external-url">
-
-					<fieldset>
-						<label for="kintone-enabled">
-							<?php esc_html_e( 'Enable kintone', 'payjp-for-kintone' ); ?>
-						</label>
-						<input
-							type="checkbox"
-							name="ht_payjpforkintone_setting_data[kintone-enabled]"
-							id="kintone-enabled"
-							value="enable"
-							<?php checked( $kintone_enabled, 'enable' ); ?>
-						>
-					</fieldset>
-				</div>
-
-				<div class="field-wrap field-wrap-use-external-url">
-					<fieldset>
-						<label for="payjp-billing-id">
-							<?php esc_html_e( 'kintone field code to saving PAY.JP Billing ID', 'payjp-for-kintone' ); ?>
-						</label><br/>
-						<input type="text" id="payjp-billing-id"
-							value="<?php echo esc_attr( $kintone_fieldcode_for_payjp_billing_id ); ?>"
-							name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-billing-id]">
-					</fieldset>
-				</div>
-
-				<div class="field-wrap field-wrap-use-external-url">
-					<fieldset>
-						<label for="kintone-subscription-plan-id-fieldcode">
-							<?php esc_html_e( 'kintone field code to saving PAY.JP Subscription Plan ID', 'payjp-for-kintone' ); ?>
-						</label><br/>
-						<input type="text" id="kintone-subscription-plan-id-fieldcode"
-							value="<?php echo esc_attr( $kintone_fieldcode_for_payjp_subscription_plan_id ); ?>"
-							name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-subscription-plan-id]">
-					</fieldset>
-				</div>
-
-				<div class="field-wrap field-wrap-use-external-url">
-					<fieldset>
-						<label for="kintone-amount-fieldcode">
-							<?php esc_html_e( 'kintone field code to saving PAY.JP Subscription amount', 'payjp-for-kintone' ); ?>
-						</label><br/>
-						<input type="text" id="kintone-amount-fieldcode"
-							value="<?php echo esc_attr( $kintone_fieldcode_for_payjp_subscription_amount ); ?>"
-							name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-subscription-amount]">
-					</fieldset>
-				</div>
-
-				<div class="field-wrap field-wrap-use-external-url">
-					<fieldset>
-						<label for="payjp-customer-id">
-							<?php esc_html_e( 'kintone field code to saving PAY.JP Customer ID', 'payjp-for-kintone' ); ?>
-						</label><br/>
-						<input type="text" id="payjp-customer-id"
-							value="<?php echo esc_attr( $kintone_fieldcode_for_payjp_customer_id ); ?>"
-							name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-customer-id]">
-					</fieldset>
-				</div>
-
-				<div class="field-wrap field-wrap-use-external-url">
-					<fieldset>
-						<label for="payjp-subscription-id">
-							<?php esc_html_e( 'kintone field code to saving PAY.JP Subscription ID', 'payjp-for-kintone' ); ?>
-						</label><br/>
-						<input type="text" id="payjp-subscription-id"
-							value="<?php echo esc_attr( $kintone_fieldcode_for_payjp_subscription_id ); ?>"
-							name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-subscription-id]">
-					</fieldset>
-				</div>
-			</div>
 		</div>
 		<?php
 	}
