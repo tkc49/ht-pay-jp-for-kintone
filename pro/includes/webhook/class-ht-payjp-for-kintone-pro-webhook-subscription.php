@@ -34,10 +34,6 @@ class HT_Payjp_For_Kintone_Pro_Webhook_Subscription {
 
 		$payjp_charge_succeeded_data_from_webhook = $payjp_webhook_data;
 
-//		error_log( 'charge data ------------' );
-//		error_log( var_export( $payjp_charge_succeeded_data_from_webhook, true ) );
-//		error_log( '------------' );
-
 
 		// @todo 悩みどころ
 		$secret_key = get_option( 'ht_pay_jp_for_kintone_live_secret_key' );
@@ -45,9 +41,6 @@ class HT_Payjp_For_Kintone_Pro_Webhook_Subscription {
 		\Payjp\Payjp::setApiKey( 'sk_test_5e8079f02a01a66fc8f742f3' );
 		$subscription_data = \Payjp\Subscription::retrieve( $payjp_charge_succeeded_data_from_webhook['data']['subscription'] );
 
-//		error_log( 'subscription data ------------' );
-//		error_log( var_export( $subscription_data, true ) );
-//		error_log( '------------' );
 
 		// HT PAY.JP For kintoneで設定したプランかどうか確認する
 		$subscription_plan_id                         = $subscription_data->plan['id'];
@@ -84,6 +77,12 @@ class HT_Payjp_For_Kintone_Pro_Webhook_Subscription {
 					'value' => $payjp_charge_succeeded_data_from_webhook['data']['id'],
 				);
 			}
+			$kintone_field_code_of_payjp_captured_at = HT_Payjp_For_Kintone_Pro_Utility::get_kintone_field_code_of_payjp_information( 'payjp-captured-at', $appdata['appid'], $contact_form );
+			if ( $kintone_field_code_of_payjp_captured_at ) {
+				$data[ $kintone_field_code_of_payjp_captured_at ] = array(
+					'value' => $payjp_charge_succeeded_data_from_webhook['data']['captured_at'],
+				);
+			}
 
 			$kintone_field_code_of_payjp_customer_id = HT_Payjp_For_Kintone_Pro_Utility::get_kintone_field_code_of_payjp_information( 'payjp-customer-id', $appdata['appid'], $contact_form );
 			if ( $kintone_field_code_of_payjp_customer_id ) {
@@ -112,8 +111,8 @@ class HT_Payjp_For_Kintone_Pro_Webhook_Subscription {
 					'value' => $subscription_plan_id,
 				);
 			}
+			sleep( 3 );
 
-//			error_log( 'kintone へPOST' );
 			$kintone = array(
 				'domain'          => $kintone_setting_data['domain'],
 				'token'           => $appdata['token'],
@@ -123,6 +122,41 @@ class HT_Payjp_For_Kintone_Pro_Webhook_Subscription {
 			);
 
 			$result = Tkc49\Kintone_SDK_For_WordPress\Kintone_API::post( $kintone, $data );
+
+			if ( is_wp_error( $result ) ) {
+				$error_data = $result->get_error_data();
+
+				$send_error_mail = false;
+				if ( isset( $error_data['errors'] ) && ! empty( $error_data['errors'] ) ) {
+					foreach ( $error_data['errors'] as $key => $error ) {
+						if ( 'record.' . $kintone_field_code_of_payjp_charged_id . '.value' === $key ) {
+							foreach ( $error['messages'] as $message ) {
+								if ( '値がほかのレコードと重複しています。' !== $message ) {
+									$send_error_mail = true;
+									break 2;
+								}
+							}
+						}
+					}
+				} else {
+					$send_error_mail = true;
+				}
+
+				if ( $send_error_mail ) {
+
+					$cf7_id                   = $contact_form->id();
+					$cf7_name_after_urldecode = urldecode( $contact_form->name() );
+
+					// エラーメール送信
+					$error_message = 'Webhook update error' . "\r\n";
+					$error_message .= $cf7_name_after_urldecode . '(ID:' . $cf7_id . ')' . "\r\n";
+					$error_message .= '-----------------------' . "\r\n";
+					$error_message .= 'Charged ID: ' . $payjp_charge_succeeded_data_from_webhook['data']['id'] . "\r\n";
+					$error_message .= var_export( $error_data, true );
+
+					ht_payjp_for_kintone_send_error_mail( $contact_form, $error_message );
+				}
+			}
 		}
 
 	}

@@ -19,6 +19,8 @@ class HT_Payjp_For_Kintone_Pro_Subscription {
 
 		add_filter( 'form_data_to_kintone_get_update_key', array( $this, 'set_update_key_for_kintone' ), 10, 2 );
 //		add_filter( 'form_data_to_kintone_before_wp_remoto_post', array( $this, 'update_kintone_by_payjp_charge_id' ), 10, 2 );
+
+		add_filter( 'form_data_to_kintone_saved', array( $this, 'update_kintone_by_payjp_charge_id' ), 10, 2 );
 	}
 
 	public function check_subscription_data( $contact_form, &$abort, $submission ) {
@@ -95,15 +97,19 @@ class HT_Payjp_For_Kintone_Pro_Subscription {
 					)
 				);
 
-//				$charge = \Payjp\Charge::all(
-//					array(
-//						'subscription' => $subscription->id,
-//					)
-//				);
-//
-//				if ( ! empty( $charge['data'] ) ) {
-//					$posted_data['payjp-charged-id'] = $charge['data'][0]['id'];
-//				}
+				$charge = \Payjp\Charge::all(
+					array(
+						'subscription' => $subscription->id,
+					)
+				);
+
+				// 日付指定がない場合はすぐにチャージされるのでチャージIDが取得できれば保存
+				$posted_data['payjp-charged-id']          = '';
+				$posted_data['payjp-charged-captured-at'] = '';
+				if ( ! empty( $charge['data'] ) ) {
+					$posted_data['payjp-charged-id']          = $charge['data'][0]['id'];
+					$posted_data['payjp-charged-captured-at'] = date( 'Y-m-d H:i:s', strtotime( '+9hour', $charge['data'][0]['captured_at'] ) );
+				}
 				$posted_data['payjp-customer-id']              = $customer->id;
 				$posted_data['payjp-subscription-id']          = $subscription->id;
 				$posted_data['payjp-subscription-plan-amount'] = $subscription->plan->amount;
@@ -138,32 +144,66 @@ class HT_Payjp_For_Kintone_Pro_Subscription {
 		return $update_key;
 	}
 
-	public function update_kintone_by_payjp_charge_id( $data, $payjp_charged_id ) {
+	public function update_kintone_by_payjp_charge_id( $res, $body ) {
 
-		if ( empty( $payjp_charged_id ) ) {
-			// Charged IDが存在しないので、新規追加処理
-			return $data;
-		} else {
-			// 既にCharged IDが存在する場合はUPDATE処理
-			$contact_form                           = WPCF7_ContactForm::get_current();
-			$kintone_field_code_of_payjp_charged_id = HT_Payjp_For_Kintone_Pro_Utility::get_kintone_field_code_of_payjp_information( 'payjp-charged-id', $data['body']['app'], $contact_form );
-
-			if ( ! empty( $kintone_field_code_of_payjp_charged_id ) ) {
-				$data['method'] = 'PUT';
-				$data['body']   = array_merge(
-					$data['body'],
-					array(
-						'updateKey' => array(
-							'field' => $kintone_field_code_of_payjp_charged_id,
-							'value' => $payjp_charged_id,
-						),
-					)
-				);
-			}
-			error_log( var_export( $data, true ) );
-
-			return $data;
+		// エラーの内容をGETする
+		if ( 200 === $res['response']['code'] ) {
+			return $res;
 		}
+
+		$error_message                          = json_decode( $res['body'], true );
+		$contact_form                           = WPCF7_ContactForm::get_current();
+		$kintone_field_code_of_payjp_charged_id = HT_Payjp_For_Kintone_Pro_Utility::get_kintone_field_code_of_payjp_information( 'payjp-charged-id', $body['app'], $contact_form );
+		$update_flag                            = false;
+		foreach ( $error_message['errors'] as $key => $error ) {
+			if ( 'record.' . $kintone_field_code_of_payjp_charged_id . '.value' === $key ) {
+				foreach ( $error['messages'] as $message ) {
+					if ( '値がほかのレコードと重複しています。' === $message ) {
+						$update_flag = true;
+						break 2;
+					}
+				}
+			}
+		}
+
+		if ( $update_flag ) {
+			$kintone_setting_data = $contact_form->prop( 'kintone_setting_data' );
+			$token                = '';
+			foreach ( $kintone_setting_data['app_datas'] as $appdata ) {
+
+				if ( $body['app'] === $appdata['appid'] ) {
+					$token = $appdata['token'];
+				}
+			}
+
+			$kintone_field_code_of_payjp_charged_id = HT_Payjp_For_Kintone_Pro_Utility::get_kintone_field_code_of_payjp_information( 'payjp-charged-id', $body['app'], $contact_form );
+			if ( ! empty( $kintone_field_code_of_payjp_charged_id ) ) {
+
+				$kintone_base_data = array(
+					'domain' => $kintone_setting_data['domain'],
+					'app'    => $body['app'],
+					'token'  => $token,
+				);
+
+				$payjp_charged_id = $body['record'][ $kintone_field_code_of_payjp_charged_id ]['value'];
+
+				$record          = $body['record'];
+				$update_key_data = array(
+					'field' => $kintone_field_code_of_payjp_charged_id,
+					'value' => $payjp_charged_id,
+				);
+				unset( $record[ $kintone_field_code_of_payjp_charged_id ] );
+				$result = Tkc49\Kintone_SDK_For_WordPress\Kintone_API::put( $kintone_base_data, $record, $update_key_data );
+
+				if ( true === $result ) {
+					$res['response']['code'] = 200;
+				} else {
+					$res = $result;
+				}
+			}
+		}
+
+		return $res;
 	}
 
 
