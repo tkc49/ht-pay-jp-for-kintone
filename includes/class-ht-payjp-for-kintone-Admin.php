@@ -404,6 +404,8 @@ class HT_Payjp_For_Kintone_Admin {
 					<input type="text" id="payjpforkintone-shortcode-of-payment-id" onfocus="this.select();" readonly="readonly" class="large-text code" value="[hidden payjp-charged-id]">
 			</span>
 
+			<?php do_action( 'add_explain_ht_payjp_for_kintone_shortcode' ); ?>
+
 			<img src="<?php echo esc_attr( HT_PAY_JP_FOR_KINTONE_URL . '/assets/images/admin-shortcode.jpg' ); ?>" alt="">
 
 		</div>
