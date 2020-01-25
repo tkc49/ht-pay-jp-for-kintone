@@ -12,12 +12,18 @@ if ( ! class_exists( 'ht_payjp_for_kintone_pro' ) ):
 			// constants
 			add_action( 'init', array( $this, 'register_assets' ) );
 
+			require HT_PAY_JP_FOR_KINTONE_PATH . 'pro/includes/class-ht-payjp-for-kintone-pro-target-contact-form.php';
+			require HT_PAY_JP_FOR_KINTONE_PATH . 'pro/includes/class-ht-payjp-for-kintone-pro-utility.php';
+
 			if ( ( is_admin() ) ) {
+				if ( ! class_exists( 'KintoneFormMultipleApp' ) ) {
+					require HT_PAY_JP_FOR_KINTONE_PATH . 'pro/includes/form-data-to-kintone-multiple/class-form-data-to-kintone-multiple.php';
+				}
+
 				require_once HT_PAY_JP_FOR_KINTONE_PATH . 'pro/includes/class-ht-payjp-for-kintone-pro-admin.php';
-				new HT_Payjp_For_Kintone_Pro_Admin();
 			} else {
 				require_once HT_PAY_JP_FOR_KINTONE_PATH . 'pro/includes/class-ht-payjp-for-kintone-pro-subscription.php';
-				new HT_Payjp_For_Kintone_Pro_Subscription();
+
 
 				require_once HT_PAY_JP_FOR_KINTONE_PATH . 'pro/includes/rest-api/billing.php';
 			}

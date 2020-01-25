@@ -17,20 +17,14 @@ function ht_payjp_for_kintone_pro_get_billing_subscription_ids() {
 
 	$subscription_ids = array();
 
-	// コンタクトフォームの一覧を取得
-	$contact_form_items = WPCF7_ContactForm::find();
-
 	$subscription_list = \Payjp\Subscription::all( array( 'limit' => 100 ) );
 
 	foreach ( $subscription_list['data'] as $subscription ) {
 		// サブスクリプションに含まれているPLANIDを取得
-		$plan_id = $subscription->plan->id;
-		foreach ( $contact_form_items as $contact_form_item ) {
-			$payjpforkintone_setting_data = get_post_meta( $contact_form_item->id(), '_ht_payjpforkintone_setting_data', true );
-			if ( $plan_id === $payjpforkintone_setting_data['payjp-plan-id'] ) {
-				// ht Pay.JP for kintone で設定しているPLAN IDと同じものがあれば課金対象
-				$subscription_ids[] = $subscription->id;
-			}
+		$plan_id                                      = $subscription->plan->id;
+		$ht_payjp_for_kintone_pro_target_contact_form = new HT_Payjp_For_Kintone_Pro_Target_Contact_Form( $plan_id );
+		if ( $ht_payjp_for_kintone_pro_target_contact_form->check_my_plan_subscription_for_ht_payjp_for_kintone() ) {
+			$subscription_ids[] = $subscription->id;
 		}
 	}
 
@@ -75,6 +69,7 @@ function ht_payjp_for_kintone_pro_get_transfer( WP_REST_Request $req ) {
 	$first_date   = date( 'Y-m-d', strtotime( 'first day of ' . $target_month ) );
 	$last_date    = date( 'Y-m-d', strtotime( 'last day of ' . $target_month ) );
 
+	// @todo liveに変更するべき
 	$secret_key = get_option( 'ht_pay_jp_for_kintone_live_secret_key' );
 //	\Payjp\Payjp::setApiKey( $secret_key );
 	\Payjp\Payjp::setApiKey( 'sk_test_5e8079f02a01a66fc8f742f3' );
@@ -96,6 +91,7 @@ function ht_payjp_for_kintone_pro_get_transfer( WP_REST_Request $req ) {
 				$target_billing_of_charge_list[ $target_charge->id ]['livemode']        = $target_charge->livemode;
 				$target_billing_of_charge_list[ $target_charge->id ]['refunded']        = $target_charge->refunded;
 				$target_billing_of_charge_list[ $target_charge->id ]['subscription']    = $target_charge->subscription;
+				$target_billing_of_charge_list[ $target_charge->id ]['created']         = $target_charge->created;
 			}
 		}
 	}

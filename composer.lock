@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "115ad68fe397b0567e4a6be3ab3dce26",
+    "content-hash": "8b3f0a759c6fd46f83405580819994ee",
     "packages": [
         {
             "name": "payjp/payjp-php",
@@ -60,6 +60,50 @@
                 "payment processing"
             ],
             "time": "2019-08-09T13:10:15+00:00"
+        },
+        {
+            "name": "tkc49/kintone-sdk-for-wordpress",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tkc49/kintone-sdk-for-wordpress.git",
+                "reference": "46a5e083f5e4656ff7f104a8a3b35b18dbe632ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tkc49/kintone-sdk-for-wordpress/zipball/46a5e083f5e4656ff7f104a8a3b35b18dbe632ea",
+                "reference": "46a5e083f5e4656ff7f104a8a3b35b18dbe632ea",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tkc49\\Kintone_SDK_For_WordPress\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "tkc49",
+                    "email": "h.tkc49@gmail.com"
+                }
+            ],
+            "description": "Kintone sdk for WordPress is library for WordPress",
+            "homepage": "https://github.com/tkc49/kintone-sdk-for-wordpress",
+            "keywords": [
+                "kintone",
+                "wordpress"
+            ],
+            "time": "2019-11-21T06:31:54+00:00"
         }
     ],
     "packages-dev": [],

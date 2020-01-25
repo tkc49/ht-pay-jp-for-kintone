@@ -1,5 +1,6 @@
 {
   "require": {
-    "payjp/payjp-php": "~1.0"
+    "payjp/payjp-php": "~1.0",
+    "tkc49/kintone-sdk-for-wordpress": "^1.3"
   }
 }

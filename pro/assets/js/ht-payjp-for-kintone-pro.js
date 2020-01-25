@@ -1,12 +1,12 @@
 ( function( $ ){
 
 	function enabledBlockControle(){
-		const subscriptionFlag = $( '[name="ht_payjpforkintone_setting_data[subscription-enabled]"]:checked' ).val();
-		if ( 'enable' === subscriptionFlag ) {
+		const paymentType = $( '[name="ht_payjpforkintone_setting_data[payment-type]"]:checked' ).val();
+		if ( 'subscription' === paymentType ) {
 			$( '[name="ht_payjpforkintone_setting_data[amount-cf7-mailtag]"]' ).prop( "disabled", true ).trigger( "chosen:updated" );
 			$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-billing-id]"]' ).prop( "disabled", true );
 
-			$( '[name="ht_payjpforkintone_setting_data[payjp-plan-id]"]' ).prop( "disabled", false );
+			$( '[name="ht_payjpforkintone_setting_data[payjp-plan-id]"]' ).prop( "readonly", false );
 
 			const kintoneEnabled = $( '[name="ht_payjpforkintone_setting_data[kintone-enabled]"]:checked' ).val();
 			if ( kintoneEnabled === 'enable' ) {
@@ -31,7 +31,7 @@
 			}
 
 			$( '[name="ht_payjpforkintone_setting_data[amount-cf7-mailtag]"]' ).prop( "disabled", false ).trigger( "chosen:updated" );
-			$( '[name="ht_payjpforkintone_setting_data[payjp-plan-id]"]' ).prop( "disabled", true );
+			$( '[name="ht_payjpforkintone_setting_data[payjp-plan-id]"]' ).prop( "readonly", true );
 
 			$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-subscription-plan-id]"]' ).prop( "disabled", true );
 			$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-subscription-amount]"]' ).prop( "disabled", true );
@@ -46,7 +46,7 @@
 
 		$(
 			function(){
-				$( '[name="ht_payjpforkintone_setting_data[subscription-enabled]"]' ).change(
+				$( '[name="ht_payjpforkintone_setting_data[payment-type]"]' ).change(
 					function(){
 
 						enabledBlockControle();
@@ -65,7 +65,7 @@
 			}
 		);
 
-		$( '[name="ht_payjpforkintone_setting_data[subscription-enabled]"]' ).prop( "disabled", false );
+		$( '[name="ht_payjpforkintone_setting_data[payment-type]"]:eq(1)' ).prop( "disabled", false );
 		$( '[name="ht_payjpforkintone_setting_data[payjp-plan-id]"]' ).prop( "disabled", false );
 
 		$( '[name="ht_payjpforkintone_setting_data[kintone-fieldcode-for-payjp-subscription-plan-id]"]' ).prop( "disabled", false );

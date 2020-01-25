@@ -16,6 +16,8 @@ class HT_Payjp_For_Kintone_Pro_Admin {
 	 */
 	public function __construct() {
 
+		require_once HT_PAY_JP_FOR_KINTONE_PATH . 'pro/includes/webhook/class-ht-payjp-for-kintone-pro-webhook-subscription.php';
+
 		// actions
 		add_action( 'ht_payjp_for_kintone_after_admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
@@ -30,7 +32,6 @@ class HT_Payjp_For_Kintone_Pro_Admin {
 
 		add_filter( 'ht_payjp_for_kintone_after_setting_page', array( $this, 'set_ht_payjp_for_kintone_licence_block' ) );
 		add_action( 'ht_payjp_for_kintone_admin_setting_update', array( $this, 'update_licence_key' ) );
-
 	}
 
 
@@ -53,8 +54,8 @@ class HT_Payjp_For_Kintone_Pro_Admin {
 			)
 		);
 
-		if ( isset( $payjpforkintone_setting_data['subscription-enabled'] ) ) {
-			$subscription_enabled = $payjpforkintone_setting_data['subscription-enabled'];
+		if ( isset( $payjpforkintone_setting_data['payment-type'] ) ) {
+			$subscription_enabled = $payjpforkintone_setting_data['payment-type'];
 		}
 
 		return $subscription_enabled;
@@ -162,20 +163,32 @@ class HT_Payjp_For_Kintone_Pro_Admin {
 
 	public function set_ht_payjp_for_kintone_licence_block() {
 
-		$ht_payjp_for_kintone_licence_key = get_option( 'ht_payjp_for_kintone_licence_key' );
+		$ht_payjp_for_kintone_licence_key             = get_option( 'ht_payjp_for_kintone_licence_key' );
+		$ht_payjp_for_kintone_source_token_of_webhook = get_option( 'ht_payjp_for_kintone_source_token_of_webhook' );
 		?>
 
-		<h2>HT PAY.JP for kintone licence key</h2>
+		<h2>Setting HT PAY.JP for kintone PRO</h2>
 		<table class="form-table">
 			<tbody>
 			<tr valign="top">
 				<th scope="row">
 					<label for="add_text">
-						<?php esc_html_e( 'HT PAY.JP for kintone licence key', 'payjp-for-kintone' ); ?>
+						<?php esc_html_e( 'HT PAY.JP for kintone PRO\'s licence key', 'payjp-for-kintone' ); ?>
 					</label>
 				</th>
 				<td>
 					<input type="text" name="ht-payjp-for-kintone-licence-key" class="regular-text" value="<?php echo esc_attr( $ht_payjp_for_kintone_licence_key ); ?>">
+				</td>
+			</tr>
+			<tr valign="top">
+				<th scope="row">
+					<label for="add_text">
+						<?php esc_html_e( 'PAY.JP Source token of Webhook', 'payjp-for-kintone' ); ?>
+					</label>
+				</th>
+				<td>
+					<input type="text" name="ht-payjp-for-kintone-source-token-of-webhook" class="regular-text" value="<?php echo esc_attr( $ht_payjp_for_kintone_source_token_of_webhook ); ?>"><br>
+					<a href="https://pay.jp/d/settings" target="_blank">https://pay.jp/d/settings</a>
 				</td>
 			</tr>
 			</tbody>
@@ -191,6 +204,15 @@ class HT_Payjp_For_Kintone_Pro_Admin {
 		}
 		update_option( 'ht_payjp_for_kintone_licence_key', $safe_licence_key );
 
+		$safe_source_token = '';
+		if ( isset( $_POST['ht-payjp-for-kintone-source-token-of-webhook'] ) ) {
+			$source_token      = (string) filter_input( INPUT_POST, 'ht-payjp-for-kintone-source-token-of-webhook' );
+			$safe_source_token = sanitize_text_field( $source_token );
+		}
+		update_option( 'ht_payjp_for_kintone_source_token_of_webhook', $safe_source_token );
+
 	}
 
 }
+
+new HT_Payjp_For_Kintone_Pro_Admin();
