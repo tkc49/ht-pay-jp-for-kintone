@@ -89,7 +89,7 @@ class HT_Payjp_For_Kintone_Payment {
 			} catch ( \Payjp\Error\InvalidRequest $e ) {
 
 				$submission->set_response( $contact_form->filter_message( $e->getMessage() ) );
-				ht_payjp_for_kintone_send_error_mail( $contact_form, $e->getMessage() );
+				ht_payjp_for_kintone_send_error_mail( $e->getMessage() );
 
 				return $posted_data;
 

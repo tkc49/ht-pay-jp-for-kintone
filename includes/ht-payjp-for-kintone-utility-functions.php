@@ -10,13 +10,20 @@ function ht_payjp_for_kintone_include( $filename = '' ) {
 	}
 }
 
-function ht_payjp_for_kintone_send_error_mail( $contact_form, $erro_message ) {
+function ht_payjp_for_kintone_send_error_mail( $erro_message, $contact_form = null ) {
+
+	if ( empty( $contact_form ) ) {
+		$contact_form = WPCF7_ContactForm::get_current();
+	}
 
 	$kintone_setting_data = $contact_form->prop( 'kintone_setting_data' );
 
 	if ( empty( $kintone_setting_data ) ) {
 		return;
 	}
+	$cf7_id                   = $contact_form->id();
+	$cf7_name_after_urldecode = urldecode( $contact_form->name() );
+
 
 	$email_address_to_send_kintone_registration_error = $kintone_setting_data['email_address_to_send_kintone_registration_error'];
 
@@ -26,8 +33,13 @@ function ht_payjp_for_kintone_send_error_mail( $contact_form, $erro_message ) {
 		$to = get_option( 'admin_email' );
 	}
 
+	$error_message = 'Webhook update error' . "\r\n";
+	$error_message .= $cf7_name_after_urldecode . '(ID:' . $cf7_id . ')' . "\r\n";
+	$error_message .= '-----------------------' . "\r\n";
+
+
 	$subject = esc_html__( 'Error : PAY.JP Payment', 'payjp-for-kintone' );
-	$body    = $erro_message;
+	$body    = $error_message . $erro_message;
 	wp_mail( $to, $subject, $body );
 }
 

@@ -120,7 +120,7 @@ class HT_Payjp_For_Kintone_Pro_Subscription {
 			} catch ( \Payjp\Error\InvalidRequest $e ) {
 
 				$submission->set_response( $contact_form->filter_message( $e->getMessage() ) );
-				ht_payjp_for_kintone_send_error_mail( $contact_form, $e->getMessage() );
+				ht_payjp_for_kintone_send_error_mail( $e->getMessage() );
 
 				return $posted_data;
 
@@ -180,9 +180,11 @@ class HT_Payjp_For_Kintone_Pro_Subscription {
 			if ( ! empty( $kintone_field_code_of_payjp_charged_id ) ) {
 
 				$kintone_base_data = array(
-					'domain' => $kintone_setting_data['domain'],
-					'app'    => $body['app'],
-					'token'  => $token,
+					'domain'          => $kintone_setting_data['domain'],
+					'app'             => $body['app'],
+					'token'           => $token,
+					'basic_auth_user' => $kintone_setting_data['kintone_basic_authentication_id'],
+					'basic_auth_pass' => $kintone_setting_data['kintone_basic_authentication_password'],
 				);
 
 				$payjp_charged_id = $body['record'][ $kintone_field_code_of_payjp_charged_id ]['value'];
