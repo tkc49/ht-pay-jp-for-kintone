@@ -69,10 +69,14 @@ function ht_payjp_for_kintone_pro_get_transfer( WP_REST_Request $req ) {
 	$first_date   = date( 'Y-m-d', strtotime( 'first day of ' . $target_month ) );
 	$last_date    = date( 'Y-m-d', strtotime( 'last day of ' . $target_month ) );
 
-	// @todo liveに変更するべき
-	$secret_key = get_option( 'ht_pay_jp_for_kintone_live_secret_key' );
-//	\Payjp\Payjp::setApiKey( $secret_key );
-	\Payjp\Payjp::setApiKey( 'sk_test_5e8079f02a01a66fc8f742f3' );
+	$livemode = $req['livemode'];
+	if ( true === $livemode ) {
+		$secret_key = get_option( 'ht_pay_jp_for_kintone_live_secret_key' );
+	} else {
+		$secret_key = get_option( 'ht_pay_jp_for_kintone_test_secret_key' );
+	}
+
+	\Payjp\Payjp::setApiKey( $secret_key );
 
 	// 請求対象のサブスクリプションIDを取得する
 	$target_subscription_ids     = ht_payjp_for_kintone_pro_get_billing_subscription_ids();

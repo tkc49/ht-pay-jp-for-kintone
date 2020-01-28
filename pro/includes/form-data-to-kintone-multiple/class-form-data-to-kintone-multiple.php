@@ -14,6 +14,7 @@ class KintoneFormMultipleApp {
 				<td valign="top" style="padding: 10px 0px;">
 					APP ID:<input type="text" id="kintone-form-appid" name="kintone_setting_data[app_datas][{{row-count-placeholder}}][appid]" class="small-text" size="70" value=""/>
 					Api Token:<input type="text" id="kintone-form-token" name="kintone_setting_data[app_datas][{{row-count-placeholder}}][token]" class="regular-text" size="70" value=""/>
+					<input type="submit" class="button-primary" name="get-kintone-data" value="GET">
 				</td>
 				<td width="10%"><span class="remove button">Remove</span></td>
 			</tr>

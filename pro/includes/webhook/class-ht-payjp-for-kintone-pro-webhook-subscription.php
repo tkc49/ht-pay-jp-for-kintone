@@ -61,7 +61,6 @@ class HT_Payjp_For_Kintone_Pro_Webhook_Subscription {
 			'app'             => $appdata['appid'],
 		);
 
-		$data[ $kintone_field_code_of_payjp_subscription_id ]['value'] = 'sub_a4848d99f2d12740b3112bb8b7d3';
 
 		// サブスクリプションIDが同じものかつ決済IDがブランクのデータがあるか確認する.
 		$query  = $kintone_field_code_of_payjp_subscription_id . ' = "' . $data[ $kintone_field_code_of_payjp_subscription_id ]['value'] . '" and ' . $kintone_field_code_of_payjp_charged_id . ' = ""';
@@ -87,9 +86,6 @@ class HT_Payjp_For_Kintone_Pro_Webhook_Subscription {
 				// 対象データがあれば更新する
 				$kintone = array_merge( $kintone, array( 'id' => $subscription_records[0]['$id']['value'] ) );
 				$result  = Tkc49\Kintone_SDK_For_WordPress\Kintone_API::put( $kintone, $data );
-				error_log( var_export( $kintone, true ) );
-				error_log( var_export( $data, true ) );
-				error_log( var_export( $result, true ) );
 
 				if ( is_wp_error( $result ) ) {
 					// エラー処理
@@ -134,10 +130,16 @@ class HT_Payjp_For_Kintone_Pro_Webhook_Subscription {
 
 		$payjp_charge_succeeded_data_from_webhook = $payjp_webhook_data;
 
+
 		// @todo 悩みどころ
-		$secret_key = get_option( 'ht_pay_jp_for_kintone_live_secret_key' );
-//		\Payjp\Payjp::setApiKey( $secret_key );
-		\Payjp\Payjp::setApiKey( 'sk_test_5e8079f02a01a66fc8f742f3' );
+		if ( isset( $payjp_webhook_data['livemode'] ) && true === $payjp_webhook_data['livemode'] ) {
+			// Live.
+			$secret_key = get_option( 'ht_pay_jp_for_kintone_live_secret_key' );
+		} else {
+			$secret_key = get_option( 'ht_pay_jp_for_kintone_test_secret_key' );
+		}
+
+		\Payjp\Payjp::setApiKey( $secret_key );
 		$subscription_data = \Payjp\Subscription::retrieve( $payjp_charge_succeeded_data_from_webhook['data']['subscription'] );
 
 		// HT PAY.JP For kintoneで設定したプランかどうか確認する
