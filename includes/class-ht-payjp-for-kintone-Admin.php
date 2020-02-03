@@ -384,7 +384,7 @@ class HT_Payjp_For_Kintone_Admin {
 					<select name="ht_payjpforkintone_setting_data[payjp-fixed-subscription-month]" id="payjp-fixed-subscription-month">
 						<option value="">month / day</option>
 						<?php for ( $month = 1; $month <= 12; $month ++ ): ?>
-							<option value="<?php echo sprintf( '%02d', $month ); ?>-01" <?php selected( sprintf( '%02d', $month ), $payjp_fixed_subscription_month ) ?>><?php echo sprintf( '%02d', $month ); ?>/01</option>
+							<option value="<?php echo sprintf( '%02d', $month ); ?>-01" <?php selected( sprintf( '%02d', $month ) . '-01', $payjp_fixed_subscription_month ) ?>><?php echo sprintf( '%02d', $month ); ?>/01</option>
 						<?php endfor; ?>
 					</select>
 
