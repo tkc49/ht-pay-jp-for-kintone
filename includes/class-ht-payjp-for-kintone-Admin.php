@@ -269,12 +269,12 @@ class HT_Payjp_For_Kintone_Admin {
 		$payjp_plan_id        = '';
 		$payjp_plan_id        = apply_filters( 'ht_payjp_for_kintone_admin_payjp_plan_id', $payjp_plan_id, $post );
 
-		$payjp_fixed_subscription_date = '';
-		$payjp_fixed_subscription_date = apply_filters( 'ht_payjp_for_kintone_admin_payjp_fixed_subscription_date', $payjp_fixed_subscription_date, $post );
+
+		$payjp_fixed_subscription_month = '';
+		$payjp_fixed_subscription_month = apply_filters( 'ht_payjp_for_kintone_admin_payjp_fixed_subscription_month', $payjp_fixed_subscription_month, $post );
 
 		$payjp_fixed_subscription_time = '';
 		$payjp_fixed_subscription_time = apply_filters( 'ht_payjp_for_kintone_admin_payjp_fixed_subscription_time', $payjp_fixed_subscription_time, $post );
-
 
 		$kintone_fieldcode_for_payjp_subscription_plan_id = '';
 		$kintone_fieldcode_for_payjp_subscription_plan_id = apply_filters( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_subscription_plan_id', $kintone_fieldcode_for_payjp_subscription_plan_id, $post );
@@ -381,9 +381,15 @@ class HT_Payjp_For_Kintone_Admin {
 					<label for="payjp-fixed-subscription-date">
 						<?php esc_html_e( 'Fixed Subscription datetime', 'payjp-for-kintone' ); ?>
 					</label><br/>
-					<input type="text" id="payjp-fixed-subscription-date" value="<?php echo esc_attr( $payjp_fixed_subscription_date ); ?>" name="ht_payjpforkintone_setting_data[payjp-fixed-subscription-date]">
+					<select name="ht_payjpforkintone_setting_data[payjp-fixed-subscription-month]" id="payjp-fixed-subscription-month">
+						<option value="">month / day</option>
+						<?php for ( $month = 1; $month <= 12; $month ++ ): ?>
+							<option value="<?php echo sprintf( '%02d', $month ); ?>-01" <?php selected( $month, $payjp_fixed_subscription_month ) ?>><?php echo sprintf( '%02d', $month ); ?>/01</option>
+						<?php endfor; ?>
+					</select>
+
 					<select name="ht_payjpforkintone_setting_data[payjp-fixed-subscription-time]" id="payjp-fixed-subscription-time">
-						<option value="">----</option>
+						<option value="">time</option>
 						<?php for ( $hour = 0; $hour <= 23; $hour ++ ): ?>
 							<option value="<?php echo $hour; ?>" <?php selected( $hour, $payjp_fixed_subscription_time ) ?>><?php echo $hour; ?>:00</option>
 						<?php endfor; ?>
