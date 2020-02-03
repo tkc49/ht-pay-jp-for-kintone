@@ -52,6 +52,7 @@
 
 			$( '[name="ht_payjpforkintone_setting_data[payjp-plan-id]"]' ).prop( "disabled", true );
 			$( '[name="ht_payjpforkintone_setting_data[payment-type]"]:eq(1)' ).prop( "disabled", true );
+			$( "#payjp-fixed-subscription-datetime" ).prop( "disabled", true );
 
 		}
 
