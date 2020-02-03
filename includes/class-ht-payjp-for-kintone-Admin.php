@@ -269,8 +269,8 @@ class HT_Payjp_For_Kintone_Admin {
 		$payjp_plan_id        = '';
 		$payjp_plan_id        = apply_filters( 'ht_payjp_for_kintone_admin_payjp_plan_id', $payjp_plan_id, $post );
 
-		$payjp_fixed_subscription_datetime = '';
-		$payjp_fixed_subscription_datetime = apply_filters( 'ht_payjp_for_kintone_admin_payjp_plan_id', $payjp_fixed_subscription_datetime, $post );
+		$payjp_fixed_subscription_date = '';
+		$payjp_fixed_subscription_date = apply_filters( 'ht_payjp_for_kintone_admin_payjp_fixed_subscription_date', $payjp_fixed_subscription_date, $post );
 
 		$kintone_fieldcode_for_payjp_subscription_plan_id = '';
 		$kintone_fieldcode_for_payjp_subscription_plan_id = apply_filters( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_subscription_plan_id', $kintone_fieldcode_for_payjp_subscription_plan_id, $post );
@@ -374,10 +374,16 @@ class HT_Payjp_For_Kintone_Admin {
 
 			<div class="field-wrap field-wrap-use-external-url">
 				<fieldset>
-					<label for="payjp-fixed-subscription-datetime">
+					<label for="payjp-fixed-subscription-date">
 						<?php esc_html_e( 'Fixed Subscription datetime', 'payjp-for-kintone' ); ?>
 					</label><br/>
-					<input type="text" id="payjp-fixed-subscription-datetime" value="<?php echo esc_attr( $payjp_fixed_subscription_datetime ); ?>" name="ht_payjpforkintone_setting_data[payjp-fixed-subscription-datetime]">
+					<input type="text" id="payjp-fixed-subscription-date" value="<?php echo esc_attr( $payjp_fixed_subscription_date ); ?>" name="ht_payjpforkintone_setting_data[payjp-fixed-subscription-date]">
+					<select name="ht_payjpforkintone_setting_data[payjp-fixed-subscription-time]" id="payjp-fixed-subscription-time">
+						<option value="">----</option>
+						<?php for ( $hour = 0; $hour <= 23; $hour ++ ): ?>
+							<option value="<?php echo $hour; ?>:00"><?php echo $hour; ?>:00</option>
+						<?php endfor; ?>
+					</select>
 				</fieldset>
 			</div>
 
