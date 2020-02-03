@@ -42,6 +42,9 @@
 
 		$( '[name="ht_payjpforkintone_setting_data[payment-type]"]:eq(1)' ).prop( "disabled", false );
 		$( '[name="ht_payjpforkintone_setting_data[payjp-plan-id]"]' ).prop( "disabled", false );
+		$( "#payjp-fixed-subscription-datetime" ).datepicker( {
+			dateFormat: "yy-mm-dd"
+		} );
 
 
 		enabledBlockControle();
