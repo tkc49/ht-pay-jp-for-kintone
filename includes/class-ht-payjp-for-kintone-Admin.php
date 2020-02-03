@@ -391,7 +391,7 @@ class HT_Payjp_For_Kintone_Admin {
 					<select name="ht_payjpforkintone_setting_data[payjp-fixed-subscription-time]" id="payjp-fixed-subscription-time">
 						<option value="">time</option>
 						<?php for ( $hour = 0; $hour <= 23; $hour ++ ): ?>
-							<option value="<?php echo $hour; ?>" <?php selected( $hour, $payjp_fixed_subscription_time ) ?>><?php echo $hour; ?>:00</option>
+							<option value="<?php echo sprintf( '%02d', $hour ); ?>" <?php selected( sprintf( '%02d', $hour ), $payjp_fixed_subscription_time ) ?>><?php echo sprintf( '%02d', $hour ); ?>:00</option>
 						<?php endfor; ?>
 					</select>
 				</fieldset>
