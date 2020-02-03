@@ -1,10 +1,9 @@
-=== HT PAY.JP for kintone ===
+=== HT PAY.JP for kintone PRO Beta Version 1 ===
 Contributors: tkc49
 Donate link:
 Tags: Contact Form 7, kintone, PAY.JP
 Requires at least: 4.5
 Tested up to: 5.2.2
-Stable tag: 1.0.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 

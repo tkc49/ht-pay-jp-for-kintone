@@ -189,7 +189,9 @@ class HT_Payjp_For_Kintone_Pro_Admin {
 				</th>
 				<td>
 					<input type="text" name="ht-payjp-for-kintone-source-token-of-webhook" class="regular-text" value="<?php echo esc_attr( $ht_payjp_for_kintone_source_token_of_webhook ); ?>"><br>
-					<a href="https://pay.jp/d/settings" target="_blank">https://pay.jp/d/settings</a>
+					<a href="https://pay.jp/d/settings" target="_blank">https://pay.jp/d/settings</a><br>
+					■ Webhook for Subscription<br>
+					<?php echo admin_url( 'admin-ajax.php?action=ht_payjp_for_kintone_subscription_by_webhook' ); ?>
 				</td>
 			</tr>
 			</tbody>

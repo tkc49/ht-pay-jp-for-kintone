@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:     HT PAY.JP for kintone
+ * Plugin Name:     HT PAY.JP for kintone PRO Beta Version 1
  * Plugin URI:
  * Description:     This Plugin accept payments on your WordPress site via PAY.JP.
  * Author:          Takashi Hosoya
