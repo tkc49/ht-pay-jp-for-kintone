@@ -26,6 +26,9 @@ class HT_Payjp_For_Kintone_Pro_Admin {
 		add_filter( 'ht_payjp_for_kintone_admin_subscription_enabled', array( $this, 'set_subscription_enabled' ), 10, 2 );
 		add_filter( 'ht_payjp_for_kintone_admin_payjp_plan_id', array( $this, 'set_payjp_plan_id' ), 10, 2 );
 
+		add_filter( 'ht_payjp_for_kintone_admin_payjp_fixed_subscription_month', array( $this, 'set_payjp_fixed_subscription_month' ), 10, 2 );
+		add_filter( 'ht_payjp_for_kintone_admin_payjp_fixed_subscription_time', array( $this, 'set_payjp_fixed_subscription_time' ), 10, 2 );
+
 		add_filter( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_subscription_plan_id', array( $this, 'set_kintone_fieldcode_for_payjp_subscription_plan_id' ), 10, 2 );
 		add_filter( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_subscription_amount', array( $this, 'set_kintone_fieldcode_for_payjp_subscription_amount' ), 10, 2 );
 		add_filter( 'ht_payjp_for_kintone_admin_kintone_fieldcode_for_payjp_customer_id', array( $this, 'set_kintone_fieldcode_for_payjp_customer_id' ), 10, 2 );
@@ -80,6 +83,44 @@ class HT_Payjp_For_Kintone_Pro_Admin {
 
 		return $payjp_plan_id;
 
+	}
+
+	public function set_payjp_fixed_subscription_month( $payjp_fixed_subscription_month, $post ) {
+
+		$payjpforkintone_setting_data = get_post_meta( $post->id(), '_ht_payjpforkintone_setting_data', true );
+
+		$payjpforkintone_setting_data = wp_parse_args(
+			$payjpforkintone_setting_data,
+			array(
+				'payjpforkintone-enabled' => 'disable',
+				'live-enabled'            => false,
+			)
+		);
+
+		if ( isset( $payjpforkintone_setting_data['payjp-fixed-subscription-month'] ) ) {
+			$payjp_fixed_subscription_month = $payjpforkintone_setting_data['payjp-fixed-subscription-month'];
+		}
+
+		return $payjp_fixed_subscription_month;
+	}
+
+	public function set_payjp_fixed_subscription_time( $payjp_fixed_subscription_time, $post ) {
+
+		$payjpforkintone_setting_data = get_post_meta( $post->id(), '_ht_payjpforkintone_setting_data', true );
+
+		$payjpforkintone_setting_data = wp_parse_args(
+			$payjpforkintone_setting_data,
+			array(
+				'payjpforkintone-enabled' => 'disable',
+				'live-enabled'            => false,
+			)
+		);
+
+		if ( isset( $payjpforkintone_setting_data['payjp-fixed-subscription-time'] ) ) {
+			$payjp_fixed_subscription_time = $payjpforkintone_setting_data['payjp-fixed-subscription-time'];
+		}
+
+		return $payjp_fixed_subscription_time;
 	}
 
 	public function set_kintone_fieldcode_for_payjp_subscription_plan_id( $kintone_fieldcode_for_payjp_subscription_plan_id, $post ) {

@@ -106,6 +106,42 @@ class HT_Payjp_For_Kintone_Pro_Webhook_Subscription {
 		}
 	}
 
+	private function update_subscription_date_for_fixed_next_subscription_date( $subscription_id, $contact_form ) {
+
+		$payjpforkintone_setting_data = get_post_meta( $contact_form->id(), '_ht_payjpforkintone_setting_data', true );
+
+		if ( isset( $payjpforkintone_setting_data['payjp-fixed-subscription-month'] ) && $payjpforkintone_setting_data['payjp-fixed-subscription-month'] ) {
+
+			$time = '09:00:00';
+			if ( isset( $payjpforkintone_setting_data['payjp-fixed-subscription-time'] ) && $payjpforkintone_setting_data['payjp-fixed-subscription-time'] ) {
+				$time = $payjpforkintone_setting_data['payjp-fixed-subscription-time'] . ':00:00';
+			}
+
+			$tz = date_default_timezone_get();
+			date_default_timezone_set( 'UTC' );
+
+			// 次回の課金日を算出する
+			$today_datetime               = strtotime( '+9hour' );
+			$year                         = date( 'Y' );
+			$base_fixed_subscription_date = strtotime( $year . '-' . $payjpforkintone_setting_data['payjp-fixed-subscription-month'] . ' ' . $time );
+
+			if ( $base_fixed_subscription_date <= $today_datetime && $today_datetime <= strtotime( $year . '-12-31 23:59:59' ) ) {
+				// 翌年の対象月で更新する
+				$year = (int) $year + 1;
+			}
+			$next_subscription_datetime = strtotime( $year . '-' . $payjpforkintone_setting_data['payjp-fixed-subscription-month'] . ' ' . $time . ' -9hour' );
+
+			date_default_timezone_set( $tz );
+
+			$su            = \Payjp\Subscription::retrieve( $subscription_id );
+			$su->trial_end = $next_subscription_datetime;
+			$su->save();
+
+		}
+
+	}
+
+
 	public function ht_payjp_for_kintone_subscription_by_webhook() {
 
 		$payjp_webhook_data_json = file_get_contents( "php://input" );
@@ -130,8 +166,6 @@ class HT_Payjp_For_Kintone_Pro_Webhook_Subscription {
 
 		$payjp_charge_succeeded_data_from_webhook = $payjp_webhook_data;
 
-
-		// @todo 悩みどころ
 		if ( isset( $payjp_webhook_data['livemode'] ) && true === $payjp_webhook_data['livemode'] ) {
 			// Live.
 			$secret_key = get_option( 'ht_pay_jp_for_kintone_live_secret_key' );
@@ -220,6 +254,10 @@ class HT_Payjp_For_Kintone_Pro_Webhook_Subscription {
 				// 更新処理をしていないなら新規登録する
 				$this->ht_payjp_for_kintone_post( $kintone_setting_data, $appdata, $data, $kintone_field_code_of_payjp_charged_id, $payjp_charge_succeeded_data_from_webhook, $contact_form );
 			}
+
+
+			// 定期課金を更新する
+			$this->update_subscription_date_for_fixed_next_subscription_date( $payjp_charge_succeeded_data_from_webhook['data']['subscription'], $contact_form );
 		}
 
 	}
