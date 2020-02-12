@@ -132,8 +132,8 @@ class HT_Payjp_For_Kintone_Pro_Webhook_Subscription {
 			$next_subscription_datetime = strtotime( $year . '-' . $payjpforkintone_setting_data['payjp-fixed-subscription-month'] . ' ' . $time . ' -9hour' );
 
 			// @todo test code Start -----
-			$test_tomorrow              = date( 'Y-m-d', strtotime( '+1 day' ) );
-			$next_subscription_datetime = strtotime( $test_tomorrow . ' 09:00:00 -9hour' );
+//			$test_tomorrow              = date( 'Y-m-d', strtotime( '+1 day' ) );
+//			$next_subscription_datetime = strtotime( $test_tomorrow . ' 09:00:00 -9hour' );
 			// ----- end
 
 			date_default_timezone_set( $tz );
