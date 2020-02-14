@@ -6,12 +6,16 @@
 			$( '[name="ht_payjpforkintone_setting_data[amount-cf7-mailtag]"]' ).prop( "disabled", true ).trigger( "chosen:updated" );
 
 			$( '[name="ht_payjpforkintone_setting_data[payjp-plan-id]"]' ).prop( "readonly", false );
+			$( "#payjp-fixed-subscription-month" ).prop( "disabled", false );
+			$( "#payjp-fixed-subscription-time" ).prop( "disabled", false );
 
 
 		} else {
 
 			$( '[name="ht_payjpforkintone_setting_data[amount-cf7-mailtag]"]' ).prop( "disabled", false ).trigger( "chosen:updated" );
 			$( '[name="ht_payjpforkintone_setting_data[payjp-plan-id]"]' ).prop( "readonly", true );
+			$( "#payjp-fixed-subscription-month" ).prop( "disabled", true );
+			$( "#payjp-fixed-subscription-time" ).prop( "disabled", true );
 
 		}
 
