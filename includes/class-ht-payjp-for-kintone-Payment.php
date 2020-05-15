@@ -11,13 +11,6 @@
 class HT_Payjp_For_Kintone_Payment {
 
 	/**
-	 * Instance
-	 *
-	 * @var object
-	 */
-	private static $instance;
-
-	/**
 	 * Charged ID of Pay.jp
 	 *
 	 * @var string
@@ -27,22 +20,9 @@ class HT_Payjp_For_Kintone_Payment {
 	/**
 	 * Constructor
 	 */
-	private function __construct() {
+	public function __construct() {
 		add_action( 'wpcf7_before_send_mail', array( $this, 'payment_to_pay_jp' ), 10, 3 );
 		add_filter( 'kintone_form_cf7_posted_data_before_post_to_kintone', array( $this, 'set_payjp_charged_id' ) );
-	}
-
-	/**
-	 * Get instance
-	 *
-	 * @return object Instance.
-	 */
-	public static function get_instance() {
-		if ( ! self::$instance ) {
-			self::$instance = new HT_Payjp_For_Kintone_Payment;
-		}
-
-		return self::$instance;
 	}
 
 
