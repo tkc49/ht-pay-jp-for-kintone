@@ -103,6 +103,28 @@ class HT_Payjp_For_Kintone_Payment {
 
 				$this->payjp_charged_id = $charge->id;
 
+				$mail = $contact_form->prop( 'mail' );
+
+				$mail['body'] = str_replace(
+					'[payjp-charged-id]',
+					$charge->id,
+					$mail['body']
+				);
+
+				$mail2         = $contact_form->prop( 'mail_2' );
+				$mail2['body'] = str_replace(
+					'[payjp-charged-id]',
+					$charge->id,
+					$mail2['body']
+				);
+
+				$contact_form->set_properties(
+					array(
+						'mail'   => $mail,
+						'mail_2' => $mail2,
+					)
+				);
+
 			} catch ( \Payjp\Error\InvalidRequest $e ) {
 
 				$abort = true;

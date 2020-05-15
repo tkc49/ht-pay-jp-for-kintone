@@ -38,12 +38,15 @@ class HT_Payjp_For_Kintone_Admin {
 		// 保存したときに実行.
 		add_action( 'wpcf7_save_contact_form', array( $this, 'ht_payjpforkintone_save_contact_form' ), 10, 3 );
 
-		add_action( 'kintone_form_add_original_cf7_mail_tag_for_kintone_form', array( $this, 'set_payjp_charged_id_of_kintone_form_mail_tag_to_select_option' ) );
+		add_filter( 'wpcf7_collect_mail_tags', array( $this, 'set_payjp_charged_id_of_kintone_form' ), 10, 3 );
 
 	}
 
-	public function set_payjp_charged_id_of_kintone_form_mail_tag_to_select_option( $selected_cf7_mailtag ) {
-		echo '<option ' . selected( 'payjp-charged-id', $selected_cf7_mailtag ) . ' value="payjp-charged-id">[payjp-charged-id]</option>';
+	public function set_payjp_charged_id_of_kintone_form( $mailtags, $args, $contac_form ) {
+
+		$mailtags[] = 'payjp-charged-id';
+
+		return $mailtags;
 	}
 
 	/**
