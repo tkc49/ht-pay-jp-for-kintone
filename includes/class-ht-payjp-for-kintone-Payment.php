@@ -34,6 +34,18 @@ class HT_Payjp_For_Kintone_Payment {
 	 * @return array .
 	 */
 	public function set_payjp_charged_id( $cf7_send_data ) {
+
+		$contact_form                 = WPCF7_ContactForm::get_current();
+		$payjpforkintone_setting_data = get_post_meta( $contact_form->id(), '_ht_payjpforkintone_setting_data', true );
+
+		// 有効ではない場合は、何もせずにリターン.
+		if ( 'enable' !== $payjpforkintone_setting_data['payjpforkintone-enabled'] ) {
+			return $cf7_send_data;
+		}
+		if ( isset( $payjpforkintone_setting_data['payment-type'] ) && 'checkout' !== $payjpforkintone_setting_data['payment-type'] ) {
+			return $cf7_send_data;
+		}
+
 		$cf7_send_data['payjp-charged-id'] = $this->payjp_charged_id;
 
 		return $cf7_send_data;
