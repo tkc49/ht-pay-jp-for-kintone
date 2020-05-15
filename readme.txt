@@ -4,6 +4,7 @@ Donate link:
 Tags: Contact Form 7, kintone, PAY.JP
 Requires at least: 4.5
 Tested up to: 5.2.2
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +52,9 @@ Answer to foo bar dilemma.
 4. screenshot-4.png
 
 == Changelog ==
+= 1.1.0 =
+* Fixed a bug that caused payment to be made to Pay.jp even if there was a validation error in Contact form 7.
+
 = 1.0.8 =
 * Fix Undefined index: kintone-enabled.
 
