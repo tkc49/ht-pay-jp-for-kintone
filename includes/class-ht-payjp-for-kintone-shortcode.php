@@ -21,7 +21,7 @@ class HT_Payjp_For_Kintone_Shortcode {
 
 		// Payment.
 		require_once HT_PAY_JP_FOR_KINTONE_PATH . '/includes/class-ht-payjp-for-kintone-Payment.php';
-		HT_Payjp_For_Kintone_Payment::get_instance();
+		new HT_Payjp_For_Kintone_Payment();
 
 	}
 
