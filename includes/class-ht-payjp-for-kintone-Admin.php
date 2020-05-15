@@ -38,6 +38,12 @@ class HT_Payjp_For_Kintone_Admin {
 		// 保存したときに実行.
 		add_action( 'wpcf7_save_contact_form', array( $this, 'ht_payjpforkintone_save_contact_form' ), 10, 3 );
 
+		add_action( 'kintone_form_add_original_cf7_mail_tag_for_kintone_form', array( $this, 'set_payjp_charged_id_of_kintone_form_mail_tag_to_select_option' ) );
+
+	}
+
+	public function set_payjp_charged_id_of_kintone_form_mail_tag_to_select_option( $selected_cf7_mailtag ) {
+		echo '<option ' . selected( 'payjp-charged-id', $selected_cf7_mailtag ) . ' value="payjp-charged-id">[payjp-charged-id]</option>';
 	}
 
 	/**
@@ -426,10 +432,6 @@ class HT_Payjp_For_Kintone_Admin {
 			<?php esc_html_e( 'Paste the following shortcode of Contact form 7 on form of Contact form 7', 'payjp-for-kintone' ); ?>
 			<span class="shortcode wp-ui-highlight">
 					<input type="text" id="payjpforkintone-shortcode" onfocus="this.select();" readonly="readonly" class="large-text code" value="[ht_payjp_for_kintone]">
-			</span>
-
-			<span class="shortcode wp-ui-highlight">
-					<input type="text" id="payjpforkintone-shortcode-of-payment-id" onfocus="this.select();" readonly="readonly" class="large-text code" value="[hidden payjp-charged-id]">
 			</span>
 
 			<?php do_action( 'add_explain_ht_payjp_for_kintone_shortcode' ); ?>

@@ -21,7 +21,7 @@ class HT_Payjp_For_Kintone_Shortcode {
 
 		// Payment.
 		require_once HT_PAY_JP_FOR_KINTONE_PATH . '/includes/class-ht-payjp-for-kintone-Payment.php';
-		new HT_Payjp_For_Kintone_Payment();
+		HT_Payjp_For_Kintone_Payment::get_instance();
 
 	}
 
@@ -29,7 +29,6 @@ class HT_Payjp_For_Kintone_Shortcode {
 	 * PAY.JP checkoutコードを表示させるオリジナルタグを追加.
 	 */
 	public function ht_payjpforkintone_add_form_tag() {
-
 
 		wpcf7_add_form_tag(
 			'ht_payjp_for_kintone',
