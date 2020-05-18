@@ -10,12 +10,20 @@
  */
 class HT_Payjp_For_Kintone_Pro_Subscription {
 
+	private $payjp_charged_id;
+	private $payjp_charged_captured_at;
+	private $payjp_customer_id;
+	private $payjp_subscription_id;
+	private $payjp_subscription_plan_amount;
+	private $payjp_subscription_plan_id;
+
+
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		add_action( 'wpcf7_posted_data', array( $this, 'subscription' ), 10, 1 );
-		add_action( 'wpcf7_before_send_mail', array( $this, 'check_subscription_data' ), 10, 3 );
+		add_action( 'wpcf7_before_send_mail', array( $this, 'subscription' ), 10, 3 );
+		add_filter( 'kintone_form_cf7_posted_data_before_post_to_kintone', array( $this, 'set_payjp_subscription_info' ) );
 
 		add_filter( 'form_data_to_kintone_get_update_key', array( $this, 'set_update_key_for_kintone' ), 10, 2 );
 //		add_filter( 'form_data_to_kintone_before_wp_remoto_post', array( $this, 'update_kintone_by_payjp_charge_id' ), 10, 2 );
@@ -23,46 +31,38 @@ class HT_Payjp_For_Kintone_Pro_Subscription {
 		add_filter( 'form_data_to_kintone_saved', array( $this, 'update_kintone_by_payjp_charge_id' ), 10, 2 );
 	}
 
-	public function check_subscription_data( $contact_form, &$abort, $submission ) {
+	public function set_payjp_subscription_info( $cf7_send_data ) {
 
+		$contact_form                 = WPCF7_ContactForm::get_current();
 		$payjpforkintone_setting_data = get_post_meta( $contact_form->id(), '_ht_payjpforkintone_setting_data', true );
 
-		// 有効でない場合は何もせずにリターン.
 		if ( 'enable' !== $payjpforkintone_setting_data['payjpforkintone-enabled'] ) {
-			return;
+			return $cf7_send_data;
 		}
 		if ( isset( $payjpforkintone_setting_data['payment-type'] ) && 'subscription' !== $payjpforkintone_setting_data['payment-type'] ) {
-			return;
+			return $cf7_send_data;
 		}
 
-		$post_data = $submission->get_posted_data();
-		if ( ! isset( $post_data['payjp-customer-id'] ) || empty( $post_data['payjp-customer-id'] ) ) {
-			$abort = true;
-		}
-		if ( ! isset( $post_data['payjp-subscription-id'] ) || empty( $post_data['payjp-subscription-id'] ) ) {
-			$abort = true;
-		}
-		if ( ! isset( $post_data['payjp-subscription-plan-amount'] ) || empty( $post_data['payjp-subscription-plan-amount'] ) ) {
-			$abort = true;
-		}
-		if ( ! isset( $post_data['payjp-subscription-plan-id'] ) || empty( $post_data['payjp-subscription-plan-id'] ) ) {
-			$abort = true;
-		}
+		$cf7_send_data['payjp-charged-id']               = $this->payjp_charged_id;
+		$cf7_send_data['payjp-charged-captured-at']      = $this->payjp_charged_captured_at;
+		$cf7_send_data['payjp-customer-id']              = $this->payjp_customer_id;
+		$cf7_send_data['payjp-subscription-id']          = $this->payjp_subscription_id;
+		$cf7_send_data['payjp-subscription-plan-amount'] = $this->payjp_subscription_plan_amount;
+		$cf7_send_data['payjp-subscription-plan-id']     = $this->payjp_subscription_plan_id;
 
-		return;
+		return $cf7_send_data;
 	}
 
 	/**
 	 * PAY.JP へサブスクリプション決済する.
 	 *
-	 * @param array $posted_data .
+	 * @param WPCF7_ContactForm $contact_form .
+	 * @param bool              $abort .
+	 * @param WPCF7_Submission  $submission .
 	 *
 	 * @return array
 	 */
-	public function subscription( $posted_data ) {
-
-		$contact_form = WPCF7_ContactForm::get_current();
-		$submission   = WPCF7_Submission::get_instance();
+	public function subscription( $contact_form, &$abort, $submission ) {
 
 		$payjpforkintone_setting_data = get_post_meta(
 			$contact_form->id(),
@@ -71,15 +71,17 @@ class HT_Payjp_For_Kintone_Pro_Subscription {
 		);
 
 		if ( 'enable' !== $payjpforkintone_setting_data['payjpforkintone-enabled'] ) {
-			return $posted_data;
+			return;
 		}
 		if ( isset( $payjpforkintone_setting_data['payment-type'] ) && 'subscription' !== $payjpforkintone_setting_data['payment-type'] ) {
-			return $posted_data;
+			return;
 		}
 
-		if ( isset( $_POST['payjp-token'] ) && '' !== $_POST['payjp-token'] ) {
+		$posted_data = $submission->get_posted_data();
 
-			$token      = sanitize_text_field( wp_unslash( $_POST['payjp-token'] ) );
+		if ( isset( $posted_data['payjp-token'] ) && '' !== $posted_data['payjp-token'] ) {
+
+			$token      = sanitize_text_field( wp_unslash( $posted_data['payjp-token'] ) );
 			$secret_key = ht_payjp_for_kintone_get_api_key( $contact_form->id() );
 
 			try {
@@ -107,29 +109,98 @@ class HT_Payjp_For_Kintone_Pro_Subscription {
 				$posted_data['payjp-charged-id']          = '';
 				$posted_data['payjp-charged-captured-at'] = '';
 				if ( ! empty( $charge['data'] ) ) {
-					$posted_data['payjp-charged-id']          = $charge['data'][0]['id'];
-					$posted_data['payjp-charged-captured-at'] = date( 'Y-m-d H:i:s', strtotime( '+9hour', $charge['data'][0]['captured_at'] ) );
+					$this->payjp_charged_id          = $charge['data'][0]['id'];
+					$this->payjp_charged_captured_at = date( 'Y-m-d H:i:s', strtotime( '+9hour', $charge['data'][0]['captured_at'] ) );
 				}
-				$posted_data['payjp-customer-id']              = $customer->id;
-				$posted_data['payjp-subscription-id']          = $subscription->id;
-				$posted_data['payjp-subscription-plan-amount'] = $subscription->plan->amount;
-				$posted_data['payjp-subscription-plan-id']     = $subscription->plan->id;
+				$this->payjp_customer_id              = $customer->id;
+				$this->payjp_subscription_id          = $subscription->id;
+				$this->payjp_subscription_plan_amount = $subscription->plan->amount;
+				$this->payjp_subscription_plan_id     = $subscription->plan->id;
 
-				return $posted_data;
+				$mail = $contact_form->prop( 'mail' );
+
+				$mail['body'] = str_replace(
+					'[payjp-charged-id]',
+					$this->payjp_charged_id,
+					$mail['body']
+				);
+				$mail['body'] = str_replace(
+					'[payjp-charged-captured-at]',
+					$this->payjp_charged_captured_at,
+					$mail['body']
+				);
+				$mail['body'] = str_replace(
+					'[payjp-customer-id]',
+					$this->payjp_customer_id,
+					$mail['body']
+				);
+				$mail['body'] = str_replace(
+					'[payjp-subscription-id]',
+					$this->payjp_subscription_id,
+					$mail['body']
+				);
+				$mail['body'] = str_replace(
+					'[payjp-subscription-plan-amount]',
+					$this->payjp_subscription_plan_amount,
+					$mail['body']
+				);
+				$mail['body'] = str_replace(
+					'[payjp-subscription-plan-id]',
+					$this->payjp_subscription_plan_id,
+					$mail['body']
+				);
+
+				$mail2         = $contact_form->prop( 'mail_2' );
+				$mail2['body'] = str_replace(
+					'[payjp-charged-id]',
+					$this->payjp_charged_id,
+					$mail2['body']
+				);
+				$mail2['body'] = str_replace(
+					'[payjp-charged-captured-at]',
+					$this->payjp_charged_captured_at,
+					$mail2['body']
+				);
+				$mail2['body'] = str_replace(
+					'[payjp-customer-id]',
+					$this->payjp_customer_id,
+					$mail2['body']
+				);
+				$mail2['body'] = str_replace(
+					'[payjp-subscription-id]',
+					$this->payjp_subscription_id,
+					$mail2['body']
+				);
+				$mail2['body'] = str_replace(
+					'[payjp-subscription-plan-amount]',
+					$this->payjp_subscription_plan_amount,
+					$mail2['body']
+				);
+				$mail2['body'] = str_replace(
+					'[payjp-subscription-plan-id]',
+					$this->payjp_subscription_plan_id,
+					$mail2['body']
+				);
+
+				$contact_form->set_properties(
+					array(
+						'mail'   => $mail,
+						'mail_2' => $mail2,
+					)
+				);
 
 			} catch ( \Payjp\Error\InvalidRequest $e ) {
 
+				$abort = true;
 				$submission->set_response( $contact_form->filter_message( $e->getMessage() ) );
 				ht_payjp_for_kintone_send_error_mail( $e->getMessage() );
-
-				return $posted_data;
 
 			}
 		} else {
 			// Error.
+			$abort = true;
 			$submission->set_response( $contact_form->filter_message( __( 'Failed to get credit card information', 'payjp-for-kintone' ) ) );
 
-			return $posted_data;
 		}
 
 	}

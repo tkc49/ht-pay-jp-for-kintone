@@ -20,7 +20,7 @@ class HT_Payjp_For_Kintone_Pro_Admin {
 
 		// actions
 		add_action( 'ht_payjp_for_kintone_after_admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		add_action( 'add_explain_ht_payjp_for_kintone_shortcode', array( $this, 'add_explaion_pro_shortcode' ) );
+//		add_action( 'add_explain_ht_payjp_for_kintone_shortcode', array( $this, 'add_explaion_pro_shortcode' ) );
 
 		// fillter
 		add_filter( 'ht_payjp_for_kintone_admin_subscription_enabled', array( $this, 'set_subscription_enabled' ), 10, 2 );
@@ -36,6 +36,22 @@ class HT_Payjp_For_Kintone_Pro_Admin {
 
 		add_action( 'ht_payjp_for_kintone_after_setting_page', array( $this, 'set_ht_payjp_for_kintone_licence_block' ) );
 		add_action( 'ht_payjp_for_kintone_admin_setting_update', array( $this, 'update_licence_key' ) );
+
+		add_filter( 'wpcf7_collect_mail_tags', array( $this, 'set_payjp_subscription_info_of_kintone_form' ), 10, 3 );
+
+	}
+
+	public function set_payjp_subscription_info_of_kintone_form( $mailtags, $args, $contac_form ) {
+
+		$mailtags[] = 'payjp-charged-captured-at';
+		$mailtags[] = 'payjp-customer-id';
+		$mailtags[] = 'payjp-subscription-id';
+		$mailtags[] = 'payjp-subscription-plan-amount';
+		$mailtags[] = 'payjp-subscription-plan-id';
+
+
+		return $mailtags;
+
 	}
 
 
