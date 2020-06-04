@@ -1,6 +1,7 @@
 {
   "require": {
     "payjp/payjp-php": "~1.0",
-    "tkc49/kintone-sdk-for-wordpress": "^1.3"
+    "tkc49/kintone-sdk-for-wordpress": "^1.3",
+    "yahnis-elsts/plugin-update-checker": "^4.9"
   }
 }
