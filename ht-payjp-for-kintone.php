@@ -7,7 +7,7 @@
  * Author URI:      https://ht79.info
  * Text Domain:     payjp-for-kintone
  * Domain Path:     /languages
- * Version:         1.1.0
+ * Version:         1.2.0
  *
  * @package         HT_Payjp_For_Kintone
  */
@@ -37,3 +37,23 @@ ht_payjp_for_kintone_include( 'pro/ht-payjp-for-kintone-pro.php' );
 
 $ht_pay_jp = new HT_Payjp_For_Kintone();
 $ht_pay_jp->register();
+
+
+function ht79_payjp_for_kintone_pro_activate_autoupdate() {
+
+	$filename  = 'pro/ht-payjp-for-kintone-pro.php';
+	$file_path = ht_payjp_for_kintone_get_path( $filename );
+	if ( file_exists( $file_path ) ) {
+		$my_update_checker = Puc_v4_Factory::buildUpdateChecker(
+			'https://github.com/tkc49/PAY.JP-for-kintone-pro/',
+			__FILE__,
+			'ht-payjp-for-kintone'
+		);
+
+		// Optional: If you're using a private repository, specify the access token like this:
+		$my_update_checker->setAuthentication( GITHUB_ACCESS_TOKEN );
+
+	}
+}
+
+add_action( 'plugins_loaded', 'ht79_payjp_for_kintone_pro_activate_autoupdate' );
