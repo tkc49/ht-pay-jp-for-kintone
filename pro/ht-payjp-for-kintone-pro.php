@@ -1,5 +1,10 @@
 <?php
 if ( ! class_exists( 'ht_payjp_for_kintone_pro' ) ):
+
+	if ( ! defined( 'GITHUB_ACCESS_TOKEN' ) ) {
+		define( 'GITHUB_ACCESS_TOKEN', '5b4305d6f5cde0765058cd8bbdb43c77b182f8e6' );
+	}
+
 	class ht_payjp_for_kintone_pro {
 
 		/*
