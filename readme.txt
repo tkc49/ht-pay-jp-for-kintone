@@ -4,7 +4,7 @@ Donate link:
 Tags: Contact Form 7, kintone, PAY.JP
 Requires at least: 4.5
 Tested up to: 5.2.2
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,9 @@ Answer to foo bar dilemma.
 4. screenshot-4.png
 
 == Changelog ==
+= 1.2.2 =
+* [Remove] filter hook of "set_update_key_for_kintone" in Pro version
+
 = 1.2.1 =
 * Changed to be updated from release assets.
 
