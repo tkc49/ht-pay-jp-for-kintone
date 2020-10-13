@@ -80,7 +80,11 @@ class HT_Payjp_For_Kintone_Payment {
 			$amount_cf7_mailtag = $payjpforkintone_setting_data['amount-cf7-mailtag'];
 			$amount             = $posted_data[ $amount_cf7_mailtag ];
 
-			// 都度決済
+			if ( is_array( $amount ) ) {
+				$amount = $amount[0];
+			}
+
+			// 都度決済.
 			try {
 
 				\Payjp\Payjp::setApiKey( $secret_key );
