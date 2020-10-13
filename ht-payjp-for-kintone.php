@@ -58,5 +58,3 @@ function ht79_payjp_for_kintone_pro_activate_autoupdate() {
 }
 
 add_action( 'plugins_loaded', 'ht79_payjp_for_kintone_pro_activate_autoupdate' );
-
-// aa
