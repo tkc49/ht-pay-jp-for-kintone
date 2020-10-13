@@ -4,7 +4,7 @@ Donate link:
 Tags: Contact Form 7, kintone, PAY.JP
 Requires at least: 4.5
 Tested up to: 5.2.2
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,10 @@ Answer to foo bar dilemma.
 4. screenshot-4.png
 
 == Changelog ==
+
+= 1.2.4 =
+* [Fixed] A problem with the radio button as an element in the amount form.
+
 = 1.2.3 =
 * [Remove] the webhook waiting process in Pro version
 
