@@ -25,6 +25,13 @@ class HT_Payjp_For_Kintone_Payment {
 	private $payjp_captured_at;
 
 	/**
+	 * 決済金額
+	 *
+	 * @var number
+	 */
+	private $amount;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -53,9 +60,12 @@ class HT_Payjp_For_Kintone_Payment {
 			return $cf7_send_data;
 		}
 
-		$cf7_send_data['payjp-charged-id'] = $this->payjp_charged_id;
+		$cf7_send_data['payjp-charged-id']          = $this->payjp_charged_id;
 		$cf7_send_data['payjp-charged-captured-at'] = $this->payjp_captured_at;
 
+		$payjpforkintone_setting_data         = get_post_meta( $contact_form->id(), '_ht_payjpforkintone_setting_data', true );
+		$amount_cf7_mailtag                   = $payjpforkintone_setting_data['amount-cf7-mailtag'];
+		$cf7_send_data[ $amount_cf7_mailtag ] = $this->amount;
 
 		return $cf7_send_data;
 	}
@@ -92,6 +102,12 @@ class HT_Payjp_For_Kintone_Payment {
 			if ( is_array( $amount ) ) {
 				$amount = $amount[0];
 			}
+
+			$amount       = str_replace( ',', '', $amount );
+			$amount       = str_replace( '円', '', $amount );
+			$amount       = str_replace( '￥', '', $amount );
+			$amount       = str_replace( '$', '', $amount );
+			$this->amount = $amount;
 
 			// 都度決済.
 			try {
