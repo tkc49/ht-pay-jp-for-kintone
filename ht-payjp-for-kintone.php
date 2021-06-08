@@ -7,7 +7,7 @@
  * Author URI:      https://ht79.info
  * Text Domain:     payjp-for-kintone
  * Domain Path:     /languages
- * Version:         1.2.4
+ * Version:         1.2.5
  *
  * @package         HT_Payjp_For_Kintone
  */
@@ -50,7 +50,7 @@ function ht79_payjp_for_kintone_pro_activate_autoupdate() {
 			'ht-payjp-for-kintone'
 		);
 
-		// Optional: If you're using a private repository, specify the access token like this:
+		// Optional: If you're using a private repository, specify the access token like this: .
 		$my_update_checker->setAuthentication( GITHUB_ACCESS_TOKEN );
 		$my_update_checker->getVcsApi()->enableReleaseAssets();
 

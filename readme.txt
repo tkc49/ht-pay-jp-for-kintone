@@ -1,10 +1,10 @@
 === HT PAY.JP for kintone ===
 Contributors: tkc49
 Donate link:
-Tags: Contact Form 7, kintone, PAY.JP
+Tags: Contact Form 7, kintone, PAY.JP, form data to kintone
 Requires at least: 4.5
-Tested up to: 5.2.2
-Stable tag: 1.2.4
+Tested up to: 5.7.2
+Stable tag: 1.2.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,11 @@ Answer to foo bar dilemma.
 4. screenshot-4.png
 
 == Changelog ==
+= 1.2.5 =
+Release Date: Jun 8th, 2021
+
+* [Added] Added support for retrieving Pay.jp's settlement processing date.
+* [Added] Remove unwanted strings such as commas and yen from the payment amount.
 
 = 1.2.4 =
 * [Fixed] A problem with the radio button as an element in the amount form.
