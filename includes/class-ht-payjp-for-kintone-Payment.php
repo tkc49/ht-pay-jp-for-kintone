@@ -18,6 +18,13 @@ class HT_Payjp_For_Kintone_Payment {
 	private $payjp_charged_id;
 
 	/**
+	 * 支払い処理確定時のUTCタイムスタンプ
+	 *
+	 * @var integer
+	 */
+	private $payjp_captured_at;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -47,6 +54,8 @@ class HT_Payjp_For_Kintone_Payment {
 		}
 
 		$cf7_send_data['payjp-charged-id'] = $this->payjp_charged_id;
+		$cf7_send_data['payjp-charged-captured-at'] = $this->payjp_captured_at;
+
 
 		return $cf7_send_data;
 	}
@@ -98,6 +107,8 @@ class HT_Payjp_For_Kintone_Payment {
 				);
 
 				$this->payjp_charged_id = $charge->id;
+				// captured_at はUTCなので+9時間をする.
+				$this->payjp_captured_at = date_i18n( 'Y-m-d H:i:s', strtotime( $charge->captured_at . '+9hour' ) );
 
 				$mail = $contact_form->prop( 'mail' );
 
@@ -107,12 +118,24 @@ class HT_Payjp_For_Kintone_Payment {
 					$mail['body']
 				);
 
+				$mail['body'] = str_replace(
+					'[payjp-charged-captured-at]',
+					$this->payjp_captured_at,
+					$mail['body']
+				);
+
 				$mail2         = $contact_form->prop( 'mail_2' );
 				$mail2['body'] = str_replace(
 					'[payjp-charged-id]',
 					$charge->id,
 					$mail2['body']
 				);
+				$mail2['body'] = str_replace(
+					'[payjp-charged-captured-at]',
+					$this->payjp_captured_at,
+					$mail2['body']
+				);
+
 
 				$contact_form->set_properties(
 					array(
