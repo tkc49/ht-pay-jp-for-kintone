@@ -90,11 +90,11 @@ class HT_Payjp_For_Kintone_Payment {
 				\Payjp\Payjp::setApiKey( $secret_key );
 
 				$charge = \Payjp\Charge::create(
-					[
+					array(
 						'card'     => $token,
 						'amount'   => $amount,
 						'currency' => 'jpy',
-					]
+					)
 				);
 
 				$this->payjp_charged_id = $charge->id;
