@@ -273,6 +273,11 @@ class HT_Payjp_For_Kintone_Admin {
 
 		$payjpforkintone_enabled = $payjpforkintone_setting_data['payjpforkintone-enabled'];
 
+		$payjpforkintone_language = 'ja';
+		if( isset( $payjpforkintone_setting_data['payjpforkintone-language'] ) && $payjpforkintone_setting_data['payjpforkintone-language'] !== '' ){
+			$payjpforkintone_language = $payjpforkintone_setting_data['payjpforkintone-language'];
+		}
+
 		$subscription_enabled = 'checkout';
 		$subscription_enabled = apply_filters( 'ht_payjp_for_kintone_admin_subscription_enabled', $subscription_enabled, $post );
 		$payjp_plan_id        = '';
@@ -341,7 +346,22 @@ class HT_Payjp_For_Kintone_Admin {
 				</div>
 			<?php endif; ?>
 
+			<div id="payjpforkintone-language-blocked" class="field-wrap field-wrap-use-external-url">
+				<lable>■ <?php esc_html_e( 'Setting the language to display on the payment dialog box.', 'payjp-for-kintone' ); ?></lable>
+				<fieldset>
+					<label for="payjpforkintone-japanese">
+						<?php esc_html_e( 'Japanese', 'payjp-for-kintone' ); ?>
+					</label>
+					<input type="radio" name="ht_payjpforkintone_setting_data[payjpforkintone-language]" id="payjpforkintone-japanese" value="ja" <?php checked( $payjpforkintone_language, 'ja' ); ?>>
+					<label for="payjpforkintone-english">
+						<?php esc_html_e( 'English', 'payjp-for-kintone' ); ?>
+					</label>
+					<input type="radio" name="ht_payjpforkintone_setting_data[payjpforkintone-language]" id="payjpforkintone-english" value="en" <?php checked( $payjpforkintone_language, 'en' ); ?>>
+				</fieldset>
+			</div>
+
 			<div class="field-wrap field-wrap-use-external-url">
+				<lable>■ <?php esc_html_e( 'Setting live mode.', 'payjp-for-kintone' ); ?></lable>
 				<fieldset>
 					<label for="live-enabled"><?php esc_html_e( 'Enable Live', 'payjp-for-kintone' ); ?></label>
 					<input

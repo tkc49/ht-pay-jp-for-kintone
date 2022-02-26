@@ -62,7 +62,12 @@ class HT_Payjp_For_Kintone_Shortcode {
 			$public_key = get_option( 'ht_pay_jp_for_kintone_test_public_key' );
 		}
 
-		$html = '<script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button" data-key="' . $public_key . '" data-partial="true" ></script > ';
+		$payjpforkintone_language = 'ja';
+		if ( isset( $payjpforkintone_setting_data['payjpforkintone-language'] )) {
+			$payjpforkintone_language= $payjpforkintone_setting_data['payjpforkintone-language'];
+		}
+
+		$html = '<script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button" data-key="' . $public_key . '" data-partial="true" data-lang="'.$payjpforkintone_language.'" ></script > ';
 
 		return $html;
 
