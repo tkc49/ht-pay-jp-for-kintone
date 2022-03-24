@@ -45,6 +45,7 @@ class HT_Payjp_For_Kintone_Admin {
 	public function set_payjp_charged_id_of_kintone_form( $mailtags, $args, $contac_form ) {
 
 		$mailtags[] = 'payjp-charged-id';
+		$mailtags[] = 'payjp-charged-captured-at';
 
 		return $mailtags;
 	}
