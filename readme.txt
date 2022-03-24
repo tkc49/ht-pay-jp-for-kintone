@@ -52,6 +52,11 @@ Answer to foo bar dilemma.
 4. screenshot-4.png
 
 == Changelog ==
+= 1.3.1 =
+Release Date: February 26th, 2022
+
+* [Added] Support for saving Pay.jp payment datetime to kintone.
+
 = 1.3.0 =
 Release Date: February 26th, 2022
 
