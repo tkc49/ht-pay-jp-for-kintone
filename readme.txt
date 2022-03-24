@@ -4,7 +4,7 @@ Donate link:
 Tags: Contact Form 7, kintone, PAY.JP, form data to kintone
 Requires at least: 4.5
 Tested up to: 5.9
-Stable tag: 1.3.0
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,8 +52,13 @@ Answer to foo bar dilemma.
 4. screenshot-4.png
 
 == Changelog ==
+= 1.3.2 =
+Release Date: March 24th, 2022
+
+* [Update] Version up number.
+
 = 1.3.1 =
-Release Date: February 26th, 2022
+Release Date: March 24th, 2022
 
 * [Added] Support for saving Pay.jp payment datetime to kintone.
 
