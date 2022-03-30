@@ -124,7 +124,7 @@ class HT_Payjp_For_Kintone_Payment {
 
 				$this->payjp_charged_id = $charge->id;
 				// captured_at はUTCなので+9時間をする.
-				$this->payjp_captured_at = date_i18n( 'Y-m-d H:i:s', strtotime( $charge->captured_at . '+9hour' ) );
+				$this->payjp_captured_at = date_i18n( 'Y-m-d H:i:s', $charge->captured_at + (9 * 60 * 60) );
 
 				$mail = $contact_form->prop( 'mail' );
 
