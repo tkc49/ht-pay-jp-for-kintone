@@ -7,7 +7,7 @@
  * Author URI:      https://ht79.info
  * Text Domain:     ht-pay-jp-for-kintone
  * Domain Path:     /languages
- * Version:         1.3.3
+ * Version:         1.3.4
  *
  * @package         HT_Payjp_For_Kintone
  */

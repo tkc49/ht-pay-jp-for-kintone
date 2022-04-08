@@ -52,6 +52,11 @@ Answer to foo bar dilemma.
 4. screenshot-4.png
 
 == Changelog ==
+= 1.3.4 =
+Release Date: April 8th, 2022
+
+* [Fixed] Fixed text domain.
+
 = 1.3.3 =
 Release Date: March 30th, 2022
 
