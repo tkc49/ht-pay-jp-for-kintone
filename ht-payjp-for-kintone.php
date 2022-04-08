@@ -5,7 +5,7 @@
  * Description:     This Plugin accept payments on your WordPress site via PAY.JP.
  * Author:          Takashi Hosoya
  * Author URI:      https://ht79.info
- * Text Domain:     payjp-for-kintone
+ * Text Domain:     ht-pay-jp-for-kintone
  * Domain Path:     /languages
  * Version:         1.3.3
  *
