@@ -5,3 +5,4 @@ node_modules/
 *.tar.gz
 *.zip
 copy-to-wordpress-plugin-directory.sh
+/vendor
