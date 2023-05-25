@@ -33,9 +33,7 @@ class HT_Payjp_For_Kintone_Shortcode {
 		wpcf7_add_form_tag(
 			'ht_payjp_for_kintone',
 			array( $this, 'ht_payjp_for_kintone_add_form_handler' ),
-			array(
-				'name-attr' => true,
-			)
+			false
 		);
 	}
 
