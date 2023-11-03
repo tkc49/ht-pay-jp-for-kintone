@@ -4,7 +4,7 @@ Donate link:
 Tags: Contact Form 7, kintone, PAY.JP, form data to kintone
 Requires at least: 4.5
 Tested up to: 6.3.2
-Stable tag: 1.3.7
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,7 +53,7 @@ Answer to foo bar dilemma.
 
 == Changelog ==
 
-= 1.3.7( 2023-11-03 ) =
+= 1.4.0( 2023-11-03 ) =
 
 * Support for adding description to payment data
 
