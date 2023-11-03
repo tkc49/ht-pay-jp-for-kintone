@@ -74,8 +74,8 @@ class HT_Payjp_For_Kintone_Payment {
 	 * PAY.JP へ決済する.
 	 *
 	 * @param WPCF7_ContactForm $contact_form .
-	 * @param boolean           $abort .
-	 * @param WPCF7_Submission  $submission .
+	 * @param boolean $abort .
+	 * @param WPCF7_Submission $submission .
 	 */
 	public function payment_to_pay_jp( $contact_form, &$abort, $submission ) {
 
@@ -96,8 +96,13 @@ class HT_Payjp_For_Kintone_Payment {
 
 			$secret_key = ht_payjp_for_kintone_get_api_key( $contact_form->id() );
 
+			// 金額の設定.
 			$amount_cf7_mailtag = $payjpforkintone_setting_data['amount-cf7-mailtag'];
 			$amount             = $posted_data[ $amount_cf7_mailtag ];
+
+			// descriptionの設定.
+			$description_cf7_mailtag = $payjpforkintone_setting_data['description-cf7-mailtag'];
+			$description             = $posted_data[ $description_cf7_mailtag ];
 
 			if ( is_array( $amount ) ) {
 				$amount = $amount[0];
@@ -116,15 +121,16 @@ class HT_Payjp_For_Kintone_Payment {
 
 				$charge = \Payjp\Charge::create(
 					array(
-						'card'     => $token,
-						'amount'   => $amount,
-						'currency' => 'jpy',
+						'card'        => $token,
+						'amount'      => $amount,
+						'currency'    => 'jpy',
+						'description' => $description,
 					)
 				);
 
 				$this->payjp_charged_id = $charge->id;
 				// captured_at はUTCなので+9時間をする.
-				$this->payjp_captured_at = date_i18n( 'Y-m-d H:i:s', $charge->captured_at + (9 * 60 * 60) );
+				$this->payjp_captured_at = date_i18n( 'Y-m-d H:i:s', $charge->captured_at + ( 9 * 60 * 60 ) );
 
 				$mail = $contact_form->prop( 'mail' );
 

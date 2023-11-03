@@ -310,6 +310,12 @@ class HT_Payjp_For_Kintone_Admin {
 			$amount_cf7_mailtag = $payjpforkintone_setting_data['amount-cf7-mailtag'];
 		}
 
+		$description_cf7_mailtag = '';
+		if ( isset( $payjpforkintone_setting_data['description-cf7-mailtag'] ) ) {
+			$description_cf7_mailtag = $payjpforkintone_setting_data['description-cf7-mailtag'];
+		}
+
+
 		$kintone_enabled = '';
 		if ( isset( $payjpforkintone_setting_data['kintone-enabled'] ) ) {
 			$kintone_enabled = $payjpforkintone_setting_data['kintone-enabled'];
@@ -445,6 +451,29 @@ class HT_Payjp_For_Kintone_Admin {
 							<option
 								value="<?php echo esc_textarea( $mailtag ); ?>"
 								<?php selected( $amount_cf7_mailtag, $mailtag ); ?>
+							>
+								<?php echo esc_textarea( $mailtag ); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+				</fieldset>
+				<fieldset>
+					<label for="description-cf7-mailtag">
+						<?php esc_html_e( 'Select description of CF7 mailtag', 'payjp-for-kintone' ); ?>
+					</label><br/>
+
+					<select
+						name="ht_payjpforkintone_setting_data[description-cf7-mailtag]"
+						data-placeholder="<?php esc_html_e( 'Select description of CF7 mailtag', 'payjp-for-kintone' ); ?>"
+						class="chosen-select"
+						style="width:350px;"
+						id="description-cf7-mailtag"
+					>
+						<option value=""></option>
+						<?php foreach ( $mailtags as $mailtag ) : ?>
+							<option
+								value="<?php echo esc_textarea( $mailtag ); ?>"
+								<?php selected( $description_cf7_mailtag, $mailtag ); ?>
 							>
 								<?php echo esc_textarea( $mailtag ); ?>
 							</option>
