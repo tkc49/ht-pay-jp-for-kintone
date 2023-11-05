@@ -4,7 +4,7 @@ Donate link:
 Tags: Contact Form 7, kintone, PAY.JP, form data to kintone
 Requires at least: 4.5
 Tested up to: 6.3.2
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,11 @@ Answer to foo bar dilemma.
 4. screenshot-4.png
 
 == Changelog ==
+
+= 1.4.1( 2023-11-05 ) =
+
+* [Fixed]Handle case where 'description' setting is not provided
+
 
 = 1.4.0( 2023-11-03 ) =
 

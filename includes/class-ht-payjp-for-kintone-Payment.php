@@ -101,8 +101,11 @@ class HT_Payjp_For_Kintone_Payment {
 			$amount             = $posted_data[ $amount_cf7_mailtag ];
 
 			// descriptionの設定.
-			$description_cf7_mailtag = $payjpforkintone_setting_data['description-cf7-mailtag'];
-			$description             = $posted_data[ $description_cf7_mailtag ];
+			$description = '';
+			if ( isset( $payjpforkintone_setting_data['description-cf7-mailtag'] ) && $payjpforkintone_setting_data['description-cf7-mailtag'] !== '' ) {
+				$description_cf7_mailtag = $payjpforkintone_setting_data['description-cf7-mailtag'];
+				$description             = $posted_data[ $description_cf7_mailtag ];
+			}
 
 			if ( is_array( $amount ) ) {
 				$amount = $amount[0];
