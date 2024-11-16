@@ -3,7 +3,11 @@
 // Payjp singleton
 require(dirname(__FILE__) . '/lib/Payjp.php');
 
-// Utilities
+// Logger
+require(dirname(__FILE__) . '/lib/Logger/LoggerInterface.php');
+require(dirname(__FILE__) . '/lib/Logger/DefaultLogger.php');
+
+// UtilitiesL
 require(dirname(__FILE__) . '/lib/Util/RequestOptions.php');
 require(dirname(__FILE__) . '/lib/Util/Set.php');
 require(dirname(__FILE__) . '/lib/Util/Util.php');
@@ -30,12 +34,20 @@ require(dirname(__FILE__) . '/lib/ExternalAccount.php');
 
 // Payjp API Resources
 require(dirname(__FILE__) . '/lib/Account.php');
+require(dirname(__FILE__) . '/lib/ApplicationUrl.php');
+require(dirname(__FILE__) . '/lib/Balance.php');
 require(dirname(__FILE__) . '/lib/Card.php');
 require(dirname(__FILE__) . '/lib/Charge.php');
 require(dirname(__FILE__) . '/lib/Collection.php');
 require(dirname(__FILE__) . '/lib/Customer.php');
 require(dirname(__FILE__) . '/lib/Event.php');
 require(dirname(__FILE__) . '/lib/Plan.php');
+require(dirname(__FILE__) . '/lib/Statement.php');
+require(dirname(__FILE__) . '/lib/StatementUrl.php');
 require(dirname(__FILE__) . '/lib/Subscription.php');
+require(dirname(__FILE__) . '/lib/Tenant.php');
+require(dirname(__FILE__) . '/lib/TenantTransfer.php');
+require(dirname(__FILE__) . '/lib/Term.php');
+require(dirname(__FILE__) . '/lib/ThreeDSecureRequest.php');
 require(dirname(__FILE__) . '/lib/Token.php');
 require(dirname(__FILE__) . '/lib/Transfer.php');

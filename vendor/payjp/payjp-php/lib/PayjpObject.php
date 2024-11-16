@@ -101,30 +101,35 @@ class PayjpObject implements ArrayAccess
                     . "with the result returned by Payjp's API, "
                     . "probably as a result of a save(). The attributes currently "
                     . "available on this object are: $attrs";
-            error_log($message);
+            Payjp::getLogger()->error($message);
             return null;
         } else {
             $class = get_class($this);
-            error_log("Payjp Notice: Undefined property of $class instance: $k");
+            Payjp::getLogger()->error("Payjp Notice: Undefined property of $class instance: $k");
             return null;
         }
     }
 
     // ArrayAccess methods
+    #[\ReturnTypeWillChange]
     public function offsetSet($k, $v)
     {
         $this->$k = $v;
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetExists($k)
     {
         return array_key_exists($k, $this->_values);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetUnset($k)
     {
         unset($this->$k);
     }
+
+    #[\ReturnTypeWillChange]
     public function offsetGet($k)
     {
         return array_key_exists($k, $this->_values) ? $this->_values[$k] : null;

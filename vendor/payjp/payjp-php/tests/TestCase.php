@@ -6,13 +6,13 @@ namespace Payjp;
  * Base class for Payjp test cases, provides some utility methods for creating
  * objects.
  */
-class TestCase extends \PHPUnit_Framework_TestCase
+class TestCase extends \PHPUnit\Framework\TestCase
 {
     const API_KEY = 'sk_test_c62fade9d045b54cd76d7036';// public api key for test
     const CURRENCY = 'jpy';
     const COUNTRY = 'JP';
 
-    private $mock;
+    protected $mock;
 
     protected static function authorizeFromEnv()
     {
@@ -24,77 +24,45 @@ class TestCase extends \PHPUnit_Framework_TestCase
         Payjp::setApiKey($apiKey);
     }
 
-    protected function setUp()
+    protected static function setMaxRetryForCi()
     {
+        $maxRetry = getenv('MAX_RETRY');
+        if ($maxRetry) {
+            Payjp::setMaxRetry($maxRetry);
+        }
+    }
+
+    /**
+     * @before
+     */
+    protected function setUpTestCase()
+    {
+        $this->setMaxRetryForCi();
         ApiRequestor::setHttpClient(HttpClient\CurlClient::instance());
         $this->mock = null;
-        $this->call = 0;
     }
 
     protected function mockRequest($method, $path, $params = array(), $return = array('id' => 'myId'))
     {
         $mock = $this->setUpMockRequest();
-        $mock->expects($this->at($this->call++))
-             ->method('request')
-                 ->with(strtolower($method), 'https://api.pay.jp' . $path, $this->anything(), $params, false)
-                 ->willReturn(array(json_encode($return), 200));
+        $mock->expects($this->once())
+            ->method('request')
+            ->with(
+                strtolower($method),
+                'https://api.pay.jp' . $path,
+                $this->anything(),
+                $params,
+                false
+            )
+            ->willReturn(array(json_encode($return), 200));
     }
 
-    private function setUpMockRequest()
+    protected function setUpMockRequest()
     {
-        if (!$this->mock) {
-            self::authorizeFromEnv();
-            $this->mock = $this->getMock('\Payjp\HttpClient\ClientInterface');
-            ApiRequestor::setHttpClient($this->mock);
-        }
+        self::authorizeFromEnv();
+        $this->mock = $this->createMock('\Payjp\HttpClient\ClientInterface');
+        ApiRequestor::setHttpClient($this->mock);
         return $this->mock;
-    }
-
-    /**
-     * Create a valid test charge.
-     */
-    protected static function createTestCharge(array $attributes = array())
-    {
-        self::authorizeFromEnv();
-
-        $params =  [
-            'card' => [
-            "number" => "4242424242424242",
-            "exp_month" => 6,
-            "exp_year" => date('Y') + 3,
-            "cvc" => "314"
-            ]
-        ];
-
-        $card = Token::create($params, $options = ['payjp_direct_token_generate' => 'true']);
-
-        return Charge::create(
-            $attributes + array(
-                'amount' => 2000,
-                'currency' => self::CURRENCY,
-                'description' => 'Charge for test@example.com',
-                'card' => $card
-            )
-        );
-    }
-
-    /**
-     * Create a valid test charge.
-     */
-    protected static function createTestTransfer(array $attributes = array())
-    {
-        self::authorizeFromEnv();
-
-        $recipient = self::createTestRecipient();
-
-        return Transfer::create(
-            $attributes + array(
-                'amount' => 2000,
-                'currency' => self::CURRENCY,
-                'description' => 'Transfer to test@example.com',
-                'recipient' => $recipient->id
-            )
-        );
     }
 
     /**
