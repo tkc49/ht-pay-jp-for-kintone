@@ -169,8 +169,14 @@ class HT_Payjp_For_Kintone_Payment {
 					)
 				);
 
-			} catch ( \Payjp\Error\InvalidRequest $e ) {
+			} catch ( \Payjp\Error\Card $e ) {
+				// カード決済エラーの場合
+				$abort = true;
+				$submission->set_response( $contact_form->filter_message( __( 'Card payment failed. Please check your card information.', 'payjp-for-kintone' ) ) );
+				ht_payjp_for_kintone_send_error_mail( $contact_form, $e->getMessage() );
 
+			} catch ( \Payjp\Error\InvalidRequest $e ) {
+				// その他のPAY.JPエラーの場合
 				$abort = true;
 				$submission->set_response( $contact_form->filter_message( $e->getMessage() ) );
 				ht_payjp_for_kintone_send_error_mail( $contact_form, $e->getMessage() );
