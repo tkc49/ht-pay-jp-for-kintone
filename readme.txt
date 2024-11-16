@@ -2,9 +2,10 @@
 Contributors: tkc49
 Donate link:
 Tags: Contact Form 7, kintone, PAY.JP, form data to kintone
-Requires at least: 4.5
-Tested up to: 6.3.2
-Stable tag: 1.4.1
+Requires at least: 6.6
+Tested up to: 6.7
+Requires PHP: 7.4
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +53,11 @@ Answer to foo bar dilemma.
 4. screenshot-4.png
 
 == Changelog ==
+
+= 1.5.0( 2024-11-17 ) =
+
+* Updated payjp/payjp-php version from 1.0.5 to 1.7.0
+* Added error handling for \Payjp\Error\Card
 
 = 1.4.1( 2023-11-05 ) =
 
