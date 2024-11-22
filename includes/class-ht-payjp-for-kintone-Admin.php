@@ -346,7 +346,7 @@ class HT_Payjp_For_Kintone_Admin {
 			<?php endif; ?>
 
 			<div class="field-wrap field-wrap-use-external-url">
-				<lable>■ <?php esc_html_e( 'Setting 3D Secure', 'payjp-for-kintone' ); ?></lable>
+				<lable>■ <?php esc_html_e( 'Setting 3D Secure', 'payjp-for-kintone' ); ?> (<a href="https://ht79.info/release/ht-pay-jp-for-kintone-1-6-0/" target="_blank">Setting Guide</a>)</lable>
 				<fieldset>
 					<select name="ht_payjpforkintone_setting_data[three-d-secure]" id="three-d-secure">
 						<option value="disabled" <?php selected( $three_d_secure, 'disabled' ); ?>><?php esc_html_e( '3D Secure Disabled', 'payjp-for-kintone' ); ?></option>
