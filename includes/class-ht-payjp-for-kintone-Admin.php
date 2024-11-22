@@ -269,10 +269,12 @@ class HT_Payjp_For_Kintone_Admin {
 			array(
 				'payjpforkintone-enabled' => 'disable',
 				'live-enabled'            => false,
+				'three-d-secure'          => 'disabled',
 			)
 		);
 
 		$payjpforkintone_enabled = $payjpforkintone_setting_data['payjpforkintone-enabled'];
+		$three_d_secure = $payjpforkintone_setting_data['three-d-secure'];
 
 		$payjpforkintone_language = 'ja';
 		if( isset( $payjpforkintone_setting_data['payjpforkintone-language'] ) && $payjpforkintone_setting_data['payjpforkintone-language'] !== '' ){
@@ -316,16 +318,6 @@ class HT_Payjp_For_Kintone_Admin {
 		}
 
 
-		$kintone_enabled = '';
-		if ( isset( $payjpforkintone_setting_data['kintone-enabled'] ) ) {
-			$kintone_enabled = $payjpforkintone_setting_data['kintone-enabled'];
-		}
-
-		$kintone_fieldcode_for_payjp_billing_id = '';
-		if ( isset( $payjpforkintone_setting_data['kintone-fieldcode-for-payjp-billing-id'] ) ) {
-			$kintone_fieldcode_for_payjp_billing_id = $payjpforkintone_setting_data['kintone-fieldcode-for-payjp-billing-id'];
-		}
-
 		?>
 
 		<h2><?php esc_html_e( 'Setting PAY.JP for kintone', 'payjp-for-kintone' ); ?></h2>
@@ -352,6 +344,17 @@ class HT_Payjp_For_Kintone_Admin {
 					</a>
 				</div>
 			<?php endif; ?>
+
+			<div class="field-wrap field-wrap-use-external-url">
+				<lable>■ <?php esc_html_e( 'Setting 3D Secure', 'payjp-for-kintone' ); ?></lable>
+				<fieldset>
+					<select name="ht_payjpforkintone_setting_data[three-d-secure]" id="three-d-secure">
+						<option value="disabled" <?php selected( $three_d_secure, 'disabled' ); ?>><?php esc_html_e( '3D Secure Disabled', 'payjp-for-kintone' ); ?></option>
+						<option value="prerelease" <?php selected( $three_d_secure, 'prerelease' ); ?>><?php esc_html_e( '3D Secure with Prerelease (Available until April 30, 2025)', 'payjp-for-kintone' ); ?></option>
+						<option value="enabled" <?php selected( $three_d_secure, 'enabled' ); ?>><?php esc_html_e( '3D Secure Enabled (Available from February 4, 2025)', 'payjp-for-kintone' ); ?></option>
+					</select>
+				</fieldset>
+			</div>
 
 			<div id="payjpforkintone-language-blocked" class="field-wrap field-wrap-use-external-url">
 				<lable>■ <?php esc_html_e( 'Setting the language to display on the payment dialog box.', 'payjp-for-kintone' ); ?></lable>
