@@ -91,7 +91,6 @@ class HT_Payjp_For_Kintone_Payment {
 		$posted_data = $submission->get_posted_data();
 
 		if ( isset( $posted_data['payjp-token'] ) && '' !== $posted_data['payjp-token'] ) {
-
 			$token = sanitize_text_field( wp_unslash( $posted_data['payjp-token'] ) );
 
 			$secret_key = ht_payjp_for_kintone_get_api_key( $contact_form->id() );
@@ -119,7 +118,6 @@ class HT_Payjp_For_Kintone_Payment {
 
 			// 都度決済.
 			try {
-
 				\Payjp\Payjp::setApiKey( $secret_key );
 
 				$charge = \Payjp\Charge::create(
@@ -130,7 +128,7 @@ class HT_Payjp_For_Kintone_Payment {
 						'description' => $description,
 					)
 				);
-
+				// 予期せぬエラーが発生するようにして
 				$this->payjp_charged_id = $charge->id;
 				// captured_at はUTCなので+9時間をする.
 				$this->payjp_captured_at = date_i18n( 'Y-m-d H:i:s', $charge->captured_at + ( 9 * 60 * 60 ) );
@@ -168,20 +166,17 @@ class HT_Payjp_For_Kintone_Payment {
 						'mail_2' => $mail2,
 					)
 				);
-
 			} catch ( \Payjp\Error\Card $e ) {
 				// カード決済エラーの場合
 				$abort = true;
 				$submission->set_response( $contact_form->filter_message( __( 'Card payment failed. Please check your card information.', 'payjp-for-kintone' ) ) );
 				ht_payjp_for_kintone_send_error_mail( $contact_form, $e->getMessage() );
-
 			} catch ( \Payjp\Error\InvalidRequest $e ) {
 				// その他のPAY.JPエラーの場合
 				$abort = true;
 				$submission->set_response( $contact_form->filter_message( $e->getMessage() ) );
 				ht_payjp_for_kintone_send_error_mail( $contact_form, $e->getMessage() );
-
-			}
+			} 
 		} else {
 			// Error.
 			$abort = true;

@@ -83,7 +83,6 @@ class HT_Payjp_For_Kintone_Admin {
 	public function ht_payjpforkintone_options_page_handler() {
 
 		if ( ! empty( $_POST ) && check_admin_referer( $this->nonce ) ) {
-
 			if ( $this->update() ) {
 				echo '<div class="updated notice is-dismissible"><p><strong>Success</strong></p></div>';
 			} else {
@@ -269,15 +268,13 @@ class HT_Payjp_For_Kintone_Admin {
 			array(
 				'payjpforkintone-enabled' => 'disable',
 				'live-enabled'            => false,
-				'three-d-secure'          => 'disabled',
 			)
 		);
 
 		$payjpforkintone_enabled = $payjpforkintone_setting_data['payjpforkintone-enabled'];
-		$three_d_secure = $payjpforkintone_setting_data['three-d-secure'];
 
 		$payjpforkintone_language = 'ja';
-		if( isset( $payjpforkintone_setting_data['payjpforkintone-language'] ) && $payjpforkintone_setting_data['payjpforkintone-language'] !== '' ){
+		if ( isset( $payjpforkintone_setting_data['payjpforkintone-language'] ) && $payjpforkintone_setting_data['payjpforkintone-language'] !== '' ) {
 			$payjpforkintone_language = $payjpforkintone_setting_data['payjpforkintone-language'];
 		}
 
@@ -345,17 +342,6 @@ class HT_Payjp_For_Kintone_Admin {
 				</div>
 			<?php endif; ?>
 
-			<div class="field-wrap field-wrap-use-external-url">
-				<lable>■ <?php esc_html_e( 'Setting 3D Secure', 'payjp-for-kintone' ); ?> (<a href="https://ht79.info/release/ht-pay-jp-for-kintone-1-6-0/" target="_blank">Setting Guide</a>)</lable>
-				<fieldset>
-					<select name="ht_payjpforkintone_setting_data[three-d-secure]" id="three-d-secure">
-						<option value="disabled" <?php selected( $three_d_secure, 'disabled' ); ?>><?php esc_html_e( '3D Secure Disabled', 'payjp-for-kintone' ); ?></option>
-						<option value="prerelease" <?php selected( $three_d_secure, 'prerelease' ); ?>><?php esc_html_e( '3D Secure with Prerelease (Available until April 30, 2025)', 'payjp-for-kintone' ); ?></option>
-						<option value="enabled" <?php selected( $three_d_secure, 'enabled' ); ?>><?php esc_html_e( '3D Secure Enabled (Available from February 4, 2025)', 'payjp-for-kintone' ); ?></option>
-					</select>
-				</fieldset>
-			</div>
-
 			<div id="payjpforkintone-language-blocked" class="field-wrap field-wrap-use-external-url">
 				<lable>■ <?php esc_html_e( 'Setting the language to display on the payment dialog box.', 'payjp-for-kintone' ); ?></lable>
 				<fieldset>
@@ -422,14 +408,14 @@ class HT_Payjp_For_Kintone_Admin {
 					</label><br/>
 					<select name="ht_payjpforkintone_setting_data[payjp-fixed-subscription-month]" id="payjp-fixed-subscription-month">
 						<option value="">month / day</option>
-						<?php for ( $month = 1; $month <= 12; $month ++ ): ?>
+						<?php for ( $month = 1; $month <= 12; $month ++ ) : ?>
 							<option value="<?php echo sprintf( '%02d', $month ); ?>-01" <?php selected( sprintf( '%02d', $month ) . '-01', $payjp_fixed_subscription_month ) ?>><?php echo sprintf( '%02d', $month ); ?>/01</option>
 						<?php endfor; ?>
 					</select>
 
 					<select name="ht_payjpforkintone_setting_data[payjp-fixed-subscription-time]" id="payjp-fixed-subscription-time">
 						<option value="">time</option>
-						<?php for ( $hour = 0; $hour <= 23; $hour ++ ): ?>
+						<?php for ( $hour = 0; $hour <= 23; $hour ++ ) : ?>
 							<option value="<?php echo sprintf( '%02d', $hour ); ?>" <?php selected( sprintf( '%02d', $hour ), $payjp_fixed_subscription_time ) ?>><?php echo sprintf( '%02d', $hour ); ?>:00</option>
 						<?php endfor; ?>
 					</select>
@@ -601,4 +587,3 @@ class HT_Payjp_For_Kintone_Admin {
 		return true;
 	}
 }
-

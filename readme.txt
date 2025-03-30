@@ -5,7 +5,7 @@ Tags: Contact Form 7, kintone, PAY.JP, form data to kintone
 Requires at least: 6.6
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.6.1
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,6 +54,10 @@ Answer to foo bar dilemma.
 
 == Changelog ==
 
+= 1.7.0( 2025-03-30 ) =
+
+* Forced migration to 3D Secure
+
 = 1.6.1( 2024-11-24 ) =
 
 * Added setting guide link for 3D Secure
@@ -72,7 +76,6 @@ Answer to foo bar dilemma.
 = 1.4.1( 2023-11-05 ) =
 
 * [Fixed]Handle case where 'description' setting is not provided
-
 
 = 1.4.0( 2023-11-03 ) =
 
