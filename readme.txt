@@ -5,7 +5,7 @@ Tags: Contact Form 7, kintone, PAY.JP, form data to kintone
 Requires at least: 6.7
 Tested up to: 6.8.3
 Requires PHP: 7.4
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,6 +17,23 @@ This plugin needs [Contact Form 7](https://ja.wordpress.org/plugins/contact-form
 This plugin can payment using PAY.JP and post to kintone.
 
 [youtube https://www.youtube.com/watch?v=I_lXUYyYR0U]
+
+= Features =
+
+* Accept payments via PAY.JP on WordPress forms
+* Send payment data to kintone automatically
+* 3D Secure authentication support (required from February 2025)
+* Create PAY.JP Customer during payment (optional)
+* Test/Live mode switching per form
+* Multi-language support (Japanese/English) for payment dialog
+
+= Available Mail Tags =
+
+The following mail tags can be used in CF7 mail templates and kintone field mappings:
+
+* `[payjp-charged-id]` - PAY.JP Charge ID
+* `[payjp-charged-captured-at]` - Payment captured datetime
+* `[payjp-customer-id]` - PAY.JP Customer ID (when customer creation is enabled)
 
 = What is kintone? =
 
@@ -33,17 +50,34 @@ PAY.JP is  a suite of payment APIs in Japan.
 
 == Installation ==
 
-1. Upload the entire `ht-payjp-for-kintone` folder to the `/ wp-content / plugins /` directory.
+1. Upload the entire `ht-payjp-for-kintone` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Go to Contact > HT PAY.JP for kintone to set your PAY.JP API keys
+4. Edit your Contact Form 7 form and go to the PAY.JP tab to configure settings
+5. Add the shortcode `[ht_payjp_for_kintone]` to your form
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= What plugins are required? =
 
+This plugin requires [Contact Form 7](https://wordpress.org/plugins/contact-form-7/).
+If you want to send payment data to kintone, install [Form data to kintone](https://wordpress.org/plugins/kintone-form/) as well.
 
-= What about foo bar? =
+= How do I get PAY.JP API keys? =
 
-Answer to foo bar dilemma.
+Sign up at [https://pay.jp/](https://pay.jp/) and get your Test/Live API keys from the dashboard.
+
+= Is 3D Secure supported? =
+
+Yes, 3D Secure is supported and required from February 2025 by PAY.JP.
+
+= Can I create customers in PAY.JP? =
+
+Yes, you can enable customer creation in the PAY.JP tab settings. When enabled, a PAY.JP Customer will be created during payment, and you can use the `[payjp-customer-id]` mail tag.
+
+= How do I switch between Test and Live mode? =
+
+Each Contact Form 7 form has its own "Enable Live" checkbox in the PAY.JP tab. Uncheck it to use Test mode.
 
 == Screenshots ==
 
@@ -54,7 +88,13 @@ Answer to foo bar dilemma.
 
 == Changelog ==
 
-= 1.8.0( 2025-01-31 ) =
+= 1.8.1( 2026-02-01 ) =
+
+* Updated readme.txt with Features section and Available Mail Tags documentation
+* Improved FAQ section with actual questions and answers
+* Fixed changelog dates to match Git tag dates
+
+= 1.8.0( 2026-01-31 ) =
 
 * Added customer creation feature - optionally create PAY.JP Customer during payment
 * Added `[payjp-customer-id]` mail tag for CF7 mail and kintone
