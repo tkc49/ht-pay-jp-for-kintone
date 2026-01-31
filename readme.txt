@@ -2,10 +2,10 @@
 Contributors: tkc49
 Donate link:
 Tags: Contact Form 7, kintone, PAY.JP, form data to kintone
-Requires at least: 6.6
-Tested up to: 6.7
+Requires at least: 6.7
+Tested up to: 6.8.3
 Requires PHP: 7.4
-Stable tag: 1.7.1
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,13 @@ Answer to foo bar dilemma.
 4. screenshot-4.png
 
 == Changelog ==
+
+= 1.8.0( 2025-01-31 ) =
+
+* Added customer creation feature - optionally create PAY.JP Customer during payment
+* Added `[payjp-customer-id]` mail tag for CF7 mail and kintone
+* Added `ht_payjp_for_kintone_after_customer_create` action hook
+* Added `ht_payjp_for_kintone_after_charge` action hook
 
 = 1.7.1( 2025-03-30 ) =
 

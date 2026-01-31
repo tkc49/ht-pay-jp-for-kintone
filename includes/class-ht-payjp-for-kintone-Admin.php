@@ -39,13 +39,13 @@ class HT_Payjp_For_Kintone_Admin {
 		add_action( 'wpcf7_save_contact_form', array( $this, 'ht_payjpforkintone_save_contact_form' ), 10, 3 );
 
 		add_filter( 'wpcf7_collect_mail_tags', array( $this, 'set_payjp_charged_id_of_kintone_form' ), 10, 3 );
-
 	}
 
 	public function set_payjp_charged_id_of_kintone_form( $mailtags, $args, $contac_form ) {
 
 		$mailtags[] = 'payjp-charged-id';
 		$mailtags[] = 'payjp-charged-captured-at';
+		$mailtags[] = 'payjp-customer-id';
 
 		return $mailtags;
 	}
@@ -268,6 +268,7 @@ class HT_Payjp_For_Kintone_Admin {
 			array(
 				'payjpforkintone-enabled' => 'disable',
 				'live-enabled'            => false,
+				'create-customer'         => '',
 			)
 		);
 
@@ -282,7 +283,6 @@ class HT_Payjp_For_Kintone_Admin {
 		$subscription_enabled = apply_filters( 'ht_payjp_for_kintone_admin_subscription_enabled', $subscription_enabled, $post );
 		$payjp_plan_id        = '';
 		$payjp_plan_id        = apply_filters( 'ht_payjp_for_kintone_admin_payjp_plan_id', $payjp_plan_id, $post );
-
 
 		$payjp_fixed_subscription_month = '';
 		$payjp_fixed_subscription_month = apply_filters( 'ht_payjp_for_kintone_admin_payjp_fixed_subscription_month', $payjp_fixed_subscription_month, $post );
@@ -314,6 +314,10 @@ class HT_Payjp_For_Kintone_Admin {
 			$description_cf7_mailtag = $payjpforkintone_setting_data['description-cf7-mailtag'];
 		}
 
+		$create_customer = '';
+		if ( isset( $payjpforkintone_setting_data['create-customer'] ) ) {
+			$create_customer = $payjpforkintone_setting_data['create-customer'];
+		}
 
 		?>
 
@@ -370,6 +374,19 @@ class HT_Payjp_For_Kintone_Admin {
 				</fieldset>
 			</div>
 
+			<div class="field-wrap field-wrap-use-external-url">
+				<lable>■ <?php esc_html_e( 'Setting customer creation.', 'payjp-for-kintone' ); ?></lable>
+				<fieldset>
+					<label for="create-customer"><?php esc_html_e( 'Create Customer', 'payjp-for-kintone' ); ?></label>
+					<input
+						type="checkbox"
+						name="ht_payjpforkintone_setting_data[create-customer]"
+						id="create-customer"
+						value="enable"
+						<?php checked( $create_customer, 'enable' ); ?>
+					>
+				</fieldset>
+			</div>
 
 			<div class="field-wrap field-wrap-use-external-url">
 				<fieldset>
@@ -408,15 +425,15 @@ class HT_Payjp_For_Kintone_Admin {
 					</label><br/>
 					<select name="ht_payjpforkintone_setting_data[payjp-fixed-subscription-month]" id="payjp-fixed-subscription-month">
 						<option value="">month / day</option>
-						<?php for ( $month = 1; $month <= 12; $month ++ ) : ?>
-							<option value="<?php echo sprintf( '%02d', $month ); ?>-01" <?php selected( sprintf( '%02d', $month ) . '-01', $payjp_fixed_subscription_month ) ?>><?php echo sprintf( '%02d', $month ); ?>/01</option>
+						<?php for ( $month = 1; $month <= 12; $month++ ) : ?>
+							<option value="<?php printf( '%02d', $month ); ?>-01" <?php selected( sprintf( '%02d', $month ) . '-01', $payjp_fixed_subscription_month ); ?>><?php printf( '%02d', $month ); ?>/01</option>
 						<?php endfor; ?>
 					</select>
 
 					<select name="ht_payjpforkintone_setting_data[payjp-fixed-subscription-time]" id="payjp-fixed-subscription-time">
 						<option value="">time</option>
-						<?php for ( $hour = 0; $hour <= 23; $hour ++ ) : ?>
-							<option value="<?php echo sprintf( '%02d', $hour ); ?>" <?php selected( sprintf( '%02d', $hour ), $payjp_fixed_subscription_time ) ?>><?php echo sprintf( '%02d', $hour ); ?>:00</option>
+						<?php for ( $hour = 0; $hour <= 23; $hour++ ) : ?>
+							<option value="<?php printf( '%02d', $hour ); ?>" <?php selected( sprintf( '%02d', $hour ), $payjp_fixed_subscription_time ); ?>><?php printf( '%02d', $hour ); ?>:00</option>
 						<?php endfor; ?>
 					</select>
 				</fieldset>

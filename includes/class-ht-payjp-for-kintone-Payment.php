@@ -32,6 +32,13 @@ class HT_Payjp_For_Kintone_Payment {
 	private $amount;
 
 	/**
+	 * Customer ID of Pay.jp
+	 *
+	 * @var string
+	 */
+	private $payjp_customer_id = '';
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -62,6 +69,7 @@ class HT_Payjp_For_Kintone_Payment {
 
 		$cf7_send_data['payjp-charged-id']          = $this->payjp_charged_id;
 		$cf7_send_data['payjp-charged-captured-at'] = $this->payjp_captured_at;
+		$cf7_send_data['payjp-customer-id']         = $this->payjp_customer_id;
 
 		$payjpforkintone_setting_data         = get_post_meta( $contact_form->id(), '_ht_payjpforkintone_setting_data', true );
 		$amount_cf7_mailtag                   = $payjpforkintone_setting_data['amount-cf7-mailtag'];
@@ -74,8 +82,8 @@ class HT_Payjp_For_Kintone_Payment {
 	 * PAY.JP へ決済する.
 	 *
 	 * @param WPCF7_ContactForm $contact_form .
-	 * @param boolean $abort .
-	 * @param WPCF7_Submission $submission .
+	 * @param boolean           $abort .
+	 * @param WPCF7_Submission  $submission .
 	 */
 	public function payment_to_pay_jp( $contact_form, &$abort, $submission ) {
 
@@ -120,18 +128,57 @@ class HT_Payjp_For_Kintone_Payment {
 			try {
 				\Payjp\Payjp::setApiKey( $secret_key );
 
-				$charge = \Payjp\Charge::create(
-					array(
-						'card'        => $token,
-						'amount'      => $amount,
-						'currency'    => 'jpy',
-						'description' => $description,
-					)
-				);
-				// 予期せぬエラーが発生するようにして
+				// customer 作成が有効な場合.
+				$create_customer = isset( $payjpforkintone_setting_data['create-customer'] )
+					&& 'enable' === $payjpforkintone_setting_data['create-customer'];
+
+				if ( $create_customer ) {
+					// customer を作成.
+					$customer                = \Payjp\Customer::create(
+						array(
+							'card' => $token,
+						)
+					);
+					$this->payjp_customer_id = $customer->id;
+
+					/**
+					 * PAY.JP Customer 作成後のアクションフック.
+					 *
+					 * @param \Payjp\Customer $customer PAY.JP の Customer オブジェクト.
+					 */
+					do_action( 'ht_payjp_for_kintone_after_customer_create', $customer );
+
+					// customer を使って決済.
+					$charge = \Payjp\Charge::create(
+						array(
+							'customer'    => $customer->id,
+							'amount'      => $amount,
+							'currency'    => 'jpy',
+							'description' => $description,
+						)
+					);
+				} else {
+					// 従来どおりトークンで直接決済.
+					$charge = \Payjp\Charge::create(
+						array(
+							'card'        => $token,
+							'amount'      => $amount,
+							'currency'    => 'jpy',
+							'description' => $description,
+						)
+					);
+				}
+
 				$this->payjp_charged_id = $charge->id;
 				// captured_at はUTCなので+9時間をする.
 				$this->payjp_captured_at = date_i18n( 'Y-m-d H:i:s', $charge->captured_at + ( 9 * 60 * 60 ) );
+
+				/**
+				 * PAY.JP 決済完了後のアクションフック.
+				 *
+				 * @param \Payjp\Charge $charge PAY.JP の Charge オブジェクト.
+				 */
+				do_action( 'ht_payjp_for_kintone_after_charge', $charge );
 
 				$mail = $contact_form->prop( 'mail' );
 
@@ -147,6 +194,12 @@ class HT_Payjp_For_Kintone_Payment {
 					$mail['body']
 				);
 
+				$mail['body'] = str_replace(
+					'[payjp-customer-id]',
+					$this->payjp_customer_id,
+					$mail['body']
+				);
+
 				$mail2         = $contact_form->prop( 'mail_2' );
 				$mail2['body'] = str_replace(
 					'[payjp-charged-id]',
@@ -159,6 +212,11 @@ class HT_Payjp_For_Kintone_Payment {
 					$mail2['body']
 				);
 
+				$mail2['body'] = str_replace(
+					'[payjp-customer-id]',
+					$this->payjp_customer_id,
+					$mail2['body']
+				);
 
 				$contact_form->set_properties(
 					array(
@@ -176,12 +234,11 @@ class HT_Payjp_For_Kintone_Payment {
 				$abort = true;
 				$submission->set_response( $contact_form->filter_message( $e->getMessage() ) );
 				ht_payjp_for_kintone_send_error_mail( $contact_form, $e->getMessage() );
-			} 
+			}
 		} else {
 			// Error.
 			$abort = true;
 			$submission->set_response( $contact_form->filter_message( __( 'Failed to get credit card information', 'payjp-for-kintone' ) ) );
 		}
-
 	}
 }

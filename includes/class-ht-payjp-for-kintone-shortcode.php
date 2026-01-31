@@ -22,7 +22,6 @@ class HT_Payjp_For_Kintone_Shortcode {
 		// Payment.
 		require_once HT_PAY_JP_FOR_KINTONE_PATH . '/includes/class-ht-payjp-for-kintone-Payment.php';
 		new HT_Payjp_For_Kintone_Payment();
-
 	}
 
 	/**
@@ -62,12 +61,11 @@ class HT_Payjp_For_Kintone_Shortcode {
 
 		$payjpforkintone_language = 'ja';
 		if ( isset( $payjpforkintone_setting_data['payjpforkintone-language'] ) ) {
-			$payjpforkintone_language= $payjpforkintone_setting_data['payjpforkintone-language'];
+			$payjpforkintone_language = $payjpforkintone_setting_data['payjpforkintone-language'];
 		}
 
-		$html = '<script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button" data-key="' . $public_key . '" data-partial="true" data-lang="'.$payjpforkintone_language.'" data-payjp-three-d-secure="true" data-payjp-three-d-secure-workflow="subwindow" data-payjp-extra-attribute-email data-payjp-extra-attribute-phone ></script > ';
+		$html = '<script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button" data-key="' . $public_key . '" data-partial="true" data-lang="' . $payjpforkintone_language . '" data-payjp-three-d-secure="true" data-payjp-three-d-secure-workflow="subwindow" data-payjp-extra-attribute-email data-payjp-extra-attribute-phone ></script > ';
 
 		return $html;
-
 	}
 }
