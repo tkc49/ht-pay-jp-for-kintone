@@ -5,7 +5,7 @@ Tags: Contact Form 7, kintone, PAY.JP, form data to kintone
 Requires at least: 6.7
 Tested up to: 6.8.3
 Requires PHP: 7.4
-Stable tag: 1.8.1
+Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,6 +87,14 @@ Each Contact Form 7 form has its own "Enable Live" checkbox in the PAY.JP tab. U
 4. screenshot-4.png
 
 == Changelog ==
+
+= 1.9.0( 2026-04-27 ) =
+
+* [Security] Masked Test/Live Secret Keys on the settings page (input type=password with empty value; only the last 4 characters shown as a "Current" hint)
+* [Security] Suppressed browser password manager prompts (autocomplete=off plus data-1p-ignore / data-lpignore / data-bwignore)
+* [Security] Validated PAY.JP key format prefixes (sk_test_ / sk_live_ / pk_test_ / pk_live_) before saving; invalid values are rejected with an error message
+* [Security] Set autoload=no on stored API key options so secret keys are not loaded into memory on every request
+* [Fixed] Live Secret Key was not saved when Live Public Key was empty due to a field check looking at the wrong POST key
 
 = 1.8.1( 2026-02-01 ) =
 
