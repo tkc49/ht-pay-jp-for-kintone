@@ -83,10 +83,17 @@ class HT_Payjp_For_Kintone_Admin {
 	public function ht_payjpforkintone_options_page_handler() {
 
 		if ( ! empty( $_POST ) && check_admin_referer( $this->nonce ) ) {
-			if ( $this->update() ) {
-				echo '<div class="updated notice is-dismissible"><p><strong>Success</strong></p></div>';
-			} else {
-				echo '<div class="error notice is-dismissible"><p><strong>Error</strong></p></div>';
+			$result = $this->update();
+			if ( ! empty( $result['errors'] ) ) {
+				foreach ( $result['errors'] as $error_message ) {
+					printf(
+						'<div class="error notice is-dismissible"><p>%s</p></div>',
+						esc_html( $error_message )
+					);
+				}
+			}
+			if ( $result['success'] ) {
+				echo '<div class="updated notice is-dismissible"><p><strong>' . esc_html__( 'Success', 'payjp-for-kintone' ) . '</strong></p></div>';
 			}
 		}
 
@@ -95,10 +102,15 @@ class HT_Payjp_For_Kintone_Admin {
 		$live_secret_key = get_option( 'ht_pay_jp_for_kintone_live_secret_key' );
 		$live_public_key = get_option( 'ht_pay_jp_for_kintone_live_public_key' );
 
+		$test_secret_mask = self::mask_secret_key( $test_secret_key );
+		$live_secret_mask = self::mask_secret_key( $live_secret_key );
+
+		$secret_placeholder = __( '変更しない場合は空欄のままにしてください', 'payjp-for-kintone' );
+
 		?>
 		<div class="wrap">
 			<h2>PAY.JP for kintone Settings</h2>
-			<form id="payjp-for-kintone-form" method="post" action="">
+			<form id="payjp-for-kintone-form" method="post" action="" autocomplete="off">
 
 				<?php wp_nonce_field( $this->nonce ); ?>
 
@@ -106,46 +118,62 @@ class HT_Payjp_For_Kintone_Admin {
 					<tbody>
 					<tr valign="top">
 						<th scope="row">
-							<label for="add_text">
+							<label for="test-secret-key">
 								<?php esc_html_e( 'Test Secret Key', 'payjp-for-kintone' ); ?>
 							</label>
 						</th>
 						<td>
-							<input type="text" name="test-secret-key" class="regular-text"
-								value="<?php echo esc_attr( $test_secret_key ); ?>">
+							<input type="password" id="test-secret-key" name="test-secret-key" class="regular-text"
+								value="" autocomplete="off" spellcheck="false"
+								data-lpignore="true" data-1p-ignore="true" data-bwignore="true"
+								placeholder="<?php echo esc_attr( $secret_placeholder ); ?>">
+							<?php if ( '' !== $test_secret_mask ) : ?>
+								<p class="description">
+									<?php esc_html_e( 'Current:', 'payjp-for-kintone' ); ?>
+									<code><?php echo esc_html( $test_secret_mask ); ?></code>
+								</p>
+							<?php endif; ?>
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<label for="add_text">
+							<label for="test-public-key">
 								<?php esc_html_e( 'Test Public Key', 'payjp-for-kintone' ); ?>
 							</label>
 						</th>
 						<td>
-							<input type="text" name="test-public-key" class="regular-text"
-								value="<?php echo esc_attr( $test_public_key ); ?>">
+							<input type="text" id="test-public-key" name="test-public-key" class="regular-text"
+								value="<?php echo esc_attr( $test_public_key ); ?>" spellcheck="false">
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<label for="add_text">
+							<label for="live-secret-key">
 								<?php esc_html_e( 'Live Secret Key', 'payjp-for-kintone' ); ?>
 							</label>
 						</th>
 						<td>
-							<input type="text" name="live-secret-key" class="regular-text"
-								value="<?php echo esc_attr( $live_secret_key ); ?>">
+							<input type="password" id="live-secret-key" name="live-secret-key" class="regular-text"
+								value="" autocomplete="off" spellcheck="false"
+								data-lpignore="true" data-1p-ignore="true" data-bwignore="true"
+								placeholder="<?php echo esc_attr( $secret_placeholder ); ?>">
+							<?php if ( '' !== $live_secret_mask ) : ?>
+								<p class="description">
+									<?php esc_html_e( 'Current:', 'payjp-for-kintone' ); ?>
+									<code><?php echo esc_html( $live_secret_mask ); ?></code>
+								</p>
+							<?php endif; ?>
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<label for="add_text">
+							<label for="live-public-key">
 								<?php esc_html_e( 'Live Public Key', 'payjp-for-kintone' ); ?>
 							</label>
 						</th>
 						<td>
-							<input type="text" name="live-public-key" class="regular-text"
-								value="<?php echo esc_attr( $live_public_key ); ?>">
+							<input type="text" id="live-public-key" name="live-public-key" class="regular-text"
+								value="<?php echo esc_attr( $live_public_key ); ?>" spellcheck="false">
 						</td>
 					</tr>
 					</tbody>
@@ -559,48 +587,159 @@ class HT_Payjp_For_Kintone_Admin {
 	}
 
 	/**
-	 * Update.
+	 * 設定値の更新.
+	 *
+	 * Secret Key が空欄でサブミットされた場合は既存値を維持する。
+	 * Public Key は空欄でも明示的なクリアとして保存する。
+	 * 不正なフォーマットの鍵はエラーを返し、保存しない。
+	 *
+	 * @return array {
+	 *     @type bool     $success エラーなく1件以上保存できたか.
+	 *     @type string[] $errors  ユーザーに表示するエラーメッセージ.
+	 * }
 	 */
 	private function update() {
 
+		$result = array(
+			'success' => false,
+			'errors'  => array(),
+		);
+
 		if ( ! check_admin_referer( $this->nonce ) ) {
-			return false;
+			return $result;
 		}
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			return false;
+			return $result;
 		}
 
-		$safe_test_public_key = '';
-		if ( isset( $_POST['test-public-key'] ) ) {
-			$test_public_key      = (string) filter_input( INPUT_POST, 'test-public-key' );
-			$safe_test_public_key = sanitize_text_field( $test_public_key );
+		// Public Key は空でも保存（明示的なクリアを許可）.
+		$public_keys = array(
+			'test-public-key' => array(
+				'option' => 'ht_pay_jp_for_kintone_test_public_key',
+				'prefix' => 'pk_test_',
+				'label'  => __( 'Test Public Key', 'payjp-for-kintone' ),
+			),
+			'live-public-key' => array(
+				'option' => 'ht_pay_jp_for_kintone_live_public_key',
+				'prefix' => 'pk_live_',
+				'label'  => __( 'Live Public Key', 'payjp-for-kintone' ),
+			),
+		);
+		foreach ( $public_keys as $field => $meta ) {
+			if ( ! isset( $_POST[ $field ] ) ) {
+				continue;
+			}
+			$input = sanitize_text_field( wp_unslash( $_POST[ $field ] ) );
+			if ( '' !== $input && ! self::is_valid_payjp_key( $input, $meta['prefix'] ) ) {
+				/* translators: 1: フィールド名, 2: 期待されるプレフィックス */
+				$result['errors'][] = sprintf( __( '%1$s の形式が不正です（%2$s で始まる必要があります）。', 'payjp-for-kintone' ), $meta['label'], $meta['prefix'] );
+				continue;
+			}
+			self::update_key_option( $meta['option'], $input );
 		}
-		update_option( 'ht_pay_jp_for_kintone_test_public_key', $safe_test_public_key );
 
-		$safe_test_secret_key = '';
-		if ( isset( $_POST['test-secret-key'] ) ) {
-			$test_secret_key      = (string) filter_input( INPUT_POST, 'test-secret-key' );
-			$safe_test_secret_key = sanitize_text_field( $test_secret_key );
+		// Secret Key は空欄なら既存値を維持。入力がある場合のみ検証して保存。.
+		$secret_keys = array(
+			'test-secret-key' => array(
+				'option' => 'ht_pay_jp_for_kintone_test_secret_key',
+				'prefix' => 'sk_test_',
+				'label'  => __( 'Test Secret Key', 'payjp-for-kintone' ),
+			),
+			'live-secret-key' => array(
+				'option' => 'ht_pay_jp_for_kintone_live_secret_key',
+				'prefix' => 'sk_live_',
+				'label'  => __( 'Live Secret Key', 'payjp-for-kintone' ),
+			),
+		);
+		foreach ( $secret_keys as $field => $meta ) {
+			if ( ! isset( $_POST[ $field ] ) ) {
+				continue;
+			}
+			$input = sanitize_text_field( wp_unslash( $_POST[ $field ] ) );
+			if ( '' === $input ) {
+				continue; // 既存値維持.
+			}
+			if ( ! self::is_valid_payjp_key( $input, $meta['prefix'] ) ) {
+				/* translators: 1: フィールド名, 2: 期待されるプレフィックス */
+				$result['errors'][] = sprintf( __( '%1$s の形式が不正です（%2$s で始まる必要があります）。', 'payjp-for-kintone' ), $meta['label'], $meta['prefix'] );
+				continue;
+			}
+			self::update_key_option( $meta['option'], $input );
 		}
-		update_option( 'ht_pay_jp_for_kintone_test_secret_key', $safe_test_secret_key );
 
-		$safe_live_public_key = '';
-		if ( isset( $_POST['live-public-key'] ) ) {
-			$live_public_key      = (string) filter_input( INPUT_POST, 'live-public-key' );
-			$safe_live_public_key = sanitize_text_field( $live_public_key );
+		// 4本すべての autoload を 'no' に揃える（毎リクエストの自動展開を回避）.
+		// 値が空欄サブミットで update_key_option を通らなかった場合でも確実に切り替える.
+		if ( function_exists( 'wp_set_options_autoload' ) ) {
+			wp_set_options_autoload(
+				array(
+					'ht_pay_jp_for_kintone_test_secret_key',
+					'ht_pay_jp_for_kintone_test_public_key',
+					'ht_pay_jp_for_kintone_live_secret_key',
+					'ht_pay_jp_for_kintone_live_public_key',
+				),
+				'no'
+			);
 		}
-		update_option( 'ht_pay_jp_for_kintone_live_public_key', $safe_live_public_key );
-
-		$safe_live_secret_key = '';
-		if ( isset( $_POST['live-public-key'] ) ) {
-			$live_secret_key      = (string) filter_input( INPUT_POST, 'live-secret-key' );
-			$safe_live_secret_key = sanitize_text_field( $live_secret_key );
-		}
-		update_option( 'ht_pay_jp_for_kintone_live_secret_key', $safe_live_secret_key );
 
 		do_action( 'ht_payjp_for_kintone_admin_setting_update' );
 
-		return true;
+		$result['success'] = empty( $result['errors'] );
+		return $result;
+	}
+
+	/**
+	 * PAY.JP の鍵フォーマットを検証する.
+	 *
+	 * @param string $key             検証対象の鍵.
+	 * @param string $expected_prefix 期待されるプレフィックス（例: sk_test_）.
+	 *
+	 * @return bool
+	 */
+	private static function is_valid_payjp_key( $key, $expected_prefix ) {
+		if ( '' === (string) $key ) {
+			return true;
+		}
+		return 0 === strpos( $key, $expected_prefix )
+			&& (bool) preg_match( '/^[A-Za-z0-9_]+$/', $key );
+	}
+
+	/**
+	 * Secret Key 表示用にマスク化する（下4桁のみ平文）.
+	 *
+	 * @param string $key マスク対象の鍵.
+	 *
+	 * @return string
+	 */
+	private static function mask_secret_key( $key ) {
+		$key = (string) $key;
+		if ( '' === $key ) {
+			return '';
+		}
+		$len = strlen( $key );
+		if ( $len <= 4 ) {
+			return str_repeat( '•', $len );
+		}
+		return str_repeat( '•', max( 8, $len - 4 ) ) . substr( $key, -4 );
+	}
+
+	/**
+	 * オプションを autoload=no で保存する.
+	 *
+	 * Secret Key を含むため、毎リクエストでメモリに展開しないようにする。
+	 *
+	 * @param string $name  オプション名.
+	 * @param string $value 保存値.
+	 */
+	private static function update_key_option( $name, $value ) {
+		if ( false === get_option( $name, false ) ) {
+			add_option( $name, $value, '', 'no' );
+			return;
+		}
+		update_option( $name, $value );
+		// 値が変わらない場合でも autoload を強制で 'no' に切り替える（WP 6.4+）.
+		if ( function_exists( 'wp_set_option_autoload' ) ) {
+			wp_set_option_autoload( $name, 'no' );
+		}
 	}
 }
