@@ -124,6 +124,33 @@ class HT_Payjp_For_Kintone_Payment {
 			$amount       = str_replace( '$', '', $amount );
 			$this->amount = $amount;
 
+			/**
+			 * PAY.JP 決済直前のアクションフック.
+			 *
+			 * 決済前にトークンや posted_data を検証し、$abort_payment を true にすると決済を中止できる.
+			 *
+			 * @param array            $posted_data    CF7 の posted data.
+			 * @param int              $amount         請求金額.
+			 * @param string           $token          PAY.JP トークン.
+			 * @param bool             $abort_payment  中止フラグ（参照渡し）.
+			 * @param string           $abort_reason   中止理由（参照渡し、ユーザー表示文言）.
+			 * @param WPCF7_Submission $submission     CF7 submission オブジェクト.
+			 * @param WPCF7_ContactForm $contact_form  CF7 contact form オブジェクト.
+			 */
+			$abort_payment = false;
+			$abort_reason  = '';
+			do_action_ref_array(
+				'ht_payjp_for_kintone_before_charge',
+				array( $posted_data, $amount, $token, &$abort_payment, &$abort_reason, $submission, $contact_form )
+			);
+			if ( $abort_payment ) {
+				$abort = true;
+				if ( '' !== $abort_reason ) {
+					$submission->set_response( $contact_form->filter_message( $abort_reason ) );
+				}
+				return;
+			}
+
 			// 都度決済.
 			try {
 				\Payjp\Payjp::setApiKey( $secret_key );

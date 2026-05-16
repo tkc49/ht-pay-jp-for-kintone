@@ -5,7 +5,7 @@ Tags: Contact Form 7, kintone, PAY.JP, form data to kintone
 Requires at least: 6.7
 Tested up to: 6.8.3
 Requires PHP: 7.4
-Stable tag: 1.9.0
+Stable tag: 1.10.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,6 +87,12 @@ Each Contact Form 7 form has its own "Enable Live" checkbox in the PAY.JP tab. U
 4. screenshot-4.png
 
 == Changelog ==
+
+= 1.10.0( 2026-05-16 ) =
+
+* [Added] New action hook `ht_payjp_for_kintone_before_charge` fired just before PAY.JP charge. Allows site-specific validation (e.g., member matching, fraud check) and aborting the payment by reference parameters.
+* Parameters: $posted_data (array), $amount (int), $token (string), $abort_payment (bool, by-ref), $abort_reason (string, by-ref), $submission (WPCF7_Submission), $contact_form (WPCF7_ContactForm)
+* Set $abort_payment = true in your callback to cancel the charge; optionally set $abort_reason for the user-facing message
 
 = 1.9.0( 2026-04-27 ) =
 
