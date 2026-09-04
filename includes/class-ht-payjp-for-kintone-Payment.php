@@ -155,6 +155,9 @@ class HT_Payjp_For_Kintone_Payment {
 			try {
 				\Payjp\Payjp::setApiKey( $secret_key );
 
+				// PAY.JP API のエラーメッセージ言語. Locale ヘッダーとして送られる.
+				$payjp_options = array( 'locale' => ht_payjp_for_kintone_get_locale( $contact_form->id() ) );
+
 				// customer 作成が有効な場合.
 				$create_customer = isset( $payjpforkintone_setting_data['create-customer'] )
 					&& 'enable' === $payjpforkintone_setting_data['create-customer'];
@@ -164,7 +167,8 @@ class HT_Payjp_For_Kintone_Payment {
 					$customer                = \Payjp\Customer::create(
 						array(
 							'card' => $token,
-						)
+						),
+						$payjp_options
 					);
 					$this->payjp_customer_id = $customer->id;
 
@@ -182,7 +186,8 @@ class HT_Payjp_For_Kintone_Payment {
 							'amount'      => $amount,
 							'currency'    => 'jpy',
 							'description' => $description,
-						)
+						),
+						$payjp_options
 					);
 				} else {
 					// 従来どおりトークンで直接決済.
@@ -192,7 +197,8 @@ class HT_Payjp_For_Kintone_Payment {
 							'amount'      => $amount,
 							'currency'    => 'jpy',
 							'description' => $description,
-						)
+						),
+						$payjp_options
 					);
 				}
 
@@ -252,20 +258,80 @@ class HT_Payjp_For_Kintone_Payment {
 					)
 				);
 			} catch ( \Payjp\Error\Card $e ) {
-				// カード決済エラーの場合
-				$abort = true;
-				$submission->set_response( $contact_form->filter_message( __( 'Card payment failed. Please check your card information.', 'payjp-for-kintone' ) ) );
+				// カード決済エラーの場合.
+				$abort   = true;
+				$message = $this->filter_error_message(
+					__( 'Card payment failed. Please check your card information.', 'ht-pay-jp-for-kintone' ),
+					'card_error',
+					$e,
+					$contact_form
+				);
+				$submission->set_response( $contact_form->filter_message( $message ) );
 				ht_payjp_for_kintone_send_error_mail( $contact_form, $e->getMessage() );
 			} catch ( \Payjp\Error\InvalidRequest $e ) {
-				// その他のPAY.JPエラーの場合
-				$abort = true;
-				$submission->set_response( $contact_form->filter_message( $e->getMessage() ) );
+				// その他のPAY.JPエラーの場合.
+				// API へは Locale ヘッダーを送っているため、ja 設定時は日本語のメッセージが返る.
+				$abort   = true;
+				$message = $this->filter_error_message(
+					$e->getMessage(),
+					'invalid_request',
+					$e,
+					$contact_form
+				);
+				$submission->set_response( $contact_form->filter_message( $message ) );
 				ht_payjp_for_kintone_send_error_mail( $contact_form, $e->getMessage() );
+			} catch ( \Payjp\Error\Base $e ) {
+				// 認証エラー・通信エラー等. 生のメッセージには API キーの一部が含まれることが
+				// あるためユーザーには出さず、詳細は管理者へメール通知する.
+				$abort   = true;
+				$message = $this->filter_error_message(
+					__( 'Payment processing failed. Please try again later.', 'ht-pay-jp-for-kintone' ),
+					'api_error',
+					$e,
+					$contact_form
+				);
+				$submission->set_response( $contact_form->filter_message( $message ) );
+				ht_payjp_for_kintone_send_error_mail( $contact_form, get_class( $e ) . ' : ' . $e->getMessage() );
 			}
 		} else {
-			// Error.
-			$abort = true;
-			$submission->set_response( $contact_form->filter_message( __( 'Failed to get credit card information', 'payjp-for-kintone' ) ) );
+			// カード情報が入力されないまま送信された場合. PAY.JP へのリクエストは発生していない.
+			$abort   = true;
+			$message = $this->filter_error_message(
+				__( 'Failed to get credit card information', 'ht-pay-jp-for-kintone' ),
+				'no_token',
+				null,
+				$contact_form
+			);
+			$submission->set_response( $contact_form->filter_message( $message ) );
 		}
+	}
+
+	/**
+	 * ユーザーに表示するエラー文言をフィルターに通す.
+	 *
+	 * @param string            $message      表示する文言.
+	 * @param string            $error_type   エラー種別. no_token / card_error / invalid_request / api_error.
+	 * @param \Exception|null   $exception    発生した例外. no_token の場合は null.
+	 * @param WPCF7_ContactForm $contact_form CF7 contact form オブジェクト.
+	 *
+	 * @return string .
+	 */
+	private function filter_error_message( $message, $error_type, $exception, $contact_form ) {
+
+		/**
+		 * 決済エラー時にユーザーへ表示する文言をフィルターする.
+		 *
+		 * @param string             $message      表示する文言.
+		 * @param string             $error_type   エラー種別. no_token / card_error / invalid_request / api_error.
+		 * @param \Exception|null    $exception    発生した例外. no_token の場合は null.
+		 * @param WPCF7_ContactForm  $contact_form CF7 contact form オブジェクト.
+		 */
+		return apply_filters(
+			'ht_payjp_for_kintone_error_message',
+			$message,
+			$error_type,
+			$exception,
+			$contact_form
+		);
 	}
 }

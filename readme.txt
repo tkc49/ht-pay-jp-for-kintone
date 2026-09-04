@@ -5,7 +5,7 @@ Tags: Contact Form 7, kintone, PAY.JP, form data to kintone
 Requires at least: 6.7
 Tested up to: 6.8.3
 Requires PHP: 7.4
-Stable tag: 1.10.0
+Stable tag: 1.11.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,6 +87,16 @@ Each Contact Form 7 form has its own "Enable Live" checkbox in the PAY.JP tab. U
 4. screenshot-4.png
 
 == Changelog ==
+
+= 1.11.0( 2026-09-04 ) =
+
+* [Added] Japanese translation files (`languages/ht-pay-jp-for-kintone-ja.po` / `.mo`). Error messages such as "Failed to get credit card information", shown when the form is submitted without entering card information, are now displayed in Japanese on Japanese-locale sites
+* [Added] PAY.JP API requests now send the `Locale` header, so PAY.JP-side error messages are returned in Japanese. The language follows the existing per-form "payment dialog language" setting (Japanese / English), so it is not hard-coded
+* [Added] New filter hook `ht_payjp_for_kintone_error_message` to customize the user-facing payment error message
+* Parameters: $message (string), $error_type (string: no_token / card_error / invalid_request / api_error), $exception (\Exception|null), $contact_form (WPCF7_ContactForm)
+* [Fixed] `Payjp\Error\Authentication`, `Payjp\Error\ApiConnection` and `Payjp\Error\Api` were not caught, so an invalid API key or a network failure ended the form submission with a PHP fatal error. They are now caught and shown to the visitor as a generic message, with the details sent to the admin by e-mail
+* [Fixed] The `Text Domain` plugin header did not match the text domain used in the code, so no translation could ever be loaded. Both are now unified to `ht-pay-jp-for-kintone`
+* [Fixed] Moved `load_plugin_textdomain()` to the `init` hook to avoid the "Translation loading triggered too early" notice on WordPress 6.7+
 
 = 1.10.0( 2026-05-16 ) =
 

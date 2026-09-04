@@ -6,7 +6,7 @@ function ht_payjp_for_kintone_get_path( $filename = '' ) {
 function ht_payjp_for_kintone_include( $filename = '' ) {
 	$file_path = ht_payjp_for_kintone_get_path( $filename );
 	if ( file_exists( $file_path ) ) {
-		include_once( $file_path );
+		include_once $file_path;
 	}
 }
 
@@ -26,7 +26,7 @@ function ht_payjp_for_kintone_send_error_mail( $contact_form, $erro_message ) {
 		$to = get_option( 'admin_email' );
 	}
 
-	$subject = esc_html__( 'Error : PAY.JP Payment', 'payjp-for-kintone' );
+	$subject = esc_html__( 'Error : PAY.JP Payment', 'ht-pay-jp-for-kintone' );
 	$body    = $erro_message;
 	wp_mail( $to, $subject, $body );
 }
@@ -52,4 +52,39 @@ function ht_payjp_for_kintone_get_api_key( $contact_form_id ) {
 	}
 
 	return $secret_key;
+}
+
+/**
+ * フォームに設定された表示言語を取得する.
+ *
+ * PAY.JP の checkout ダイアログの表示言語設定 ( payjpforkintone-language ) を
+ * PAY.JP API の Locale ヘッダーにも流用する。API は Locale: ja を受け取ると
+ * エラーメッセージを日本語で返す ( Accept-Language は無視される ).
+ *
+ * @param int $contact_form_id Contact Form 7 の投稿ID.
+ *
+ * @return string ja または en.
+ */
+function ht_payjp_for_kintone_get_locale( $contact_form_id = 0 ) {
+
+	if ( empty( $contact_form_id ) ) {
+		$contact_form = WPCF7_ContactForm::get_current();
+		if ( ! $contact_form ) {
+			return 'ja';
+		}
+		$contact_form_id = $contact_form->id();
+	}
+
+	$payjpforkintone_setting_data = get_post_meta(
+		$contact_form_id,
+		'_ht_payjpforkintone_setting_data',
+		true
+	);
+
+	$locale = 'ja';
+	if ( isset( $payjpforkintone_setting_data['payjpforkintone-language'] ) && '' !== $payjpforkintone_setting_data['payjpforkintone-language'] ) {
+		$locale = $payjpforkintone_setting_data['payjpforkintone-language'];
+	}
+
+	return 'en' === $locale ? 'en' : 'ja';
 }

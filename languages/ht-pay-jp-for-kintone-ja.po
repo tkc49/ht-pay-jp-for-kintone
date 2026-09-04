@@ -1,0 +1,124 @@
+# Japanese translation for HT PAY.JP for kintone.
+# Copyright (C) 2026 Takashi Hosoya
+# This file is distributed under the same license as the HT PAY.JP for kintone plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: HT PAY.JP for kintone 1.11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: includes/class-ht-payjp-for-kintone-Payment.php
+msgid "Failed to get credit card information"
+msgstr "カード情報が入力されていません。「カード情報を入力する」ボタンからカード情報をご入力のうえ、再度お試しください。"
+
+#: includes/class-ht-payjp-for-kintone-Payment.php
+msgid "Card payment failed. Please check your card information."
+msgstr "カード決済に失敗しました。カード情報をご確認のうえ、再度お試しください。"
+
+#: includes/ht-payjp-for-kintone-utility-functions.php
+msgid "Error : PAY.JP Payment"
+msgstr "エラー : PAY.JP 決済"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Success"
+msgstr "保存しました"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Test Secret Key"
+msgstr "テスト秘密鍵"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Test Public Key"
+msgstr "テスト公開鍵"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Live Secret Key"
+msgstr "本番秘密鍵"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Live Public Key"
+msgstr "本番公開鍵"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Current:"
+msgstr "現在の設定値:"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Save"
+msgstr "保存"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Setting PAY.JP for kintone"
+msgstr "PAY.JP for kintone の設定"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Disable"
+msgstr "無効"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Enable"
+msgstr "有効"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Setting the language to display on the payment dialog box."
+msgstr "決済ダイアログおよび PAY.JP のエラーメッセージの表示言語"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Japanese"
+msgstr "日本語"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "English"
+msgstr "英語"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Setting live mode."
+msgstr "本番モードの設定"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Enable Live"
+msgstr "本番モードを有効にする"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Setting customer creation."
+msgstr "顧客 (Customer) 作成の設定"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Create Customer"
+msgstr "顧客 (Customer) を作成する"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Checkout"
+msgstr "都度決済 (Checkout)"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Subscription"
+msgstr "定期課金 (Subscription)"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "PAY.JP's Plan ID"
+msgstr "PAY.JP のプラン ID"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Fixed Subscription datetime"
+msgstr "定期課金日を固定する"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Select amount of CF7 mailtag"
+msgstr "金額に対応する Contact Form 7 のメールタグを選択"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Select description of CF7 mailtag"
+msgstr "備考 (description) に対応する Contact Form 7 のメールタグを選択"
+
+#: includes/class-ht-payjp-for-kintone-Admin.php
+msgid "Paste the following shortcode of Contact form 7 on form of Contact form 7"
+msgstr "以下のショートコードを Contact Form 7 のフォームに貼り付けてください"
+
+#: includes/class-ht-payjp-for-kintone-Payment.php
+msgid "Payment processing failed. Please try again later."
+msgstr "決済処理に失敗しました。お手数ですが、しばらく時間をおいてから再度お試しください。"

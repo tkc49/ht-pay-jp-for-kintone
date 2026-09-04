@@ -93,7 +93,7 @@ class HT_Payjp_For_Kintone_Admin {
 				}
 			}
 			if ( $result['success'] ) {
-				echo '<div class="updated notice is-dismissible"><p><strong>' . esc_html__( 'Success', 'payjp-for-kintone' ) . '</strong></p></div>';
+				echo '<div class="updated notice is-dismissible"><p><strong>' . esc_html__( 'Success', 'ht-pay-jp-for-kintone' ) . '</strong></p></div>';
 			}
 		}
 
@@ -105,7 +105,7 @@ class HT_Payjp_For_Kintone_Admin {
 		$test_secret_mask = self::mask_secret_key( $test_secret_key );
 		$live_secret_mask = self::mask_secret_key( $live_secret_key );
 
-		$secret_placeholder = __( '変更しない場合は空欄のままにしてください', 'payjp-for-kintone' );
+		$secret_placeholder = __( '変更しない場合は空欄のままにしてください', 'ht-pay-jp-for-kintone' );
 
 		?>
 		<div class="wrap">
@@ -119,7 +119,7 @@ class HT_Payjp_For_Kintone_Admin {
 					<tr valign="top">
 						<th scope="row">
 							<label for="test-secret-key">
-								<?php esc_html_e( 'Test Secret Key', 'payjp-for-kintone' ); ?>
+								<?php esc_html_e( 'Test Secret Key', 'ht-pay-jp-for-kintone' ); ?>
 							</label>
 						</th>
 						<td>
@@ -129,7 +129,7 @@ class HT_Payjp_For_Kintone_Admin {
 								placeholder="<?php echo esc_attr( $secret_placeholder ); ?>">
 							<?php if ( '' !== $test_secret_mask ) : ?>
 								<p class="description">
-									<?php esc_html_e( 'Current:', 'payjp-for-kintone' ); ?>
+									<?php esc_html_e( 'Current:', 'ht-pay-jp-for-kintone' ); ?>
 									<code><?php echo esc_html( $test_secret_mask ); ?></code>
 								</p>
 							<?php endif; ?>
@@ -138,7 +138,7 @@ class HT_Payjp_For_Kintone_Admin {
 					<tr valign="top">
 						<th scope="row">
 							<label for="test-public-key">
-								<?php esc_html_e( 'Test Public Key', 'payjp-for-kintone' ); ?>
+								<?php esc_html_e( 'Test Public Key', 'ht-pay-jp-for-kintone' ); ?>
 							</label>
 						</th>
 						<td>
@@ -149,7 +149,7 @@ class HT_Payjp_For_Kintone_Admin {
 					<tr valign="top">
 						<th scope="row">
 							<label for="live-secret-key">
-								<?php esc_html_e( 'Live Secret Key', 'payjp-for-kintone' ); ?>
+								<?php esc_html_e( 'Live Secret Key', 'ht-pay-jp-for-kintone' ); ?>
 							</label>
 						</th>
 						<td>
@@ -159,7 +159,7 @@ class HT_Payjp_For_Kintone_Admin {
 								placeholder="<?php echo esc_attr( $secret_placeholder ); ?>">
 							<?php if ( '' !== $live_secret_mask ) : ?>
 								<p class="description">
-									<?php esc_html_e( 'Current:', 'payjp-for-kintone' ); ?>
+									<?php esc_html_e( 'Current:', 'ht-pay-jp-for-kintone' ); ?>
 									<code><?php echo esc_html( $live_secret_mask ); ?></code>
 								</p>
 							<?php endif; ?>
@@ -168,7 +168,7 @@ class HT_Payjp_For_Kintone_Admin {
 					<tr valign="top">
 						<th scope="row">
 							<label for="live-public-key">
-								<?php esc_html_e( 'Live Public Key', 'payjp-for-kintone' ); ?>
+								<?php esc_html_e( 'Live Public Key', 'ht-pay-jp-for-kintone' ); ?>
 							</label>
 						</th>
 						<td>
@@ -183,7 +183,7 @@ class HT_Payjp_For_Kintone_Admin {
 
 				<p class="submit">
 					<input type="submit" name="get_kintone_fields" class="button-primary"
-						value="<?php echo esc_attr( __( 'Save', 'payjp-for-kintone' ) ); ?>"/>
+						value="<?php echo esc_attr( __( 'Save', 'ht-pay-jp-for-kintone' ) ); ?>"/>
 				</p>
 			</form>
 		</div>
@@ -349,15 +349,15 @@ class HT_Payjp_For_Kintone_Admin {
 
 		?>
 
-		<h2><?php esc_html_e( 'Setting PAY.JP for kintone', 'payjp-for-kintone' ); ?></h2>
+		<h2><?php esc_html_e( 'Setting PAY.JP for kintone', 'ht-pay-jp-for-kintone' ); ?></h2>
 		<div id="payjpforkintone-disabled-blocked" class="field-wrap field-wrap-use-external-url">
 			<fieldset>
 				<label for="payjpforkintone-disabled">
-					<?php esc_html_e( 'Disable', 'payjp-for-kintone' ); ?>
+					<?php esc_html_e( 'Disable', 'ht-pay-jp-for-kintone' ); ?>
 				</label>
 				<input type="radio" name="ht_payjpforkintone_setting_data[payjpforkintone-enabled]" id="payjpforkintone-disabled" value="disable"<?php checked( $payjpforkintone_enabled, 'disable' ); ?>>
 				<label for="payjpforkintone-enabled">
-					<?php esc_html_e( 'Enable', 'payjp-for-kintone' ); ?>
+					<?php esc_html_e( 'Enable', 'ht-pay-jp-for-kintone' ); ?>
 				</label>
 				<input type="radio" name="ht_payjpforkintone_setting_data[payjpforkintone-enabled]" id="payjpforkintone-enabled" value="enable"<?php checked( $payjpforkintone_enabled, 'enable' ); ?>>
 			</fieldset>
@@ -375,23 +375,23 @@ class HT_Payjp_For_Kintone_Admin {
 			<?php endif; ?>
 
 			<div id="payjpforkintone-language-blocked" class="field-wrap field-wrap-use-external-url">
-				<lable>■ <?php esc_html_e( 'Setting the language to display on the payment dialog box.', 'payjp-for-kintone' ); ?></lable>
+				<lable>■ <?php esc_html_e( 'Setting the language to display on the payment dialog box.', 'ht-pay-jp-for-kintone' ); ?></lable>
 				<fieldset>
 					<label for="payjpforkintone-japanese">
-						<?php esc_html_e( 'Japanese', 'payjp-for-kintone' ); ?>
+						<?php esc_html_e( 'Japanese', 'ht-pay-jp-for-kintone' ); ?>
 					</label>
 					<input type="radio" name="ht_payjpforkintone_setting_data[payjpforkintone-language]" id="payjpforkintone-japanese" value="ja" <?php checked( $payjpforkintone_language, 'ja' ); ?>>
 					<label for="payjpforkintone-english">
-						<?php esc_html_e( 'English', 'payjp-for-kintone' ); ?>
+						<?php esc_html_e( 'English', 'ht-pay-jp-for-kintone' ); ?>
 					</label>
 					<input type="radio" name="ht_payjpforkintone_setting_data[payjpforkintone-language]" id="payjpforkintone-english" value="en" <?php checked( $payjpforkintone_language, 'en' ); ?>>
 				</fieldset>
 			</div>
 
 			<div class="field-wrap field-wrap-use-external-url">
-				<lable>■ <?php esc_html_e( 'Setting live mode.', 'payjp-for-kintone' ); ?></lable>
+				<lable>■ <?php esc_html_e( 'Setting live mode.', 'ht-pay-jp-for-kintone' ); ?></lable>
 				<fieldset>
-					<label for="live-enabled"><?php esc_html_e( 'Enable Live', 'payjp-for-kintone' ); ?></label>
+					<label for="live-enabled"><?php esc_html_e( 'Enable Live', 'ht-pay-jp-for-kintone' ); ?></label>
 					<input
 						type="checkbox"
 						name="ht_payjpforkintone_setting_data[live-enabled]"
@@ -403,9 +403,9 @@ class HT_Payjp_For_Kintone_Admin {
 			</div>
 
 			<div class="field-wrap field-wrap-use-external-url">
-				<lable>■ <?php esc_html_e( 'Setting customer creation.', 'payjp-for-kintone' ); ?></lable>
+				<lable>■ <?php esc_html_e( 'Setting customer creation.', 'ht-pay-jp-for-kintone' ); ?></lable>
 				<fieldset>
-					<label for="create-customer"><?php esc_html_e( 'Create Customer', 'payjp-for-kintone' ); ?></label>
+					<label for="create-customer"><?php esc_html_e( 'Create Customer', 'ht-pay-jp-for-kintone' ); ?></label>
 					<input
 						type="checkbox"
 						name="ht_payjpforkintone_setting_data[create-customer]"
@@ -418,7 +418,7 @@ class HT_Payjp_For_Kintone_Admin {
 
 			<div class="field-wrap field-wrap-use-external-url">
 				<fieldset>
-					<label for="payment-type-checkout"><?php esc_html_e( 'Checkout', 'payjp-for-kintone' ); ?></label>
+					<label for="payment-type-checkout"><?php esc_html_e( 'Checkout', 'ht-pay-jp-for-kintone' ); ?></label>
 					<input
 						type="radio"
 						name="ht_payjpforkintone_setting_data[payment-type]"
@@ -426,7 +426,7 @@ class HT_Payjp_For_Kintone_Admin {
 						value="checkout"
 						<?php checked( $subscription_enabled, 'checkout' ); ?>
 					>
-					<label for="payment-type-subscription"><?php esc_html_e( 'Subscription', 'payjp-for-kintone' ); ?></label>
+					<label for="payment-type-subscription"><?php esc_html_e( 'Subscription', 'ht-pay-jp-for-kintone' ); ?></label>
 					<input
 						type="radio"
 						name="ht_payjpforkintone_setting_data[payment-type]"
@@ -440,7 +440,7 @@ class HT_Payjp_For_Kintone_Admin {
 			<div class="field-wrap field-wrap-use-external-url">
 				<fieldset>
 					<label for="payjp-plan-id">
-						<?php esc_html_e( 'PAY.JP\'s Plan ID', 'payjp-for-kintone' ); ?>
+						<?php esc_html_e( 'PAY.JP\'s Plan ID', 'ht-pay-jp-for-kintone' ); ?>
 					</label><br/>
 					<input type="text" id="payjp-plan-id" value="<?php echo esc_attr( $payjp_plan_id ); ?>" name="ht_payjpforkintone_setting_data[payjp-plan-id]">
 				</fieldset>
@@ -449,7 +449,7 @@ class HT_Payjp_For_Kintone_Admin {
 			<div class="field-wrap field-wrap-use-external-url">
 				<fieldset>
 					<label for="payjp-fixed-subscription-date">
-						<?php esc_html_e( 'Fixed Subscription datetime', 'payjp-for-kintone' ); ?>
+						<?php esc_html_e( 'Fixed Subscription datetime', 'ht-pay-jp-for-kintone' ); ?>
 					</label><br/>
 					<select name="ht_payjpforkintone_setting_data[payjp-fixed-subscription-month]" id="payjp-fixed-subscription-month">
 						<option value="">month / day</option>
@@ -470,12 +470,12 @@ class HT_Payjp_For_Kintone_Admin {
 			<div class="field-wrap field-wrap-use-external-url">
 				<fieldset>
 					<label for="amount-cf7-mailtag">
-						<?php esc_html_e( 'Select amount of CF7 mailtag', 'payjp-for-kintone' ); ?>
+						<?php esc_html_e( 'Select amount of CF7 mailtag', 'ht-pay-jp-for-kintone' ); ?>
 					</label><br/>
 
 					<select
 						name="ht_payjpforkintone_setting_data[amount-cf7-mailtag]"
-						data-placeholder="<?php esc_html_e( 'Select amount of CF7 mailtag', 'payjp-for-kintone' ); ?>"
+						data-placeholder="<?php esc_html_e( 'Select amount of CF7 mailtag', 'ht-pay-jp-for-kintone' ); ?>"
 						class="chosen-select"
 						style="width:350px;"
 						id="amount-cf7-mailtag"
@@ -493,12 +493,12 @@ class HT_Payjp_For_Kintone_Admin {
 				</fieldset>
 				<fieldset>
 					<label for="description-cf7-mailtag">
-						<?php esc_html_e( 'Select description of CF7 mailtag', 'payjp-for-kintone' ); ?>
+						<?php esc_html_e( 'Select description of CF7 mailtag', 'ht-pay-jp-for-kintone' ); ?>
 					</label><br/>
 
 					<select
 						name="ht_payjpforkintone_setting_data[description-cf7-mailtag]"
-						data-placeholder="<?php esc_html_e( 'Select description of CF7 mailtag', 'payjp-for-kintone' ); ?>"
+						data-placeholder="<?php esc_html_e( 'Select description of CF7 mailtag', 'ht-pay-jp-for-kintone' ); ?>"
 						class="chosen-select"
 						style="width:350px;"
 						id="description-cf7-mailtag"
@@ -516,7 +516,7 @@ class HT_Payjp_For_Kintone_Admin {
 				</fieldset>
 			</div>
 
-			<?php esc_html_e( 'Paste the following shortcode of Contact form 7 on form of Contact form 7', 'payjp-for-kintone' ); ?>
+			<?php esc_html_e( 'Paste the following shortcode of Contact form 7 on form of Contact form 7', 'ht-pay-jp-for-kintone' ); ?>
 			<span class="shortcode wp-ui-highlight">
 					<input type="text" id="payjpforkintone-shortcode" onfocus="this.select();" readonly="readonly" class="large-text code" value="[ht_payjp_for_kintone]">
 			</span>
@@ -618,12 +618,12 @@ class HT_Payjp_For_Kintone_Admin {
 			'test-public-key' => array(
 				'option' => 'ht_pay_jp_for_kintone_test_public_key',
 				'prefix' => 'pk_test_',
-				'label'  => __( 'Test Public Key', 'payjp-for-kintone' ),
+				'label'  => __( 'Test Public Key', 'ht-pay-jp-for-kintone' ),
 			),
 			'live-public-key' => array(
 				'option' => 'ht_pay_jp_for_kintone_live_public_key',
 				'prefix' => 'pk_live_',
-				'label'  => __( 'Live Public Key', 'payjp-for-kintone' ),
+				'label'  => __( 'Live Public Key', 'ht-pay-jp-for-kintone' ),
 			),
 		);
 		foreach ( $public_keys as $field => $meta ) {
@@ -633,7 +633,7 @@ class HT_Payjp_For_Kintone_Admin {
 			$input = sanitize_text_field( wp_unslash( $_POST[ $field ] ) );
 			if ( '' !== $input && ! self::is_valid_payjp_key( $input, $meta['prefix'] ) ) {
 				/* translators: 1: フィールド名, 2: 期待されるプレフィックス */
-				$result['errors'][] = sprintf( __( '%1$s の形式が不正です（%2$s で始まる必要があります）。', 'payjp-for-kintone' ), $meta['label'], $meta['prefix'] );
+				$result['errors'][] = sprintf( __( '%1$s の形式が不正です（%2$s で始まる必要があります）。', 'ht-pay-jp-for-kintone' ), $meta['label'], $meta['prefix'] );
 				continue;
 			}
 			self::update_key_option( $meta['option'], $input );
@@ -644,12 +644,12 @@ class HT_Payjp_For_Kintone_Admin {
 			'test-secret-key' => array(
 				'option' => 'ht_pay_jp_for_kintone_test_secret_key',
 				'prefix' => 'sk_test_',
-				'label'  => __( 'Test Secret Key', 'payjp-for-kintone' ),
+				'label'  => __( 'Test Secret Key', 'ht-pay-jp-for-kintone' ),
 			),
 			'live-secret-key' => array(
 				'option' => 'ht_pay_jp_for_kintone_live_secret_key',
 				'prefix' => 'sk_live_',
-				'label'  => __( 'Live Secret Key', 'payjp-for-kintone' ),
+				'label'  => __( 'Live Secret Key', 'ht-pay-jp-for-kintone' ),
 			),
 		);
 		foreach ( $secret_keys as $field => $meta ) {
@@ -662,7 +662,7 @@ class HT_Payjp_For_Kintone_Admin {
 			}
 			if ( ! self::is_valid_payjp_key( $input, $meta['prefix'] ) ) {
 				/* translators: 1: フィールド名, 2: 期待されるプレフィックス */
-				$result['errors'][] = sprintf( __( '%1$s の形式が不正です（%2$s で始まる必要があります）。', 'payjp-for-kintone' ), $meta['label'], $meta['prefix'] );
+				$result['errors'][] = sprintf( __( '%1$s の形式が不正です（%2$s で始まる必要があります）。', 'ht-pay-jp-for-kintone' ), $meta['label'], $meta['prefix'] );
 				continue;
 			}
 			self::update_key_option( $meta['option'], $input );

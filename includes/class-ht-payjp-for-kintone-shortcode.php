@@ -59,10 +59,7 @@ class HT_Payjp_For_Kintone_Shortcode {
 			$public_key = get_option( 'ht_pay_jp_for_kintone_test_public_key' );
 		}
 
-		$payjpforkintone_language = 'ja';
-		if ( isset( $payjpforkintone_setting_data['payjpforkintone-language'] ) ) {
-			$payjpforkintone_language = $payjpforkintone_setting_data['payjpforkintone-language'];
-		}
+		$payjpforkintone_language = ht_payjp_for_kintone_get_locale( $contact_form->id() );
 
 		$html = '<script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button" data-key="' . $public_key . '" data-partial="true" data-lang="' . $payjpforkintone_language . '" data-payjp-three-d-secure="true" data-payjp-three-d-secure-workflow="subwindow" data-payjp-extra-attribute-email data-payjp-extra-attribute-phone ></script > ';
 

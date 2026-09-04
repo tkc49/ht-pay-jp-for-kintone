@@ -7,7 +7,7 @@
  * Author URI:      https://ht79.info
  * Text Domain:     ht-pay-jp-for-kintone
  * Domain Path:     /languages
- * Version:         1.10.0
+ * Version:         1.11.0
  *
  * @package         HT_Payjp_For_Kintone
  */
@@ -24,11 +24,20 @@ $data = get_file_data(
 );
 define( 'HT_PAY_JP_FOR_KINTONE_VERSION', $data['ver'] );
 define( 'HT_PAY_JP_FOR_KINTONE_LANGS', $data['langs'] );
-load_plugin_textdomain(
-	'payjp-for-kintone',
-	false,
-	dirname( plugin_basename( __FILE__ ) ) . HT_PAY_JP_FOR_KINTONE_LANGS
-);
+/**
+ * 翻訳ファイルを読み込む.
+ *
+ * WordPress 6.7 以降、init より前に翻訳を読み込むと _doing_it_wrong 警告が出るため
+ * init フックで読み込む.
+ */
+function ht_payjp_for_kintone_load_textdomain() {
+	load_plugin_textdomain(
+		'ht-pay-jp-for-kintone',
+		false,
+		dirname( plugin_basename( __FILE__ ) ) . HT_PAY_JP_FOR_KINTONE_LANGS
+	);
+}
+add_action( 'init', 'ht_payjp_for_kintone_load_textdomain' );
 
 require_once 'vendor/autoload.php';
 require_once HT_PAY_JP_FOR_KINTONE_PATH . 'includes/class-ht-Payjp-for-kintone.php';
