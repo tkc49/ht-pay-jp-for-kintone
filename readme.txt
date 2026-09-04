@@ -3,9 +3,9 @@ Contributors: tkc49
 Donate link:
 Tags: Contact Form 7, kintone, PAY.JP, form data to kintone
 Requires at least: 6.7
-Tested up to: 6.8.3
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.11.0
+Stable tag: 1.11.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,6 +87,10 @@ Each Contact Form 7 form has its own "Enable Live" checkbox in the PAY.JP tab. U
 4. screenshot-4.png
 
 == Changelog ==
+
+= 1.11.1( 2026-09-04 ) =
+
+* [Changed] Bumped "Tested up to" to 7.1. Verified on WordPress 7.1 / PHP 8.3 that the Japanese error messages, the per-form language setting (PAY.JP `Locale` header and checkout.js `data-lang`), the translated admin screens and a successful test-card charge all work, with no PHP notices
 
 = 1.11.0( 2026-09-04 ) =
 
