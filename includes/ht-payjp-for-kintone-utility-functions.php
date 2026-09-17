@@ -31,6 +31,32 @@ function ht_payjp_for_kintone_send_error_mail( $contact_form, $erro_message ) {
 	wp_mail( $to, $subject, $body );
 }
 
+/**
+ * フォームに紐づく PAY.JP 設定を取得する.
+ *
+ * 決済設定を一度も保存していないフォームでは get_post_meta() が空文字列を返す。
+ * そのまま配列アクセスすると PHP 8 で TypeError になり CF7 の送信が失敗するため、
+ * 常に配列を返して呼び出し側の配列アクセスを安全にする.
+ *
+ * @param int $contact_form_id Contact Form 7 の投稿ID.
+ *
+ * @return array PAY.JP 設定. 未設定の場合は空配列.
+ */
+function ht_payjp_for_kintone_get_setting_data( $contact_form_id ) {
+
+	$payjpforkintone_setting_data = get_post_meta(
+		$contact_form_id,
+		'_ht_payjpforkintone_setting_data',
+		true
+	);
+
+	if ( ! is_array( $payjpforkintone_setting_data ) ) {
+		return array();
+	}
+
+	return $payjpforkintone_setting_data;
+}
+
 function ht_payjp_for_kintone_get_api_key( $contact_form_id ) {
 
 	if ( empty( $contact_form_id ) ) {
@@ -38,11 +64,7 @@ function ht_payjp_for_kintone_get_api_key( $contact_form_id ) {
 		$contact_form_id = $contact_form->id();
 	}
 
-	$payjpforkintone_setting_data = get_post_meta(
-		$contact_form_id,
-		'_ht_payjpforkintone_setting_data',
-		true
-	);
+	$payjpforkintone_setting_data = ht_payjp_for_kintone_get_setting_data( $contact_form_id );
 
 	if ( isset( $payjpforkintone_setting_data['live-enabled'] ) && 'enable' === $payjpforkintone_setting_data['live-enabled'] ) {
 		// Live.
@@ -75,11 +97,7 @@ function ht_payjp_for_kintone_get_locale( $contact_form_id = 0 ) {
 		$contact_form_id = $contact_form->id();
 	}
 
-	$payjpforkintone_setting_data = get_post_meta(
-		$contact_form_id,
-		'_ht_payjpforkintone_setting_data',
-		true
-	);
+	$payjpforkintone_setting_data = ht_payjp_for_kintone_get_setting_data( $contact_form_id );
 
 	$locale = 'ja';
 	if ( isset( $payjpforkintone_setting_data['payjpforkintone-language'] ) && '' !== $payjpforkintone_setting_data['payjpforkintone-language'] ) {

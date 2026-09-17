@@ -57,10 +57,10 @@ class HT_Payjp_For_Kintone_Payment {
 	public function set_payjp_charged_id( $cf7_send_data ) {
 
 		$contact_form                 = WPCF7_ContactForm::get_current();
-		$payjpforkintone_setting_data = get_post_meta( $contact_form->id(), '_ht_payjpforkintone_setting_data', true );
+		$payjpforkintone_setting_data = ht_payjp_for_kintone_get_setting_data( $contact_form->id() );
 
 		// 有効ではない場合は、何もせずにリターン.
-		if ( 'enable' !== $payjpforkintone_setting_data['payjpforkintone-enabled'] ) {
+		if ( ! isset( $payjpforkintone_setting_data['payjpforkintone-enabled'] ) || 'enable' !== $payjpforkintone_setting_data['payjpforkintone-enabled'] ) {
 			return $cf7_send_data;
 		}
 		if ( isset( $payjpforkintone_setting_data['payment-type'] ) && 'checkout' !== $payjpforkintone_setting_data['payment-type'] ) {
@@ -71,7 +71,7 @@ class HT_Payjp_For_Kintone_Payment {
 		$cf7_send_data['payjp-charged-captured-at'] = $this->payjp_captured_at;
 		$cf7_send_data['payjp-customer-id']         = $this->payjp_customer_id;
 
-		$payjpforkintone_setting_data         = get_post_meta( $contact_form->id(), '_ht_payjpforkintone_setting_data', true );
+		$payjpforkintone_setting_data         = ht_payjp_for_kintone_get_setting_data( $contact_form->id() );
 		$amount_cf7_mailtag                   = $payjpforkintone_setting_data['amount-cf7-mailtag'];
 		$cf7_send_data[ $amount_cf7_mailtag ] = $this->amount;
 
@@ -88,8 +88,8 @@ class HT_Payjp_For_Kintone_Payment {
 	public function payment_to_pay_jp( $contact_form, &$abort, $submission ) {
 
 		// 有効でない場合は何もせずにリターン.
-		$payjpforkintone_setting_data = get_post_meta( $contact_form->id(), '_ht_payjpforkintone_setting_data', true );
-		if ( 'enable' !== $payjpforkintone_setting_data['payjpforkintone-enabled'] ) {
+		$payjpforkintone_setting_data = ht_payjp_for_kintone_get_setting_data( $contact_form->id() );
+		if ( ! isset( $payjpforkintone_setting_data['payjpforkintone-enabled'] ) || 'enable' !== $payjpforkintone_setting_data['payjpforkintone-enabled'] ) {
 			return;
 		}
 		if ( isset( $payjpforkintone_setting_data['payment-type'] ) && 'checkout' !== $payjpforkintone_setting_data['payment-type'] ) {

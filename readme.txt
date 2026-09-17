@@ -5,7 +5,7 @@ Tags: Contact Form 7, kintone, PAY.JP, form data to kintone
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.11.1
+Stable tag: 1.11.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,6 +87,10 @@ Each Contact Form 7 form has its own "Enable Live" checkbox in the PAY.JP tab. U
 4. screenshot-4.png
 
 == Changelog ==
+
+= 1.11.2( 2026-09-17 ) =
+
+* [Fixed] Submitting a Contact Form 7 form that had never had its PAY.JP settings saved ended in a PHP fatal error (`TypeError: Cannot access offset of type string on string`) on PHP 8. `get_post_meta()` returns an empty string for a form with no `_ht_payjpforkintone_setting_data` meta, and that string was accessed as an array. Because Contact Form 7 submits through the REST API, the broken response left the front-end spinner rotating forever and the form could not be submitted at all. The setting is now always read through the new `ht_payjp_for_kintone_get_setting_data()` helper, which guarantees an array, and every caller checks the key with `isset()` before comparing
 
 = 1.11.1( 2026-09-04 ) =
 

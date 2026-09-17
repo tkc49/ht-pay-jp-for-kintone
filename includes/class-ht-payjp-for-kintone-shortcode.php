@@ -46,9 +46,9 @@ class HT_Payjp_For_Kintone_Shortcode {
 	public function ht_payjp_for_kintone_add_form_handler( $tag ) {
 
 		$contact_form                 = WPCF7_ContactForm::get_current();
-		$payjpforkintone_setting_data = get_post_meta( $contact_form->id(), '_ht_payjpforkintone_setting_data', true );
+		$payjpforkintone_setting_data = ht_payjp_for_kintone_get_setting_data( $contact_form->id() );
 
-		if ( 'enable' !== $payjpforkintone_setting_data['payjpforkintone-enabled'] ) {
+		if ( ! isset( $payjpforkintone_setting_data['payjpforkintone-enabled'] ) || 'enable' !== $payjpforkintone_setting_data['payjpforkintone-enabled'] ) {
 			return '';
 		}
 
